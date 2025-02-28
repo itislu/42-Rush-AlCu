@@ -1,0 +1,11 @@
+*
+!*/
+!*.c
+!*.h
+!*.md
+!*.mk
+!.clang-format
+!.clangd
+!.gitignore
+!Dockerfile
+!Makefile

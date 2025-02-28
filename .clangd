@@ -1,0 +1,36 @@
+CompileFlags:
+  Add: [-Wall, -Wextra, -Werror, -pedantic, --language=c]
+  Compiler: cc
+
+Diagnostics:
+  ClangTidy:
+    Add:
+      [
+        "bugprone-*",
+        "clang-analyzer-*",
+        "cppcoreguidelines-*",
+        "hicpp-*",
+        "misc-*",
+        "performance-*",
+        "readability-*",
+      ]
+    Remove:
+      [
+        bugprone-easily-swappable-parameters,
+        cppcoreguidelines-avoid-magic-numbers,
+        hicpp-avoid-goto,
+        readability-identifier-length,
+      ]
+    CheckOptions:
+      readability-magic-numbers.IgnoredIntegerValues: "1;2;3;4;10"
+      readability-magic-numbers.IgnorePowersOf2IntegerValues: Yes
+      readability-magic-numbers.IgnoredFloatingPointValues: "0.1"
+    FastCheckFilter: None
+  MissingIncludes: Strict
+
+InlayHints:
+  BlockEnd: No
+  Designators: Yes
+  Enabled: Yes
+  ParameterNames: Yes
+  DeducedTypes: Yes
