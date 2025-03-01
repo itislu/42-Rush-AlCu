@@ -5,10 +5,10 @@ static void move_up_a_line()
 	ft_putstr_fd("\033[A\r", 1);
 }
 
-static void move_down_a_line()
-{
-	ft_putstr_fd("\033[B\r", 1);
-}
+// static void move_down_a_line()
+// {
+// 	ft_putstr_fd("\033[B\r", 1);
+// }
 
 static void clear_line()
 {

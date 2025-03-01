@@ -18,7 +18,7 @@ void	print_board_row(t_board *board, size_t row)
 	unsigned int	pieces;
 	unsigned int	width;
 
-	pieces = board->rows[row].cur_amount;
+	pieces = board->rows[row]->cur_amount;
 	width = ft_min(PRT_WIDTH_LIMIT, board->width);
 	if (pieces <= PRT_WIDTH_LIMIT)
 	{
@@ -43,7 +43,7 @@ void	print_board_row(t_board *board, size_t row)
 	}
 	while (--spaces)
 		ft_printf(" ");
-	ft_printf(" row #%i (%i pieces)\n", row + 1, board->rows[row].cur_amount);
+	ft_printf(" row #%i (%i pieces)\n", row + 1, board->rows[row]->cur_amount);
 }
 
 void	print_board_complete(t_board *board)
@@ -71,7 +71,6 @@ void	print_board_complete(t_board *board)
 
 void	clear_complete_board(t_board *board)
 {
-	size_t		row;
 	size_t		curr_height;
 	size_t		offset = 1;
 	static bool	limit;
@@ -114,7 +113,7 @@ void	clear_changed_row(t_board *board)
 
 // static void	test_empty_row_keep_width(t_board *board, size_t row)
 // {
-// 	board->rows[row].cur_amount = 0;
+// 	board->rows[row]->cur_amount = 0;
 // 	if (board->cur_row)
 // 		board->cur_row--;
 // 	usleep(50000);
