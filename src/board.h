@@ -36,3 +36,6 @@ typedef struct s_board {
 Result init_board(t_board *board, const char *filename);
 
 void free_board(t_board *board);
+
+unsigned int prompt(t_board *board);
+bool is_valid_number(const char *num);

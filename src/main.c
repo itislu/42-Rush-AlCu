@@ -3,7 +3,8 @@
 #include "libft.h"
 #include <unistd.h>
 
-bool is_game_end(t_board *board);
+static bool is_game_end(t_board *board);
+static void print_result(t_board *board);
 
 int main(int argc, char *argv[])
 {
@@ -34,9 +35,11 @@ int main(int argc, char *argv[])
 			}
 		}
 		else {
-			// picks = prompt();
+			picks = prompt(&board);
+			if (picks == 0){
+				return (0); //EOF
+			}
 		}
-
 		cur_row->cur_amount -= picks;
 		cur_row->last_pick = cur_player;
 		if (cur_row->cur_amount == 0 && board.cur_row != 0) {
@@ -48,13 +51,23 @@ int main(int argc, char *argv[])
 		cur_player *= -1;
 	}
 
-	// print_result();
+	print_result(&board);
 
 	free_board(&board);
 	return OK;
 }
 
-bool is_game_end(t_board *board)
+static bool is_game_end(t_board *board)
 {
 	return board->cur_row == 0 && board->rows[board->cur_row].cur_amount == 0;
+}
+
+static void print_result(t_board *board)
+{
+	if (board->rows[0].last_pick == board->game_mode ) {
+		ft_printf("Congrats! Whatev...\n");
+	}
+	else {
+		ft_printf("Sucker\n");
+	}
 }
