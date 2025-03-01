@@ -3,14 +3,24 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#define MAX_ROWS 42
+#define MAX_ROWS       42
+#define MIN_ROW_AMOUNT 1
+#define MAX_ROW_AMOUNT 10000
+#define MIN_PICKS      1
+#define MAX_PICKS      3
 
 typedef enum Result {
 	OK,
 	USAGE_ERROR,
 	BOARD_ERROR,
-	INTERNAL_ERROR
+	INTERNAL_ERROR,
+	USER_EXIT
 } Result;
+
+typedef enum Mode {
+	LAST_WINS = 1,
+	LAST_LOSES
+} Mode;
 
 typedef enum Player {
 	AI = -1,
@@ -25,14 +35,18 @@ typedef struct s_row {
 } t_row;
 
 typedef struct s_board {
-	t_row *rows;
-	size_t cur_row;
-	unsigned int width;
+	t_row **rows;
 	size_t height;
-	Player game_mode;
+	unsigned int width;
+	size_t cur_row;
+	Mode game_mode;
 } t_board;
 
 // If filename == NULL, read from stdin
 Result init_board(t_board *board, const char *filename);
-
 void free_board(t_board *board);
+
+Result prompt_picks(t_board *board, unsigned int *picks);
+Result prompt_game_mode(Mode *mode);
+bool is_valid_number(const char *num, unsigned int lower, unsigned int upper);
+Result get_input(char **line);
