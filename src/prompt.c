@@ -19,7 +19,7 @@ Result get_input(char **line)
 	return OK;
 }
 
-bool is_valid_number(const char *num)
+bool is_valid_number(const char *num, unsigned int lower, unsigned int upper)
 {
 	if (!num || ft_isoverflow_int(num)) {
 		return (false);
@@ -29,13 +29,25 @@ bool is_valid_number(const char *num)
 		i++;
 	}
 	i += num[i] == '+';
+
+	bool has_digit = false;
 	while (num[i] && ft_isdigit(num[i])) {
+		has_digit = true;
 		i++;
 	}
+	if (!has_digit) {
+		return false;
+	}
+
 	while (num[i] && ft_isspace(num[i])) {
 		i++;
 	}
-	return (num[i] == '\0');
+	if (num[i] != '\0') {
+		return false;
+	}
+
+	unsigned int number = (unsigned int)ft_atol(num);
+	return (lower <= number && number <= upper);
 }
 
 Result prompt_picks(t_board *board, unsigned int *picks)
@@ -44,21 +56,21 @@ Result prompt_picks(t_board *board, unsigned int *picks)
 	char *line = NULL;
 	t_row *curr_row = board->rows[board->cur_row];
 
-	ft_printf("Make up a prompt message!!! Between 1-3");
+	ft_printf(
+	    "Make up a prompt message!!! Between %i-%i", MIN_PICKS, MAX_PICKS);
 	while (true) {
 		res = get_input(&line);
 		if (res != OK) {
 			break;
 		}
-		if (is_valid_number(line)) {
+		if (is_valid_number(
+		        line, MIN_PICKS, MIN(MAX_PICKS, curr_row->cur_amount))) {
 			*picks = ft_atoi(line);
-			if (*picks >= 1 && *picks <= 3 && *picks <= curr_row->cur_amount) {
-				break;
-			}
+			break;
 		}
 		free(line);
 		// clear 2 lines
-		ft_printf("REPROMPT!!! Between 1-3");
+		ft_printf("REPROMPT!!! Between %i-%i", MIN_PICKS, MAX_PICKS);
 	}
 	free(line);
 	return res;
@@ -68,25 +80,23 @@ Result prompt_game_mode(Mode *mode)
 {
 	Result res = OK;
 	char *line = NULL;
-	int mod = 0;
 
 	ft_printf(
-	    "Select game mode!\n1	Last to pick loses\n2	Last to pick wins\n");
+	    "Select game mode!\n%i	Last to pick loses\n%i	Last to pick wins\n",
+	    LAST_WINS,
+	    LAST_LOSES);
 	while (true) {
 		res = get_input(&line);
 		if (res != OK) {
 			break;
 		}
-		if (is_valid_number(line)) {
-			mod = ft_atoi(line);
-			if (mod == 1 || mod == 2) {
-				*mode = mod;
-				break;
-			}
+		if (is_valid_number(line, LAST_WINS, LAST_LOSES)) {
+			*mode = ft_atoi(line);
+			break;
 		}
 		free(line);
 		// clear 2 lines
-		ft_printf("REPROMPT!!! 1 or 2");
+		ft_printf("REPROMPT!!! %i or %i", LAST_WINS, LAST_LOSES);
 	}
 	free(line);
 	return res;

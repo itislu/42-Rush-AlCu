@@ -63,7 +63,7 @@ static bool is_input_end(const char *line)
 
 static t_row *new_row(const char *line)
 {
-	if (!is_valid_number(line)) {
+	if (!is_valid_number(line, MIN_ROW_AMOUNT, MAX_ROW_AMOUNT)) {
 		return NULL;
 	}
 	t_row *row = ft_calloc(1, sizeof(t_row));
@@ -71,12 +71,7 @@ static t_row *new_row(const char *line)
 		return NULL;
 	}
 
-	int nbr = ft_atoi(line);
-	if (nbr < MIN_ROW_AMOUNT || nbr > MAX_ROW_AMOUNT) {
-		free(row);
-		return NULL;
-	}
-	row->start_amount = nbr;
-	row->cur_amount = nbr;
+	row->start_amount = ft_atoi(line);
+	row->cur_amount = row->start_amount;
 	return row;
 }
