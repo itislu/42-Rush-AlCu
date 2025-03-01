@@ -4,6 +4,7 @@
 #include "libft.h"
 #include <errno.h>
 #include <stdlib.h>
+#include <sys/param.h>
 #include <unistd.h>
 
 Result get_input(char **line)
@@ -55,22 +56,22 @@ Result prompt_picks(t_board *board, unsigned int *picks)
 	Result res = OK;
 	char *line = NULL;
 	t_row *curr_row = board->rows[board->cur_row];
+	unsigned int max_picks = MIN(MAX_PICKS, curr_row->cur_amount);
 
-	ft_printf(
-	    "Make up a prompt message!!! Between %i-%i", MIN_PICKS, MAX_PICKS);
 	while (true) {
+		ft_printf("Pick up to %i!\n", MIN_PICKS, max_picks);
 		res = get_input(&line);
 		if (res != OK) {
 			break;
 		}
 		if (is_valid_number(
-		        line, MIN_PICKS, MIN(MAX_PICKS, curr_row->cur_amount))) {
+		        line, MIN_PICKS, MIN(max_picks, curr_row->cur_amount))) {
 			*picks = ft_atoi(line);
 			break;
 		}
 		free(line);
 		// clear 2 lines
-		ft_printf("REPROMPT!!! Between %i-%i", MIN_PICKS, MAX_PICKS);
+		ft_printf("Invalid input. ");
 	}
 	free(line);
 	return res;
@@ -81,11 +82,11 @@ Result prompt_game_mode(Mode *mode)
 	Result res = OK;
 	char *line = NULL;
 
-	ft_printf(
-	    "Select game mode!\n%i	Last to pick loses\n%i	Last to pick wins\n",
-	    LAST_WINS,
-	    LAST_LOSES);
 	while (true) {
+		ft_printf(
+		    "Select game mode!\n%i	Last to pick loses\n%i	Last to pick wins\n",
+		    LAST_WINS,
+		    LAST_LOSES);
 		res = get_input(&line);
 		if (res != OK) {
 			break;
@@ -96,7 +97,7 @@ Result prompt_game_mode(Mode *mode)
 		}
 		free(line);
 		// clear 2 lines
-		ft_printf("REPROMPT!!! %i or %i", LAST_WINS, LAST_LOSES);
+		ft_printf("Invalid input. ");
 	}
 	free(line);
 	return res;

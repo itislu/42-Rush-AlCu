@@ -1,4 +1,5 @@
 #include "board.h"
+#include "ft_printf.h"
 #include "libft.h"
 #include <errno.h>
 #include <fcntl.h>
@@ -16,6 +17,10 @@ Result read_rows(t_list **rows, const char *filename)
 	int fd = open_file(filename);
 	if (fd == -1) {
 		return INTERNAL_ERROR;
+	}
+	if (fd == STDIN_FILENO) {
+		ft_printf(
+		    "Enter board (one number 1-10000 per line, empty line to end):\n");
 	}
 
 	char *line = NULL;
