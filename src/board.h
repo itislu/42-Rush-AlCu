@@ -61,5 +61,4 @@ Result get_input(char **line);
 
 void print_board_gameloop(t_board *board, unsigned int pieces);
 void print_board_complete(t_board *board);
-
 void clear_rows(int rows);
