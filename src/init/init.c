@@ -84,11 +84,11 @@ static void calc_finishers(t_board *board)
 
 		if (prev_finisher == AI) {
 			cur_row->pref_finisher =
-			    (cur_row->start_amount % 4 == 0) ? PLAYER : AI;
+			    (prev_row->start_amount % 4 == 0) ? AI : PLAYER;
 		}
 		else {
 			cur_row->pref_finisher =
-			    (cur_row->start_amount % 4 == 1) ? PLAYER : AI;
+			    (prev_row->start_amount % 4 == 1) ? AI : PLAYER;
 		}
 	}
 }
