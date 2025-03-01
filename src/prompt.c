@@ -58,6 +58,7 @@ Result prompt_picks(t_board *board, unsigned int *picks)
 	char *line = NULL;
 	t_row *curr_row = board->rows[board->cur_row];
 	unsigned int max_picks = MIN(MAX_PICKS, curr_row->cur_amount);
+	bool toggle = false;
 
 	while (true) {
 		ft_printf("Pick up to %i!\n", max_picks);
@@ -71,8 +72,14 @@ Result prompt_picks(t_board *board, unsigned int *picks)
 			break;
 		}
 		free(line);
-		// clear 2 lines
-		ft_printf("Invalid input. ");
+		clear_rows(2);
+		if (toggle) {
+			ft_printf("Still invalid input. ");
+		}
+		else {
+			ft_printf("Invalid input. ");
+		}
+		toggle ^= true;
 	}
 	free(line);
 	return res;
@@ -82,6 +89,7 @@ Result prompt_game_mode(Mode *mode)
 {
 	Result res = OK;
 	char *line = NULL;
+	bool toggle = false;
 
 	while (true) {
 		ft_printf(
@@ -97,8 +105,14 @@ Result prompt_game_mode(Mode *mode)
 			break;
 		}
 		free(line);
-		// clear 2 lines
-		ft_printf("Invalid input. ");
+		clear_rows(4);
+		if (toggle) {
+			ft_printf("Still invalid input. ");
+		}
+		else {
+			ft_printf("Invalid input. ");
+		}
+		toggle ^= true;
 	}
 	free(line);
 	return res;

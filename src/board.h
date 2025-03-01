@@ -53,3 +53,5 @@ Result get_input(char **line);
 
 void print_board_complete(t_board *board);
 void print_board_gameloop(t_board *board, unsigned int pieces);
+
+void clear_rows(int rows);
