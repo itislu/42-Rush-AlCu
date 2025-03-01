@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 13:33:38 by ldulling          #+#    #+#              #
-#    Updated: 2025/02/12 23:13:55 by ldulling         ###   ########.fr        #
+#    Updated: 2025/03/01 15:23:48 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -113,6 +113,7 @@ SRC		+=	$(addprefix $(DIR), \
 			ft_lstsort_bubble.c \
 			ft_lstsort_merge.c \
 			ft_lstswap_head.c \
+			ft_lstto_array.c \
 )
 
 # Memory:
