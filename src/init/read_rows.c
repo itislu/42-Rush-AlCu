@@ -28,9 +28,12 @@ Result read_rows(t_list **rows, const char *filename)
 	Result res = OK;
 
 	errno = 0;
-	while (true) {
-		res = get_input(&line, fd);
-		if (res != OK || is_input_end(line)) {
+	while ((res = get_input(&line, fd)) == OK) {
+		if (is_input_end(line)) {
+			if (fd == STDIN_FILENO) {
+				clear_rows(1);
+				move_down_a_line();
+			}
 			break;
 		}
 		t_row *row = new_row(line);
@@ -65,12 +68,7 @@ static int open_file(const char *filename)
 
 static bool is_input_end(const char *line)
 {
-	if (line == NULL || ft_strcmp(line, "\n") == 0) {
-		clear_rows(1);
-		move_down_a_line();
-		return true;
-	}
-	return false;
+	return (line == NULL || ft_strcmp(line, "\n") == 0);
 }
 
 static t_row *new_row(const char *line)
