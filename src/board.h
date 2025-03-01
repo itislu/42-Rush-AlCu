@@ -4,6 +4,8 @@
 #include <stddef.h>
 
 #define MAX_ROWS 42
+#define MIN_ROW_AMOUNT 1
+#define MAX_ROW_AMOUNT 10000
 
 typedef enum Result {
 	OK,
@@ -30,16 +32,15 @@ typedef struct s_row {
 } t_row;
 
 typedef struct s_board {
-	t_row *rows;
-	size_t cur_row;
-	unsigned int width;
+	t_row **rows;
 	size_t height;
+	unsigned int width;
+	size_t cur_row;
 	Mode game_mode;
 } t_board;
 
 // If filename == NULL, read from stdin
 Result init_board(t_board *board, const char *filename);
-
 void free_board(t_board *board);
 
 unsigned int prompt(t_board *board);

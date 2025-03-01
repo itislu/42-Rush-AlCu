@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	Player cur_player = AI;
 	// print_board();
 	while (!is_game_end(&board)) {
-		t_row *cur_row = &board.rows[board.cur_row];
+		t_row *cur_row = board.rows[board.cur_row];
 		unsigned int picks = 0;
 
 		if (cur_player == AI) {
@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
 		}
 		else {
 			picks = prompt(&board);
-			if (picks == 0){
-				return (0); //EOF
+			if (picks == 0) {
+				return (0); // EOF
 			}
 		}
 		cur_row->cur_amount -= picks;
@@ -59,13 +59,13 @@ int main(int argc, char *argv[])
 
 static bool is_game_end(t_board *board)
 {
-	return board->cur_row == 0 && board->rows[board->cur_row].cur_amount == 0;
+	return board->cur_row == 0 && board->rows[board->cur_row]->cur_amount == 0;
 }
 
 static void print_result(t_board *board)
 {
-	if ((board->game_mode == LAST_WINS && board->rows[0].last_pick == PLAYER)
-	    || (board->game_mode == LAST_LOSES && board->rows[0].last_pick == AI)) {
+	if ((board->game_mode == LAST_WINS && board->rows[0]->last_pick == PLAYER)
+	    || (board->game_mode == LAST_LOSES && board->rows[0]->last_pick == AI)) {
 		ft_printf("🌟 Congrats, you won! 🌟\n");
 	}
 	else {
