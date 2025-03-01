@@ -58,7 +58,7 @@ static int open_file(const char *filename)
 
 static bool is_input_end(const char *line)
 {
-	return (line[0] == '\0');
+	return (ft_strcmp(line, "\n") == 0);
 }
 
 static t_row *new_row(const char *line)
