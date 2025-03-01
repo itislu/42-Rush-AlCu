@@ -64,10 +64,11 @@ static bool is_game_end(t_board *board)
 
 static void print_result(t_board *board)
 {
-	if (board->rows[0].last_pick == board->game_mode ) {
-		ft_printf("Congrats! Whatev...\n");
+	if ((board->game_mode == LAST_WINS && board->rows[0].last_pick == PLAYER)
+	    || (board->game_mode == LAST_LOSES && board->rows[0].last_pick == AI)) {
+		ft_printf("🌟 Congrats, you won! 🌟\n");
 	}
 	else {
-		ft_printf("Sucker\n");
+		ft_printf("🥀 You lost... 🥀\n");
 	}
 }

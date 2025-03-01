@@ -12,6 +12,11 @@ typedef enum Result {
 	INTERNAL_ERROR
 } Result;
 
+typedef enum Mode {
+	LAST_WINS,
+	LAST_LOSES
+} Mode;
+
 typedef enum Player {
 	AI = -1,
 	PLAYER = 1
@@ -29,7 +34,7 @@ typedef struct s_board {
 	size_t cur_row;
 	unsigned int width;
 	size_t height;
-	Player game_mode;
+	Mode game_mode;
 } t_board;
 
 // If filename == NULL, read from stdin
