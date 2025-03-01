@@ -1,5 +1,6 @@
 #include "init.h"
 #include "board.h"
+#include "get_next_line.h"
 #include "libft.h"
 #include <fcntl.h>
 #include <stdbool.h>
@@ -13,6 +14,7 @@ static void calc_finishers(t_board *board);
 // If filename == NULL, read from stdin
 Result init_board(t_board *board, const char *filename)
 {
+	ft_bzero(board, sizeof(*board));
 	Result res = read_board(board, filename);
 	if (res != OK) {
 		return res;
@@ -35,6 +37,7 @@ void free_board(t_board *board)
 		free(board->rows[i]);
 	}
 	ft_free_and_null((void **)&board->rows);
+	free_get_next_line();
 }
 
 static Result read_board(t_board *board, const char *filename)
