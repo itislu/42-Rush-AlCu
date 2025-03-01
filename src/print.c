@@ -8,24 +8,12 @@
 #define INPUT_OFFSET    3
 #define PRT_ROW_LIMIT   10
 #define PRT_WIDTH_LIMIT 26
-#define AI_OFFSET
-#define PLAYER_OFFSET
+#define AI_OFFSET		3
+#define PLAYER_OFFSET	2
 #define PRT_PIN_FILLER 3
 
 void clear_rows(int rows);
 
-void print_board_gameloop(t_board *board)
-{
-	Player cur_player = board->rows[board->cur_row]->last_pick;
-	if (cur_player == AI) {
-		ft_printf("AI removed %i pieces\n");
-		// offset = AI_OFFSET;
-	}
-	else {
-		// offset = PLAYER_OFFSET;
-	}
-	// make this work
-}
 
 void print_board_row(t_board *board, size_t row)
 {
@@ -87,13 +75,17 @@ void print_board_complete(t_board *board)
 	}
 }
 
-void clear_complete_board(t_board *board)
+void clear_complete_board(t_board *board, int player_offset)
 {
 	size_t curr_height;
 	size_t offset = 1;
+	static size_t last_row;
 	static bool limit;
-
-	curr_height = board->cur_row + 1;
+	
+	curr_height = board->cur_row;
+	if (!last_row && curr_height)
+		last_row = curr_height;
+	// this is needed for correct update on HEIGHT limit
 	if (board->cur_row > PRT_ROW_LIMIT) {
 		offset++;
 		limit = true;
@@ -102,8 +94,13 @@ void clear_complete_board(t_board *board)
 		offset++;
 		limit = false;
 	}
+	// removes one more line when the last line is empty
+	if (last_row != curr_height) {
+		offset++;
+		last_row = curr_height;
+	}
 	curr_height = ft_min(curr_height, PRT_ROW_LIMIT);
-	clear_rows(curr_height + offset + INPUT_OFFSET);
+	clear_rows(curr_height + offset + player_offset);
 	// clear_rows(curr_height + offset);
 }
 
@@ -128,55 +125,22 @@ void clear_changed_row(t_board *board)
 	clear_rows(delta);
 }
 
-// static void	test_empty_row_keep_width(t_board *board, size_t row)
-// {
-// 	board->rows[row]->cur_amount = 0;
-// 	if (board->cur_row)
-// 		board->cur_row--;
-// 	usleep(50000);
-// 	clear_complete_board(board);
-// 	print_board_complete(board);
-// }
+void print_board_gameloop(t_board *board, int pieces)
+{
+	int	player_offset;
+	// static size_t last_row;
 
-// static void	test_set_width(t_board *board)
-// {
-// 	size_t	row = 0;
-
-// 	while (row < board->height)
-// 	{
-// 		board->width = ft_max(board->width, board->rows[row++].cur_amount);
-// 	}
-// }
-
-// int	main()
-// {
-// 	t_board	board;
-// 	size_t	height = 15;
-
-// 	// keeping width
-// 	ft_memset(&board, 0, sizeof board);
-// 	height = 70;
-// 	board.rows = ft_calloc(height, sizeof (t_row));
-// 	for (int i = 0; i < height; i++)
-// 	{
-// 		board.rows[i].cur_amount = (i + 1) * 3;
-// 		board.rows[i].start_amount = (i + 1) * 3;
-// 		board.height++;
-// 	}
-// 	board.cur_row = board.height - 1;
-// 	test_set_width(&board);
-// 	print_board_complete(&board);
-// 	for (int i = 0; i < height; i++)
-// 		test_empty_row_keep_width(&board, board.cur_row);
-// 	free(board.rows);
-// }
-
-/*
-📍📍📍📍📍  row #1 (5 pieces)
-📍📍📍📍📍  row #2 (5 pieces)
-
-AI removed 2 pieces
-
-Pick up to 1!
-> 3
-*/
+	Player cur_player = board->rows[board->cur_row]->last_pick;
+	if (cur_player == AI) {
+		// ft_printf("AI removed %i pieces\n");
+		player_offset = AI_OFFSET;
+	}
+	else {
+		player_offset = PLAYER_OFFSET;
+	}
+	clear_complete_board(board, player_offset);
+	print_board_complete(board);
+	if (cur_player == AI)
+		ft_printf("\nAI removed %i pieces\n", pieces);
+	// make this work
+}
