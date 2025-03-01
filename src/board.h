@@ -14,8 +14,7 @@
 #define INPUT_OFFSET    3
 #define PRT_ROW_LIMIT   10
 #define PRT_WIDTH_LIMIT 26
-#define AI_OFFSET		3
-#define PLAYER_OFFSET	2
+#define PLAYER_OFFSET	5
 #define PRT_PIN_FILLER	3
 
 typedef enum Result {
