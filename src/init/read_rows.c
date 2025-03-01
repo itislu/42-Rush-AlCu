@@ -1,5 +1,4 @@
 #include "board.h"
-#include "get_next_line.h"
 #include "libft.h"
 #include <errno.h>
 #include <fcntl.h>
@@ -23,8 +22,9 @@ Result read_rows(t_list **rows, const char *filename)
 	Result res = OK;
 
 	errno = 0;
-	while ((line = get_next_line(fd))) {
-		if (is_input_end(line)) {
+	while (true) {
+		res = get_input(&line);
+		if (res != OK || is_input_end(line)) {
 			break;
 		}
 		t_row *row = new_row(line);
@@ -72,7 +72,7 @@ static t_row *new_row(const char *line)
 	}
 
 	int nbr = ft_atoi(line);
-	if (MIN_ROW_AMOUNT <= nbr && nbr <= MAX_ROW_AMOUNT) {
+	if (nbr < MIN_ROW_AMOUNT || nbr > MAX_ROW_AMOUNT) {
 		free(row);
 		return NULL;
 	}

@@ -11,7 +11,8 @@ typedef enum Result {
 	OK,
 	USAGE_ERROR,
 	BOARD_ERROR,
-	INTERNAL_ERROR
+	INTERNAL_ERROR,
+	USER_EXIT
 } Result;
 
 typedef enum Mode {
@@ -43,6 +44,7 @@ typedef struct s_board {
 Result init_board(t_board *board, const char *filename);
 void free_board(t_board *board);
 
-unsigned int prompt(t_board *board);
+Result prompt_picks(t_board *board, unsigned int *picks);
+Result prompt_game_mode(Mode *mode);
 bool is_valid_number(const char *num);
-bool prompt_game_mode(Mode *mode);
+Result get_input(char **line);
