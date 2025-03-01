@@ -18,8 +18,8 @@ typedef enum Result {
 } Result;
 
 typedef enum Mode {
-	LAST_WINS = 1,
-	LAST_LOSES
+	LAST_LOSES = 1,
+	LAST_WINS
 } Mode;
 
 typedef enum Player {
