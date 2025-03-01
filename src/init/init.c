@@ -20,11 +20,10 @@ Result init_board(t_board *board, const char *filename)
 
 	board->cur_row = (board->height != 0) ? board->height - 1 : 0;
 
-	// if (!prompt_game_mode(&board->game_mode)) {
-	// }
-
-	calc_finishers(board);
-
+	res = prompt_game_mode(&board->game_mode);
+	if (res == OK) {
+		calc_finishers(board);
+	}
 	return res;
 }
 
