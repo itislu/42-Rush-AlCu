@@ -100,7 +100,6 @@ void print_board_complete(t_board *board)
 	width = ft_min(PRT_WIDTH_LIMIT, board->width);
 	if (board->cur_row > PRT_ROW_LIMIT) {
 		row = board->cur_row - PRT_ROW_LIMIT;
-		ft_printf("   ");
 		width /= 2;
 		while (width--) {
 			ft_printf(" ");
@@ -120,19 +119,18 @@ static void clear_complete_board(t_board *board, int offset_in)
 	size_t curr_height;
 	size_t offset = 1;
 	
-	static bool limit;
+	// static bool limit;
 	
 	curr_height = board->cur_row;
-
 	// this is needed for correct update on HEIGHT limit
-	if (board->cur_row > PRT_ROW_LIMIT) {
-		offset++;
-		limit = true;
-	}
-	else if (limit) {
-		offset++;
-		limit = false;
-	}
+	// if (board->cur_row > PRT_ROW_LIMIT) {
+	// 	offset++;
+	// 	limit = true;
+	// }
+	// else if (limit) {
+	// 	offset++;
+	// 	limit = false;
+	// }
 	// removes one more line when the last line is empty
 	
 	curr_height = ft_min(curr_height, PRT_ROW_LIMIT);
