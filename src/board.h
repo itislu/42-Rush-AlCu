@@ -13,7 +13,7 @@ typedef enum Result {
 } Result;
 
 typedef enum Mode {
-	LAST_WINS,
+	LAST_WINS = 1,
 	LAST_LOSES
 } Mode;
 
@@ -30,7 +30,7 @@ typedef struct s_row {
 } t_row;
 
 typedef struct s_board {
-	t_row *rows;
+	t_row **rows;
 	size_t cur_row;
 	unsigned int width;
 	size_t height;
@@ -44,3 +44,4 @@ void free_board(t_board *board);
 
 unsigned int prompt(t_board *board);
 bool is_valid_number(const char *num);
+bool prompt_game_mode(Mode *mode);
