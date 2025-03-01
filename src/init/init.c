@@ -1,5 +1,6 @@
 #include "init.h"
 #include "board.h"
+#include "ft_printf.h"
 #include "get_next_line.h"
 #include "libft.h"
 #include <fcntl.h>
@@ -24,6 +25,9 @@ Result init_board(t_board *board, const char *filename)
 
 	board->width = max_width(board);
 	board->cur_row = board->height - 1;
+
+	print_board_complete(board);
+	ft_printf("\n");
 
 	res = prompt_game_mode(&board->game_mode);
 	if (res == OK) {
