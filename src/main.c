@@ -72,7 +72,7 @@ static Result game_loop(t_board *board)
 		cur_row->cur_amount -= picks;
 		cur_row->last_pick = cur_player;
 
-		print_board_gameloop(board);
+		print_board_gameloop(board, picks);
 
 		if (cur_row->cur_amount == 0 && board->cur_row != 0) {
 			board->cur_row--;

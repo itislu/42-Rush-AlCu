@@ -125,7 +125,7 @@ void clear_changed_row(t_board *board)
 	clear_rows(delta);
 }
 
-void print_board_gameloop(t_board *board, int pieces)
+void print_board_gameloop(t_board *board, unsigned int pieces)
 {
 	int	player_offset;
 	// static size_t last_row;
