@@ -19,12 +19,14 @@ unsigned int prompt(t_board *board)
 			ft_printf("Bye-Bye! 👋");
 			return 0;
 		}
-		picks = ft_atoi(line);
-		if (is_valid_number(line) == false
-		&& picks >= 1 && picks <= 3 && picks <= board->rows->cur_amount) {
-			return (free(line), picks);
+		if (is_valid_number(line) == false) {
+			return (free(line), false);
 		}
+		picks = ft_atoi(line);
 		free(line);
+		if (picks >= 1 && picks <= 3 && picks <= board->rows->cur_amount) {
+			return (picks);
+		}
 		//clear 2 lines
 		ft_printf("REPROMPT!!! Between 1-3");
 	}
