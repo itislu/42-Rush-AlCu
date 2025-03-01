@@ -23,7 +23,7 @@ Result init_board(t_board *board, const char *filename)
 	}
 
 	board->width = max_width(board);
-	board->cur_row = (board->height != 0) ? board->height - 1 : 0;
+	board->cur_row = board->height - 1;
 
 	res = prompt_game_mode(&board->game_mode);
 	if (res == OK) {
@@ -51,7 +51,10 @@ static Result read_board(t_board *board, const char *filename)
 	if (res == OK) {
 		board->height = ft_lstsize(rows);
 		board->rows = (t_row **)ft_lstto_array(&rows);
-		if (board->rows == NULL) {
+		if (board->height == 0) {
+			res = BOARD_ERROR;
+		}
+		else if (board->rows == NULL) {
 			res = INTERNAL_ERROR;
 		}
 	}
@@ -71,6 +74,9 @@ static unsigned int max_width(t_board *board)
 
 static void calc_finishers(t_board *board)
 {
+	board->rows[0]->pref_finisher =
+	    (board->game_mode == LAST_LOSES) ? PLAYER : AI;
+
 	for (size_t row = 1; row < board->height; row++) {
 		t_row *prev_row = board->rows[row - 1];
 		t_row *cur_row = board->rows[row];
