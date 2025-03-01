@@ -6,9 +6,11 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <sys/param.h>
 #include <unistd.h>
 
 static Result read_board(t_board *board, const char *filename);
+static unsigned int max_width(t_board *board);
 static void calc_finishers(t_board *board);
 
 // If filename == NULL, read from stdin
@@ -20,6 +22,7 @@ Result init_board(t_board *board, const char *filename)
 		return res;
 	}
 
+	board->width = max_width(board);
 	board->cur_row = (board->height != 0) ? board->height - 1 : 0;
 
 	res = prompt_game_mode(&board->game_mode);
@@ -54,6 +57,16 @@ static Result read_board(t_board *board, const char *filename)
 	}
 	ft_lstclear(&rows, free);
 	return res;
+}
+
+static unsigned int max_width(t_board *board)
+{
+	unsigned int max = 0;
+
+	for (size_t row = 0; row < board->height; row++) {
+		max = MAX(max, board->rows[row]->start_amount);
+	}
+	return max;
 }
 
 static void calc_finishers(t_board *board)
