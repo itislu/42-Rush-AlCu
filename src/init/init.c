@@ -73,4 +73,3 @@ static void calc_finishers(t_board *board)
 		}
 	}
 }
-
