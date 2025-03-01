@@ -12,7 +12,7 @@ void move_down_a_line(void)
 
 void clear_line(void)
 {
-	ft_putstr_fd("\033[K\r", 1);
+	ft_putstr_fd("\033[2K\r", 1);
 }
 
 void clear_rows(int rows)
