@@ -60,7 +60,7 @@ Result prompt_picks(t_board *board, unsigned int *picks)
 	unsigned int max_picks = MIN(MAX_PICKS, curr_row->cur_amount);
 
 	while (true) {
-		ft_printf("Pick up to %i!\n", MIN_PICKS, max_picks);
+		ft_printf("\nPick up to %i!\n", MIN_PICKS, max_picks);
 		res = get_input(&line);
 		if (res != OK) {
 			break;

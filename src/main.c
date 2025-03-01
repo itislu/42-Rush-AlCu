@@ -49,7 +49,7 @@ static Result game_loop(t_board *board)
 	Result res = OK;
 	Player cur_player = AI;
 
-	// print_board();
+
 	while (!is_game_end(board)) {
 		t_row *cur_row = board->rows[board->cur_row];
 		unsigned int picks = 0;
@@ -68,14 +68,15 @@ static Result game_loop(t_board *board)
 				break;
 			}
 		}
+
 		cur_row->cur_amount -= picks;
 		cur_row->last_pick = cur_player;
+
+		print_board_gameloop(board);
+
 		if (cur_row->cur_amount == 0 && board->cur_row != 0) {
 			board->cur_row--;
 		}
-
-		// print_board();
-
 		cur_player *= -1;
 	}
 	return res;
