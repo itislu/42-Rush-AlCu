@@ -1,5 +1,6 @@
 #include "board.h"
 #include "ft_printf.h"
+#include "get_next_line.h"
 #include "libft.h"
 #include <errno.h>
 #include <fcntl.h>
@@ -28,7 +29,7 @@ Result read_rows(t_list **rows, const char *filename)
 
 	errno = 0;
 	while (true) {
-		res = get_input(&line);
+		res = get_input(&line, fd);
 		if (res != OK || is_input_end(line)) {
 			break;
 		}
@@ -46,6 +47,7 @@ Result read_rows(t_list **rows, const char *filename)
 	free(line);
 	if (fd != STDIN_FILENO) {
 		close(fd);
+		free_get_next_line();
 	}
 	if (errno != 0) {
 		res = INTERNAL_ERROR;
@@ -63,7 +65,7 @@ static int open_file(const char *filename)
 
 static bool is_input_end(const char *line)
 {
-	if (ft_strcmp(line, "\n") == 0) {
+	if (line == NULL || ft_strcmp(line, "\n") == 0) {
 		clear_rows(1);
 		move_down_a_line();
 		return true;
