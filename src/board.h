@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#define MAX_ROWS 42
+#define MAX_ROWS       42
 #define MIN_ROW_AMOUNT 1
 #define MAX_ROW_AMOUNT 10000
 
@@ -15,7 +15,7 @@ typedef enum Result {
 } Result;
 
 typedef enum Mode {
-	LAST_WINS,
+	LAST_WINS = 1,
 	LAST_LOSES
 } Mode;
 
@@ -45,3 +45,4 @@ void free_board(t_board *board);
 
 unsigned int prompt(t_board *board);
 bool is_valid_number(const char *num);
+bool prompt_game_mode(Mode *mode);
