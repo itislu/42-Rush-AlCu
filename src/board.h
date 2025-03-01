@@ -9,6 +9,14 @@
 #define MIN_PICKS      1
 #define MAX_PICKS      3
 
+// --- PRINT stuff
+#define PIECES          "📍"
+#define INPUT_OFFSET    3
+#define PRT_ROW_LIMIT   10
+#define PRT_WIDTH_LIMIT 26
+#define PLAYER_OFFSET	5
+#define PRT_PIN_FILLER	3
+
 typedef enum Result {
 	OK,
 	USAGE_ERROR,
@@ -51,8 +59,8 @@ Result prompt_game_mode(Mode *mode);
 bool is_valid_number(const char *num, unsigned int lower, unsigned int upper);
 Result get_input(char **line, int fd);
 
-void print_board_complete(t_board *board);
 void print_board_gameloop(t_board *board, unsigned int pieces);
+void print_board_complete(t_board *board);
 
 void clear_rows(int rows);
 void clear_line(void);
