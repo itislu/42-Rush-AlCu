@@ -80,7 +80,8 @@ static void print_board_row(t_board *board, size_t row)
 			ft_printf("%s", PIECES);
 		}
 		// this is now adjusted to 3 filler pins left and right
-		ft_printf("   ...      %5i pieces left     ...   ", pieces);
+		ft_printf("   ...      %5i piece%s left     ...   ", pieces, 
+			(pieces > 1) ? "s" : "");
 		for (int i = 0; i < PRT_PIN_FILLER; i++) {
 			ft_printf("%s", PIECES);
 		}
@@ -89,7 +90,8 @@ static void print_board_row(t_board *board, size_t row)
 	while (--spaces) {
 		ft_printf(" ");
 	}
-	ft_printf(" row #%i (%i pieces)\n", row + 1, board->rows[row]->cur_amount);
+	ft_printf(" row #%i (%i piece%s)\n", row + 1, board->rows[row]->cur_amount, 
+		(board->rows[row]->cur_amount > 1) ? "s" : "");
 }
 
 void print_board_complete(t_board *board)
