@@ -31,12 +31,12 @@ Result init_board(t_board *board, const char *filename)
 
 void free_board(t_board *board)
 {
-	size_t i = 0;
-
-	while (board->rows[i] != NULL) {
-		free(board->rows[i]);
+	if (board->rows != NULL) {
+		for (size_t i = 0; board->rows[i] != NULL; i++) {
+			free(board->rows[i]);
+		}
+		ft_free_and_null((void **)&board->rows);
 	}
-	ft_free_and_null((void **)&board->rows);
 	free_get_next_line();
 }
 
