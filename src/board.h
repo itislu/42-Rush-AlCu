@@ -13,20 +13,23 @@ typedef enum Result {
 } Result;
 
 typedef enum Player {
-	AI,
-	PLAYER
+	AI = -1,
+	PLAYER = 1
 } Player;
 
 typedef struct s_row {
 	unsigned int start_amount;
-	unsigned int amount;
+	unsigned int cur_amount;
 	Player pref_finisher;
+	Player last_pick;
 } t_row;
 
 typedef struct s_board {
 	t_row *rows;
 	size_t cur_row;
 	unsigned int width;
+	size_t height;
+	Player game_mode;
 } t_board;
 
 // If filename == NULL, read from stdin

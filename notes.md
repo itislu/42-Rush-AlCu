@@ -4,18 +4,32 @@
 |||||||||||||
 
 
+Last one picks loses
+A || H
+
+A |||||| A
+|||
+
+
+
+A ||| A
+
+
 H- | H
 H+ |||||||| A
 A+ ||| A
 
 
 Force other to take last one:
+	n % 4 == 0
 	Number of matches mod 4 equals 1 is BAD to start
 
 Force player to let us take last one:
+	n % 4 == 1
 	Number of matches mod 4 equals 0 is BAD to start
 
 
+n % 4 == 1
 We lose:
 1
 5

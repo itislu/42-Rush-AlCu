@@ -1,6 +1,9 @@
 #include "board.h"
 #include "ft_printf.h"
+#include "libft.h"
 #include <unistd.h>
+
+bool is_game_end(t_board *board);
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +19,42 @@ int main(int argc, char *argv[])
 		return res;
 	}
 
+	Player cur_player = AI;
+	// print_board();
+	while (!is_game_end(&board)) {
+		t_row *cur_row = &board.rows[board.cur_row];
+		unsigned int picks = 0;
+
+		if (cur_player == AI) {
+			if (cur_row->pref_finisher == AI) {
+				picks = ft_max(1, cur_row->cur_amount % 4);
+			}
+			else {
+				picks = ft_max(1, (cur_row->cur_amount - 1) % 4);
+			}
+		}
+		else {
+			// picks = prompt();
+		}
+
+		cur_row->cur_amount -= picks;
+		cur_row->last_pick = cur_player;
+		if (cur_row->cur_amount == 0 && board.cur_row != 0) {
+			board.cur_row--;
+		}
+
+		// print_board();
+
+		cur_player *= -1;
+	}
+
+	// print_result();
+
 	free_board(&board);
 	return OK;
+}
+
+bool is_game_end(t_board *board)
+{
+	return board->cur_row == 0 && board->rows[board->cur_row].cur_amount == 0;
 }
