@@ -63,7 +63,12 @@ static int open_file(const char *filename)
 
 static bool is_input_end(const char *line)
 {
-	return (ft_strcmp(line, "\n") == 0);
+	if (ft_strcmp(line, "\n") == 0) {
+		clear_rows(1);
+		move_down_a_line();
+		return true;
+	}
+	return false;
 }
 
 static t_row *new_row(const char *line)

@@ -27,7 +27,8 @@ int main(int argc, char *argv[])
 		print_result(&board);
 		break;
 	case USER_EXIT:
-		ft_printf("\nBye-Bye! 👋\n");
+		clear_line();
+		ft_printf("Bye-Bye! 👋\n");
 		break;
 	case INTERNAL_ERROR:
 		ft_dprintf(STDERR_FILENO, "INTERNAL ERROR\n");
@@ -48,7 +49,6 @@ static Result game_loop(t_board *board)
 {
 	Result res = OK;
 	Player cur_player = AI;
-
 
 	while (!is_game_end(board)) {
 		t_row *cur_row = board->rows[board->cur_row];

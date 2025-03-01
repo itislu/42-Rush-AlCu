@@ -55,3 +55,5 @@ void print_board_complete(t_board *board);
 void print_board_gameloop(t_board *board, unsigned int pieces);
 
 void clear_rows(int rows);
+void clear_line(void);
+void move_down_a_line(void);
