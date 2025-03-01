@@ -1,4 +1,4 @@
-include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
+include				$(shell git rev-parse --show-toplevel)/build/setup.mk
 
 
 # ***************************** CONFIGURATION ******************************** #
