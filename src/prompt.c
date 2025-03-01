@@ -7,16 +7,21 @@
 #include <sys/param.h>
 #include <unistd.h>
 
-Result get_input(char **line)
+Result get_input(char **line, int fd)
 {
 	errno = 0;
-	ft_printf("> ");
-	*line = get_next_line(STDIN_FILENO);
-	if (*line == NULL || (*line)[ft_strlen(*line) - 1] != '\n') {
+	if (fd == STDIN_FILENO) {
+		ft_printf("> ");
+	}
+	*line = get_next_line(fd);
+	if (*line == NULL
+	    || (fd == STDIN_FILENO && (*line)[ft_strlen(*line) - 1] != '\n')) {
 		if (errno != 0) {
 			return INTERNAL_ERROR;
 		}
-		return USER_EXIT;
+		if (fd == STDIN_FILENO) {
+			return USER_EXIT;
+		}
 	}
 	return OK;
 }
@@ -62,7 +67,7 @@ Result prompt_picks(t_board *board, unsigned int *picks)
 
 	while (true) {
 		ft_printf("Pick up to %i!\n", max_picks);
-		res = get_input(&line);
+		res = get_input(&line, STDIN_FILENO);
 		if (res != OK) {
 			break;
 		}
@@ -96,7 +101,7 @@ Result prompt_game_mode(Mode *mode)
 		    "Select game mode!\n%i	Last to pick loses\n%i	Last to pick wins\n",
 		    LAST_LOSES,
 		    LAST_WINS);
-		res = get_input(&line);
+		res = get_input(&line, STDIN_FILENO);
 		if (res != OK) {
 			break;
 		}
