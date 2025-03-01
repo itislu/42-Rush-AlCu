@@ -10,8 +10,9 @@
 Result get_input(char **line)
 {
 	errno = 0;
+	ft_printf("> ");
 	*line = get_next_line(STDIN_FILENO);
-	if (!*line) {
+	if (*line == NULL || (*line)[ft_strlen(*line) - 1] != '\n') {
 		if (errno != 0) {
 			return INTERNAL_ERROR;
 		}

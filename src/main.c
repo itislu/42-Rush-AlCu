@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 		print_result(&board);
 		break;
 	case USER_EXIT:
-		ft_printf("Bye-Bye! 👋");
+		ft_printf("\nBye-Bye! 👋\n");
 		break;
 	case INTERNAL_ERROR:
 		ft_dprintf(STDERR_FILENO, "INTERNAL ERROR\n");
