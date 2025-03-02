@@ -20,7 +20,7 @@ Result prompt_game_mode(Mode *mode)
 		    "Select a game mode:\n%i - Last to pick loses\n%i - Last to pick wins\n",
 		    LAST_LOSES,
 		    LAST_WINS);
-		res = get_input(&line, STDIN_FILENO);
+		res = get_input(&line, g_stdin);
 		if (res != OK) {
 			break;
 		}
@@ -56,7 +56,7 @@ Result prompt_picks(t_board *board, unsigned int *picks)
 
 	while (true) {
 		ft_printf("Pick up to %i%s:\n", max_picks, PIECE);
-		res = get_input(&line, STDIN_FILENO);
+		res = get_input(&line, g_stdin);
 		if (res != OK) {
 			break;
 		}

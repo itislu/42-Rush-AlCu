@@ -21,7 +21,7 @@ Result read_rows(t_list **rows, const char *filename)
 	if (fd == -1) {
 		return INTERNAL_ERROR;
 	}
-	if (fd == STDIN_FILENO) {
+	if (fd == g_stdin) {
 		const char title[] = "🔨 BOARD CREATION 🔨";
 		print_boxed_specialstr(title, sizeof(title) - 1 - 4);
 		ft_printf(
@@ -35,7 +35,7 @@ Result read_rows(t_list **rows, const char *filename)
 
 	while ((res = get_input(&line, fd)) == OK) {
 		if (is_input_end(line)) {
-			if (fd == STDIN_FILENO) {
+			if (fd == g_stdin) {
 				clear_rows(1);
 				move_down_a_line();
 			}
@@ -53,10 +53,10 @@ Result read_rows(t_list **rows, const char *filename)
 		free(line);
 	}
 	free(line);
-	if (fd != STDIN_FILENO) {
-		close(fd);
-		free_get_next_line();
-	}
+	close(fd);
+	free_get_next_line();
+
+	g_stdin = open("/dev/tty", O_RDONLY);
 	if (errno != 0) {
 		res = INTERNAL_ERROR;
 	}
@@ -66,7 +66,7 @@ Result read_rows(t_list **rows, const char *filename)
 static int open_file(const char *filename)
 {
 	if (filename == NULL) {
-		return STDIN_FILENO;
+		return g_stdin;
 	}
 	return open(filename, O_RDONLY);
 }
