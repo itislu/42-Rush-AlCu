@@ -31,22 +31,26 @@
 
 void	update_board(t_win *n_board, t_board *board, int offset)
 {
-	int	yoffset, xoffset;
+	int	xoffset, yoffset = 0;
 	int char_limit;
 	int text_len;
+	size_t i = 0;
 	t_row *row; //ft_snprintf
 
 	(void)offset;
 	werase(n_board->win);
 	box(n_board->win, 0, 0);
-	for (size_t i = 0; i < board->height; i++) {
+	if (board->cur_row > n_board->size.y - 1)
+		i = board->cur_row - n_board->size.y - 1;
+	while (i <= board->cur_row) {
 		xoffset = 1;
-		yoffset = 1 + i;
+		yoffset++;
 		row = board->rows[i];
 		char_limit = n_board->size.x - 2;
 		text_len = ft_min(ft_nbrlen_base(i, 10) + 1, 3); // digits row '#123'
 		text_len += ft_nbrlen_base(row->cur_amount, 10) + 4; // ' 123: '
 		char_limit -= ft_min(row->cur_amount, char_limit - text_len);
+		// the getmaxy can most likely be win.size.y ...
 		if (yoffset != 0 && yoffset != (getmaxy(n_board->win) - 1)) {
 			mvwprintw(n_board->win, yoffset, xoffset, "#%-2zu %i:",
 				i, row->cur_amount);
@@ -54,6 +58,7 @@ void	update_board(t_win *n_board, t_board *board, int offset)
 			while (xoffset > char_limit)
 				mvwprintw(n_board->win, yoffset, xoffset--, "|");
 		}
+		i++;
 	}
 	wrefresh(n_board->win);
 }
