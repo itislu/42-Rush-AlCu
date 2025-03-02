@@ -1,6 +1,6 @@
 #pragma once
 
-#include "board.h"
+#include "alcu.h"
 #include <stddef.h>
 
 void print_boxed(const char *str);
