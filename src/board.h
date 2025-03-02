@@ -10,12 +10,22 @@
 #define MAX_PICKS      3
 
 // --- PRINT stuff
+#define TITLE \
+	"\
+              ╭───────────────────────╮\n\
+              │  ____ ____ ____ ____  │\n\
+              │ ||A |||l |||C |||u || │\n\
+              │ ||__|||__|||__|||__|| │\n\
+              │ |/__\\|/__\\|/__\\|/__\\| │\n\
+              │                       │\n\
+              ╰───────────────────────╯\n\
+"
 #define PIECE           "📍"
 #define INPUT_OFFSET    3
 #define PRT_ROW_LIMIT   10
 #define PRT_WIDTH_LIMIT 26
-#define PLAYER_OFFSET	5
-#define PRT_PIN_FILLER	3
+#define PLAYER_OFFSET   5
+#define PRT_PIN_FILLER  3
 
 typedef enum Result {
 	OK,

@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
 		res = USAGE_ERROR;
 	}
 	if (res == OK) {
+		ft_printf("\033[1m" TITLE "\033[0m");
 		res = init_board(&board, argv[1]);
 	}
 	if (res == OK) {
