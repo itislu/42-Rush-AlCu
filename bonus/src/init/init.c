@@ -34,6 +34,7 @@ void free_board(t_board *board)
 		}
 		ft_free_and_null((void **)&board->rows);
 	}
+	free(board->picks);
 	free_get_next_line();
 	close(g_stdin);
 }
