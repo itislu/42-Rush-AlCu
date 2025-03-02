@@ -55,7 +55,7 @@ Result prompt_picks(t_board *board, unsigned int *picks)
 	bool toggle = false;
 
 	while (true) {
-		ft_printf("Pick up to %i%s:\n", max_picks, PIECE);
+		ft_printf("Pick up to %i%s:\n", max_picks, PRT_PIECE);
 		res = get_input(&line, STDIN_FILENO);
 		if (res != OK) {
 			break;
