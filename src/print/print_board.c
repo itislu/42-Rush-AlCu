@@ -13,19 +13,22 @@ void print_board_gameloop(t_board *board, unsigned int pieces)
 	static bool init_done;
 	int offset = 0;
 	bool row_change = false;
+	static unsigned int	player_pieces;
 
+	Player cur_player = board->rows[board->cur_row]->last_pick;
+	if (cur_player == PLAYER)
+		player_pieces = pieces;
 	// first inital print and previous row setup
 	if (!init_done) {
 		row_prev_turn = board->cur_row;
 		print_board_complete(board);
-		ft_printf("\nAI removed %i%s\n\n", pieces, PIECE);
+		ft_printf("\nAI removed %i%s\n\n", pieces, PRT_PIECE);
 		init_done = true;
 		return;
 	}
 	// determine the correct offset (what is printed after the board)
-	Player cur_player = board->rows[board->cur_row]->last_pick;
 	if (cur_player == PLAYER) {
-		offset = PLAYER_OFFSET;
+		offset = PRT_OFFSET;
 	}
 	// offset change when line is finished
 	if (row_prev_turn != board->cur_row) {
@@ -43,11 +46,12 @@ void print_board_gameloop(t_board *board, unsigned int pieces)
 		print_board_complete(board);
 	}
 	if (cur_player == AI) {
-		ft_printf("\nAI removed %i%s\n\n", pieces, PIECE);
+		ft_printf("\nYou removed %i%s :: AI removed %i%s\n\n",
+			player_pieces, PRT_PIECE, pieces, PRT_PIECE);
 	}
 	// adjustment for last player move
 	else if (board->cur_row == 0 && board->rows[0]->cur_amount == 0) {
-		ft_printf("\n");
+		ft_printf("\nYou removed %i%s\n\n", player_pieces, PRT_PIECE);
 	}
 }
 
@@ -66,16 +70,16 @@ static void print_board_row(t_board *board, size_t row)
 		         - ((width / 2 - pieces / 2) * 2) // - spaces before the pins
 		         - (pieces * 2) + 2;              // - pins
 		while (pieces--) {
-			ft_printf("%s", PIECE);
+			ft_printf("%s", PRT_PIECE);
 		}
 	}
 	else {
 		for (int i = 0; i < PRT_PIN_FILLER; i++) {
-			ft_printf("%s", PIECE);
+			ft_printf("%s", PRT_PIECE);
 		}
-		ft_printf(" ...%5i%s ... ", pieces, PIECE);
+		ft_printf(" ...%5i%s ... ", pieces, PRT_PIECE);
 		for (int i = 0; i < PRT_PIN_FILLER; i++) {
-			ft_printf("%s", PIECE);
+			ft_printf("%s", PRT_PIECE);
 		}
 		spaces = 2;
 	}
@@ -83,7 +87,7 @@ static void print_board_row(t_board *board, size_t row)
 		ft_printf(" ");
 	}
 	ft_printf(
-	    "    #%-3i  %5i%s\n", row + 1, board->rows[row]->cur_amount, PIECE);
+	    "    #%-3i %5i%s\n", row + 1, board->rows[row]->cur_amount, PRT_PIECE);
 }
 
 void print_board_complete(t_board *board)
