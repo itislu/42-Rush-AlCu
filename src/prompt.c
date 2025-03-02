@@ -97,9 +97,11 @@ Result prompt_game_mode(Mode *mode)
 	char *line = NULL;
 	bool toggle = false;
 
+	const char title[] = "📌 GAME MODE SELECTION 📌";
+	print_boxed_specialstr(title, sizeof(title) - 1 - 4);
 	while (true) {
 		ft_printf(
-		    "Select game mode!\n%i	Last to pick loses\n%i	Last to pick wins\n",
+		    "Select a game mode:\n%i - Last to pick loses\n%i - Last to pick wins\n",
 		    LAST_LOSES,
 		    LAST_WINS);
 		res = get_input(&line, STDIN_FILENO);
@@ -122,7 +124,7 @@ Result prompt_game_mode(Mode *mode)
 	}
 	free(line);
 
-	clear_rows(4);
+	clear_rows(7);
 	print_game_mode(*mode);
 	ft_printf("\n");
 	return res;
