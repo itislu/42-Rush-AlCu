@@ -21,12 +21,12 @@ Result read_rows(t_list **rows, const char *filename)
 	if (fd == -1) {
 		return INTERNAL_ERROR;
 	}
-/* 	if (fd == g_stdin) {
+	if (fd == g_stdin) {
 		const char title[] = "🔨 BOARD CREATION 🔨";
 		print_boxed_specialstr(title, sizeof(title) - 1 - 4);
 		ft_printf(
 		    "Enter board (one number 1-10000 per line, empty line to end):\n");
-	} */
+	}
 
 	Result res = RESULT_OK;
 	char *line = NULL;
@@ -56,7 +56,7 @@ Result read_rows(t_list **rows, const char *filename)
 	close(fd);
 	free_get_next_line();
 
-	// g_stdin = open("/dev/tty", O_RDONLY);
+	g_stdin = open("/dev/tty", O_RDONLY);
 	if (errno != 0) {
 		res = INTERNAL_ERROR;
 	}
