@@ -24,7 +24,7 @@ static void	setup_windows_sizes(t_ncurses *env)
 	env->board.size.x = env->term.x * 2 / 3 - 1; // -1 for the border not to overlap
 	env->board.size.y = env->term.y - 1; // this might be the missing 1 for the +3 offset
 
-	if (env->term.y > 17)
+	if (env->term.y > MIN_TERMINAL_HEIGTH_FOR_HISTORY)
 	{
 		env->history.size.x = env->term.x / 3;
 		env->history.size.y = env->term.y * 2 / 3 - 1;
@@ -44,7 +44,7 @@ static void	setup_windows_position(t_ncurses *env)
 	env->board.pos.x = 1;
 	env->board.pos.y = 1;
 	env->is_history = true;
-	if (env->term.y > 17)
+	if (env->term.y > MIN_TERMINAL_HEIGTH_FOR_HISTORY)
 	{
 		env->history.pos.x = env->term.x * 2 / 3;
 		env->history.pos.y = 1;
@@ -59,10 +59,15 @@ static void	setup_windows_position(t_ncurses *env)
 		env->input.pos.y = env->history.pos.y ;
 	}
 }
-
+#include "ft_printf.h"
 static Result	init_windows(t_ncurses *env)
 {
 	getmaxyx(stdscr, env->term.y, env->term.x);
+	if (env->term.y < MIN_TERMINAL_HEIGTH || env->term.x < MIN_TERMINAL_WIDTH)
+	{
+		//ft_dprintf(2, "MIN TERMINAL SIZE: %dx%d\n", MIN_TERMINAL_WIDTH, MIN_TERMINAL_HEIGTH);
+		return (SIZE_ERROR);
+	}
 	setup_windows_sizes(env);
 	setup_windows_position(env);
 	env->board.win = newwin(env->board.size.y, env->board.size.x, env->board.pos.y, env->board.pos.x);

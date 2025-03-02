@@ -2,6 +2,7 @@
 #include "alcu.h"
 #include "ft_printf.h"
 #include "init.h"
+#include "libft.h"
 #include "print.h"
 #include "prompt.h"
 #include <stddef.h>
@@ -21,6 +22,8 @@ int main(int argc, char *argv[])
 	Result res = RESULT_OK;
 	t_board board;
 	t_ncurses env;
+	ft_bzero(&env, sizeof(env));
+	ft_bzero(&board, sizeof(board));
 
 	if (argc != 2) {
 		res = USAGE_ERROR;
@@ -61,6 +64,9 @@ int main(int argc, char *argv[])
 		const char title[] = "Bye-Bye! 👋";
 		print_boxed_specialstr(title, sizeof(title) - 1 - 2);
 		res = RESULT_OK;
+		break;
+	case SIZE_ERROR:
+		ft_dprintf(STDERR_FILENO, "\n\n\n\nMIN TERMINAL SIZE: %dx%d\n", MIN_TERMINAL_WIDTH, MIN_TERMINAL_HEIGTH);
 		break;
 	}
 
