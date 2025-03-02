@@ -60,18 +60,23 @@ typedef struct s_board {
 	Mode game_mode;
 } t_board;
 
-// If filename == NULL, read from stdin
+/* Init */
 Result init_board(t_board *board, const char *filename);
 void free_board(t_board *board);
 
+/* Input */
 Result prompt_picks(t_board *board, unsigned int *picks);
 Result prompt_game_mode(Mode *mode);
 bool is_valid_number(const char *num, unsigned int lower, unsigned int upper);
 Result get_input(char **line, int fd);
 
+/* AI */
+void calc_finishers(t_board *board);
+unsigned int ai_pick(t_board *board);
+
+/* Print */
 void print_board_gameloop(t_board *board, unsigned int pieces);
 void print_board_complete(t_board *board);
-
 void clear_rows(int rows);
 void clear_line(void);
 void move_down_a_line(void);

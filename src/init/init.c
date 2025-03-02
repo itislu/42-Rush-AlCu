@@ -1,6 +1,5 @@
 #include "init.h"
 #include "board.h"
-#include "ft_printf.h"
 #include "get_next_line.h"
 #include "libft.h"
 #include <fcntl.h>
@@ -12,26 +11,16 @@
 
 static Result read_board(t_board *board, const char *filename);
 static unsigned int max_width(t_board *board);
-static void calc_finishers(t_board *board);
 
 // If filename == NULL, read from stdin
 Result init_board(t_board *board, const char *filename)
 {
 	ft_bzero(board, sizeof(*board));
 	Result res = read_board(board, filename);
-	if (res != OK) {
-		return res;
-	}
 
-	board->width = max_width(board);
-	board->cur_row = board->height - 1;
-
-	print_board_complete(board);
-	ft_printf("\n");
-
-	res = prompt_game_mode(&board->game_mode);
 	if (res == OK) {
-		calc_finishers(board);
+		board->width = max_width(board);
+		board->cur_row = board->height - 1;
 	}
 	return res;
 }
@@ -74,25 +63,4 @@ static unsigned int max_width(t_board *board)
 		max = MAX(max, board->rows[row]->start_amount);
 	}
 	return max;
-}
-
-static void calc_finishers(t_board *board)
-{
-	board->rows[0]->pref_finisher =
-	    (board->game_mode == LAST_LOSES) ? PLAYER : AI;
-
-	for (size_t row = 1; row < board->height; row++) {
-		t_row *prev_row = board->rows[row - 1];
-		t_row *cur_row = board->rows[row];
-		Player prev_finisher = prev_row->pref_finisher;
-
-		if (prev_finisher == AI) {
-			cur_row->pref_finisher =
-			    (prev_row->start_amount % 4 == 0) ? AI : PLAYER;
-		}
-		else {
-			cur_row->pref_finisher =
-			    (prev_row->start_amount % 4 == 1) ? AI : PLAYER;
-		}
-	}
 }
