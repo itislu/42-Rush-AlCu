@@ -23,20 +23,41 @@ static void	setup_windows_sizes(t_ncurses *env)
 {
 	env->board.size.x = env->term.x * 2 / 3 - 1; // -1 for the border not to overlap
 	env->board.size.y = env->term.y - 1; // this might be the missing 1 for the +3 offset
-	env->history.size.x = env->term.x / 3;
-	env->history.size.y = env->term.y * 2 / 3 - 1;
-	env->input.size.x = env->term.x / 3;
-	env->input.size.y = env->term.y / 3 + (env->term.y / 3) % 2; // fix for height
+
+	if (env->term.y > 17)
+	{
+		env->history.size.x = env->term.x / 3;
+		env->history.size.y = env->term.y * 2 / 3 - 1;
+		env->input.size.x = env->term.x / 3;
+		env->input.size.y = env->term.y / 3 + (env->term.y / 3) % 2; // fix for height
+	}
+	else {
+		env->history.size.x = env->term.x / 3;
+		env->history.size.y = env->term.y * 2 / 3 - 1;
+		env->input.size.x = env->term.x / 3;
+		env->input.size.y = env->board.size.y;
+	}
 }
 
 static void	setup_windows_position(t_ncurses *env)
 {
 	env->board.pos.x = 1;
 	env->board.pos.y = 1;
-	env->history.pos.x = env->term.x * 2 / 3;
-	env->history.pos.y = 1;
-	env->input.pos.x = env->term.x * 2 / 3;
-	env->input.pos.y = env->term.y * 2 / 3;
+	env->is_history = true;
+	if (env->term.y > 17)
+	{
+		env->history.pos.x = env->term.x * 2 / 3;
+		env->history.pos.y = 1;
+		env->input.pos.x = env->term.x * 2 / 3;
+		env->input.pos.y = env->term.y * 2 / 3;
+	}
+	else {
+		env->is_history = false;
+		env->history.pos.x = env->term.x * 2 / 3;
+		env->history.pos.y = 1;
+		env->input.pos.x = env->history.pos.x;
+		env->input.pos.y = env->history.pos.y ;
+	}
 }
 
 static Result	init_windows(t_ncurses *env)

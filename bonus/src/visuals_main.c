@@ -36,6 +36,9 @@ void	update_board(t_win *n_board, t_board *board, int offset)
 	int text_len;
 	t_row *row; //ft_snprintf
 
+	(void)offset;
+	werase(n_board->win);
+	box(n_board->win, 0, 0);
 	for (size_t i = 0; i < board->height; i++) {
 		xoffset = 1;
 		yoffset = 1 + i;
