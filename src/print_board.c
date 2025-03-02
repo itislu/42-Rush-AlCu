@@ -16,10 +16,7 @@ void print_board_gameloop(t_board *board, unsigned int pieces)
 	if (!init_done) {
 		row_prev_turn = board->cur_row;
 		print_board_complete(board);
-		if (pieces > 1)
-			ft_printf("\nAI removed %i pieces\n\n", pieces);
-		else
-			ft_printf("\nAI removed %i piece\n\n", pieces);
+		ft_printf("\nAI removed %i%s\n\n", pieces, PIECE);
 		init_done = true;
 		return ;
 	}
@@ -44,10 +41,7 @@ void print_board_gameloop(t_board *board, unsigned int pieces)
 		print_board_complete(board);
 	}
 	if (cur_player == AI) {
-		if (pieces > 1)
-			ft_printf("\nAI removed %i pieces\n\n", pieces);
-		else
-			ft_printf("\nAI removed %i piece\n\n", pieces);
+		ft_printf("\nAI removed %i%s\n\n", pieces, PIECE);
 	}
 	// adjustment for las player move
 	else if (board->cur_row == 0 && board->rows[0]->cur_amount == 0)
@@ -72,26 +66,25 @@ static void print_board_row(t_board *board, size_t row)
 		         - ((width / 2 - pieces / 2) * 2) // - spaces before the pins
 		         - (pieces * 2) + 2;              // - pins
 		while (pieces--) {
-			ft_printf("%s", PIECES);
+			ft_printf("%s", PIECE);
 		}
 	}
 	else {
 		for (int i = 0; i < PRT_PIN_FILLER; i++) {
-			ft_printf("%s", PIECES);
+			ft_printf("%s", PIECE);
 		}
 		// this is now adjusted to 3 filler pins left and right
-		ft_printf("   ...      %5i piece%s left     ...   ", pieces, 
-			(pieces > 1) ? "s" : "");
+		ft_printf("   ...        %5i%s left        ...   ", pieces, PIECE);
 		for (int i = 0; i < PRT_PIN_FILLER; i++) {
-			ft_printf("%s", PIECES);
+			ft_printf("%s", PIECE);
 		}
 		spaces = 2;
 	}
 	while (--spaces) {
 		ft_printf(" ");
 	}
-	ft_printf(" row #%i (%i piece%s)\n", row + 1, board->rows[row]->cur_amount, 
-		(board->rows[row]->cur_amount > 1) ? "s" : "");
+	ft_printf(" row #%i (%i%s)\n", row + 1, board->rows[row]->cur_amount, 
+		PIECE);
 }
 
 void print_board_complete(t_board *board)
