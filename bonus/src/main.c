@@ -198,7 +198,7 @@ void mouse(t_ncurses *env, t_board* board)
 					env->board.scroll_offset--;
 					update_board(&env->board, board, env->board.scroll_offset);
 			}
-			else if (win == env->history.win && env->history.scroll_offset > 1)
+			else if (win == env->history.win  && env->is_history && env->history.scroll_offset > 1)
 			{
 				env->history.scroll_offset--;
 				update_history(env->history, board, env->history.scroll_offset);
@@ -217,7 +217,7 @@ void mouse(t_ncurses *env, t_board* board)
 					env->board.scroll_offset++;
 					update_board(&env->board, board, env->board.scroll_offset);
 			}
-			else if (win == env->history.win && board->cur_turn > env->history.size.y - 4
+			else if (win == env->history.win && env->is_history && board->cur_turn > env->history.size.y - 4
 				&& env->history.scroll_offset < board->cur_turn - env->history.size.y + 4)
 			// env->history.size.y - 4 // is the limit to print the last row
 			{
