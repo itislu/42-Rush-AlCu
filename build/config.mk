@@ -36,7 +36,7 @@ DOCKER_DIR		:=	$(REPO_ROOT)/docker
 
 BUILDFILES		=	$(filter-out %.d,$(MAKEFILE_LIST))
 LIBRARIES		:=	$(LIB_DIR)/libft
-LIBRARIES_EXT	:=	
+LIBRARIES_EXT	:=	ncurses
 
 
 #	Flags
