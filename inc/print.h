@@ -3,6 +3,12 @@
 #include "alcu.h"
 #include <stddef.h>
 
+#define PIECE           "📍"
+#define PRT_ROW_LIMIT   16	// how many rows/heaps to show
+#define PRT_WIDTH_LIMIT 38	// how many 📍 to show
+#define PLAYER_OFFSET   5	// how many lines to go up
+#define PRT_PIN_FILLER  15	// fillers left and right of ... XX 📍 ...
+
 /* clear */
 void clear_rows(int rows);
 void clear_line(void);
