@@ -5,7 +5,7 @@ include				$(shell git rev-parse --show-toplevel)/build/setup.mk
 
 NAME			:=	AlCu
 # MSG_PROGRESS	:=	""
-MSG_USAGE		?=	"Usage: ./$(NAME)"
+MSG_USAGE		?=	"Usage: ./$(NAME) [file]"
 COLOR_MAKE		:=	STY_YEL
 
 
