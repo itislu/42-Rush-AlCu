@@ -98,8 +98,10 @@ static void	turn(t_board *board, t_ncurses *env, Player *player)
 	cur_row->last_pick = *player;
 	board->picks[board->cur_turn] = picks;
 
-	if (env->is_history) 
+	if (env->is_history) {
 		update_history(env->history, board, 0);
+		env->history.scroll_offset = 0;
+	}
 	if (cur_row->cur_amount == 0 && board->cur_row != 0) {
 		board->cur_row--;
 	}
