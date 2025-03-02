@@ -2,6 +2,7 @@
 #include "ft_printf.h"
 #include "get_next_line.h"
 #include "libft.h"
+#include "print_utils.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
@@ -20,6 +21,8 @@ Result read_rows(t_list **rows, const char *filename)
 		return INTERNAL_ERROR;
 	}
 	if (fd == STDIN_FILENO) {
+		const char title[] = "🔨 BOARD CREATION 🔨";
+		print_boxed_specialstr(title, sizeof(title) - 1 - 4);
 		ft_printf(
 		    "Enter board (one number 1-10000 per line, empty line to end):\n");
 	}
