@@ -2,6 +2,7 @@
 #include "ft_printf.h"
 #include "get_next_line.h"
 #include "libft.h"
+#include "print_utils.h"
 #include <errno.h>
 #include <stdlib.h>
 #include <sys/param.h>
@@ -120,5 +121,9 @@ Result prompt_game_mode(Mode *mode)
 		toggle ^= true;
 	}
 	free(line);
+
+	clear_rows(4);
+	print_game_mode(*mode);
+	ft_printf("\n");
 	return res;
 }
