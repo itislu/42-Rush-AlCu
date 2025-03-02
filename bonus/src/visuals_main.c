@@ -40,9 +40,10 @@ void	update_board(t_win *n_board, t_board *board, int offset)
 	(void)offset;
 	werase(n_board->win);
 	box(n_board->win, 0, 0);
-	if (board->cur_row > n_board->size.y - 3) // from - 1
-		i = board->cur_row - n_board->size.y + 3;
-	while (i <= board->cur_row) {
+	if (board->cur_row - offset > n_board->size.y - 3) // from - 1
+		i = board->cur_row - offset - n_board->size.y + 3;
+	// while (i <= board->cur_row) {
+	while (i <= board->cur_row - offset) {
 		xoffset = 1;
 		row = board->rows[i];
 		char_limit = n_board->size.x - 2;
