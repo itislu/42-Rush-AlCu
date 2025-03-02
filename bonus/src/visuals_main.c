@@ -31,7 +31,7 @@
 
 void	update_board(t_win *n_board, t_board *board, int offset)
 {
-	int	xoffset, yoffset = 0;
+	int	xoffset, yoffset = 1;
 	int char_limit;
 	int text_len;
 	size_t i = 0;
@@ -40,24 +40,28 @@ void	update_board(t_win *n_board, t_board *board, int offset)
 	(void)offset;
 	werase(n_board->win);
 	box(n_board->win, 0, 0);
-	if (board->cur_row > n_board->size.y - 1)
-		i = board->cur_row - n_board->size.y - 1;
+	if (board->cur_row > n_board->size.y - 3) // from - 1
+		i = board->cur_row - n_board->size.y + 3;
 	while (i <= board->cur_row) {
 		xoffset = 1;
-		yoffset++;
 		row = board->rows[i];
 		char_limit = n_board->size.x - 2;
 		text_len = ft_min(ft_nbrlen_base(i, 10) + 1, 3); // digits row '#123'
 		text_len += ft_nbrlen_base(row->cur_amount, 10) + 4; // ' 123: '
 		char_limit -= ft_min(row->cur_amount, char_limit - text_len);
 		// the getmaxy can most likely be win.size.y ...
-		if (yoffset != 0 && yoffset != (getmaxy(n_board->win) - 1)) {
+			mvwprintw(n_board->win, n_board->size.y - 1, 1,
+				"size (%i,%i) xoffset %i yoffset %i i %zu",
+				n_board->size.x, n_board->size.y,
+				xoffset, yoffset, i);
+		// if (yoffset != 0 && yoffset != (getmaxy(n_board->win) - 1)) {
 			mvwprintw(n_board->win, yoffset, xoffset, "#%-2zu %i:",
-				i, row->cur_amount);
+				i + 1, row->cur_amount);
 			xoffset = n_board->size.x - 2;
 			while (xoffset > char_limit)
 				mvwprintw(n_board->win, yoffset, xoffset--, "|");
-		}
+		// }
+		yoffset++;
 		i++;
 	}
 	wrefresh(n_board->win);
