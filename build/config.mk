@@ -23,7 +23,7 @@ COLOR_MAKE		?=	STY_GRE
 #	Directories
 
 SRC_DIR			:=	src
-LIB_DIR			:=	lib
+LIB_DIR			:=	$(REPO_ROOT)/lib
 INC_DIRS		:=	inc $(SRC_DIR) $(LIB_DIR)/libft/inc
 BUILD_DIR		:=	build
 OBJ_DIR			:=	$(BUILD_DIR)/_obj
