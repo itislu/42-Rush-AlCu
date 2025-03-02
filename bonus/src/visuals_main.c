@@ -1,4 +1,6 @@
 #include "visuals.h"
+#include "ft_printf.h"
+#include "libft.h"
 // here to shutup the blue squiggles...
 #include <ncurses.h>
 #include <stdlib.h>
@@ -27,17 +29,38 @@ static void	test_draw(t_ncurses *env)
 // 	// update print from the board
 // }
 
-void	handle_board_window(t_ncurses *env, t_board *board)
+void	update_board(t_win *n_board, t_board *board)
 {
-	int	xoffset;
+	int	yoffset, xoffset;
+	int char_limit;
+	int text_len;
+	t_row *row; //ft_snprintf
 
 	for (size_t i = 0; i < board->height; i++) {
-		xoffset = 1 + i;
-		if (xoffset != 0 && xoffset != (getmaxy(env->board.win) - 1))
-			mvwprintw(env->board.win, xoffset, 2, " line %zu", i);
-		wrefresh(env->board.win);
+		xoffset = 1;
+		yoffset = 1 + i;
+		row = board->rows[i];
+		char_limit = n_board->size.x - 2;
+		text_len = ft_min(ft_nbrlen_base(i, 10) + 1, 3); // digits row '#123'
+		text_len += ft_nbrlen_base(row->cur_amount, 10) + 4; // ' 123: '
+		// char_limit = ft_min(text_len + row->cur_amount, char_limit - text_len);
+		// char_limit -= text_len;
+		char_limit -= ft_min(row->cur_amount, char_limit - text_len);
+			// ft_min(char_limit - text_len);
+		if (yoffset != 0 && yoffset != (getmaxy(n_board->win) - 1)) {
+			mvwprintw(n_board->win, yoffset, xoffset, "#%-2zu %i:",
+				i, row->cur_amount);
+			// xoffset += text_len;
+			xoffset = n_board->size.x - 2;
+			while (xoffset > char_limit)
+				mvwprintw(n_board->win, yoffset, xoffset--, "|");
+				// mvwprintw(n_board->win, yoffset, xoffset++, "|")
+		}
+		// sleep(1);
+			// mvwprintw(env->board.win, yoffset, 2, " line %zu", i);
 	}
-	(void) env; (void) board;
+	wrefresh(n_board->win);
+	// ft_printf("board window size (%i,%i)\n", env->board.size.x, env->board.size.y);
 }
 
 // void	handle_mouse_event(t_ncurses *env, int key, MEVENT *mouse)
@@ -62,7 +85,7 @@ Result	run_visuals(t_board *board)
 		// history window
 		// handle_history_window(&env, key);
 		// board window
-		handle_board_window(&env, board);
+		update_board(&env.board, board);
 		// if (key == KEY_MOUSE) {
 		// 	getmouse(&mouse);
 		// 	handle_mouse_event(&env, key, &mouse);

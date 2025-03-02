@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <locale.h> // Include this for setlocale
+#include "alcu.h"
 
 typedef struct s_size{
 	int	x;
@@ -26,3 +27,4 @@ typedef struct s_ncurses {
 
 void	setup_ncurses(t_ncurses *env);
 void	cleanup_ncruses(t_ncurses *env);
+Result	run_visuals(t_board *board);
