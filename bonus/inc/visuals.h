@@ -5,6 +5,8 @@
 #define MIN_TERMINAL_HEIGTH             10
 #define MIN_TERMINAL_WIDTH              30
 
+#define ESCAPE 27
+
 typedef struct s_size {
 	unsigned int x;
 	unsigned int y;

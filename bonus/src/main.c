@@ -272,7 +272,7 @@ static Result game_loop(t_board *board, t_ncurses *env)
 			env->input.scroll_offset = 0;
 			update_input(env->input, board);
 		}
-		else if (ch == 'q' || ch == 27) {
+		else if (ch == 'q' || ch == ESCAPE) {
 			break;
 		}
 		else if (ch == KEY_UP && !is_game_end(board)) {
