@@ -9,7 +9,6 @@ static Result	init_windows(t_ncurses *env);
 
 static void	init_ncurses(void)
 {
-	setlocale(LC_ALL, "");
     initscr();
     noecho();
     cbreak();
