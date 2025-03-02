@@ -1,15 +1,16 @@
 #include "alcu.h"
 #include "ft_printf.h"
 #include "libft.h"
+#include <stddef.h>
 
 static void print_board_row(t_board *board, size_t row);
 static void clear_complete_board(t_board *board, int offset);
 
 void print_board_gameloop(t_board *board, unsigned int pieces)
 {
-	int	offset = 0;
 	static size_t row_prev_turn;
-	static bool	init_done;
+	static bool init_done;
+	int offset = 0;
 	bool row_change = false;
 
 	// first inital print and previous row setup
@@ -18,7 +19,7 @@ void print_board_gameloop(t_board *board, unsigned int pieces)
 		print_board_complete(board);
 		ft_printf("\nAI removed %i%s\n\n", pieces, PIECE);
 		init_done = true;
-		return ;
+		return;
 	}
 	// determine the correct offset (what is printed after the board)
 	Player cur_player = board->rows[board->cur_row]->last_pick;
@@ -44,19 +45,17 @@ void print_board_gameloop(t_board *board, unsigned int pieces)
 		ft_printf("\nAI removed %i%s\n\n", pieces, PIECE);
 	}
 	// adjustment for las player move
-	else if (board->cur_row == 0 && board->rows[0]->cur_amount == 0)
+	else if (board->cur_row == 0 && board->rows[0]->cur_amount == 0) {
 		ft_printf("\n");
+	}
 }
-
 
 static void print_board_row(t_board *board, size_t row)
 {
-	unsigned int spaces;
-	unsigned int pieces;
-	unsigned int width;
+	unsigned int spaces = 0;
+	unsigned int pieces = board->rows[row]->cur_amount;
+	unsigned int width = ft_min(PRT_WIDTH_LIMIT, board->width);
 
-	pieces = board->rows[row]->cur_amount;
-	width = ft_min(PRT_WIDTH_LIMIT, board->width);
 	if (pieces <= PRT_WIDTH_LIMIT) {
 		spaces = (width / 2 - pieces / 2) * 2;
 		while (spaces--) {
@@ -83,16 +82,15 @@ static void print_board_row(t_board *board, size_t row)
 	while (--spaces) {
 		ft_printf(" ");
 	}
-	ft_printf(" row #%i (%i%s)\n", row + 1, board->rows[row]->cur_amount, 
-		PIECE);
+	ft_printf(
+	    " row #%i (%i%s)\n", row + 1, board->rows[row]->cur_amount, PIECE);
 }
 
 void print_board_complete(t_board *board)
 {
-	size_t row;
-	unsigned int width;
+	size_t row = 0;
+	unsigned int width = ft_min(PRT_WIDTH_LIMIT, board->width);
 
-	width = ft_min(PRT_WIDTH_LIMIT, board->width);
 	if (board->cur_row > PRT_ROW_LIMIT) {
 		row = board->cur_row - PRT_ROW_LIMIT;
 		width /= 2;
@@ -101,9 +99,6 @@ void print_board_complete(t_board *board)
 		}
 		ft_printf("there are %i more rows above\n", row);
 	}
-	else {
-		row = 0;
-	}
 	while (row < board->cur_row + 1) {
 		print_board_row(board, row++);
 	}
@@ -111,12 +106,11 @@ void print_board_complete(t_board *board)
 
 static void clear_complete_board(t_board *board, int offset_in)
 {
-	size_t curr_height;
+	size_t curr_height = board->cur_row;
 	size_t offset = 1;
-	
+
 	// static bool limit;
-	
-	curr_height = board->cur_row;
+
 	// this is needed for correct update on HEIGHT limit
 	// if (board->cur_row > PRT_ROW_LIMIT) {
 	// 	offset++;
@@ -127,7 +121,7 @@ static void clear_complete_board(t_board *board, int offset_in)
 	// 	limit = false;
 	// }
 	// removes one more line when the last line is empty
-	
+
 	curr_height = ft_min(curr_height, PRT_ROW_LIMIT);
 	clear_rows(curr_height + offset + offset_in);
 }
