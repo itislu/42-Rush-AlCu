@@ -92,6 +92,7 @@ void print_board_complete(t_board *board)
 	size_t row = 0;
 	unsigned int width = ft_min(PRT_WIDTH_LIMIT, board->width);
 
+	clear_line();
 	if (board->cur_row > PRT_ROW_LIMIT) {
 		row = board->cur_row - PRT_ROW_LIMIT;
 		width /= 2;

@@ -27,6 +27,8 @@
 #define PLAYER_OFFSET   5
 #define PRT_PIN_FILLER  3
 
+extern int g_stdin;
+
 typedef enum Result {
 	OK,
 	USAGE_ERROR,

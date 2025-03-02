@@ -2,26 +2,33 @@
 #include "ft_printf.h"
 #include "get_next_line.h"
 #include "libft.h"
+#include "prompt.h"
 #include <errno.h>
 #include <stdlib.h>
 #include <sys/param.h>
 #include <unistd.h>
 
+static Result read_file(char **line, int fd);
+
 Result get_input(char **line, int fd)
 {
-	errno = 0;
-	if (fd == STDIN_FILENO) {
-		ft_printf("> ");
+	ft_printf("> ");
+	Result res = read_file(line, fd);
+	if (res == INTERNAL_ERROR) {
+		return res;
 	}
+	if (*line == NULL || (*line)[ft_strlen(*line) - 1] != '\n') {
+		res = USER_EXIT;
+	}
+	return res;
+}
+
+static Result read_file(char **line, int fd)
+{
+	errno = 0;
 	*line = get_next_line(fd);
-	if (*line == NULL
-	    || (fd == STDIN_FILENO && (*line)[ft_strlen(*line) - 1] != '\n')) {
-		if (errno != 0) {
-			return INTERNAL_ERROR;
-		}
-		if (fd == STDIN_FILENO) {
-			return USER_EXIT;
-		}
+	if (errno != 0) {
+		return INTERNAL_ERROR;
 	}
 	return OK;
 }
