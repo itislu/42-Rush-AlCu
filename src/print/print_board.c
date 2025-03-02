@@ -13,11 +13,12 @@ void print_board_gameloop(t_board *board, unsigned int pieces)
 	static bool init_done;
 	int offset = 0;
 	bool row_change = false;
-	static unsigned int	player_pieces;
+	static unsigned int player_pieces;
 
 	Player cur_player = board->rows[board->cur_row]->last_pick;
-	if (cur_player == PLAYER)
+	if (cur_player == PLAYER) {
 		player_pieces = pieces;
+	}
 	// first inital print and previous row setup
 	if (!init_done) {
 		row_prev_turn = board->cur_row;
@@ -47,7 +48,10 @@ void print_board_gameloop(t_board *board, unsigned int pieces)
 	}
 	if (cur_player == AI) {
 		ft_printf("\nYou removed %i%s :: AI removed %i%s\n\n",
-			player_pieces, PRT_PIECE, pieces, PRT_PIECE);
+		          player_pieces,
+		          PRT_PIECE,
+		          pieces,
+		          PRT_PIECE);
 	}
 	// adjustment for last player move
 	else if (board->cur_row == 0 && board->rows[0]->cur_amount == 0) {
@@ -98,7 +102,8 @@ void print_board_complete(t_board *board)
 	clear_line();
 	if (board->cur_row > PRT_ROW_LIMIT) {
 		row = board->cur_row - PRT_ROW_LIMIT;
-		width -= 14; // half the length of the string to print
+		width = (width > 14) ? width - 14
+		                     : 0; // half the length of the string to print
 		while (width--) {
 			ft_printf(" ");
 		}
