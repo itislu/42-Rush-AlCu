@@ -1,4 +1,4 @@
-#include "../inc/visuals.h"
+#include "visuals.h"
 #include "alcu.h"
 // here to shutup the blue squiggles...
 #include <ncurses.h>
@@ -16,6 +16,7 @@ static void	init_ncurses(void)
     curs_set(0);	// hide cursor
     // keypad(stdscr, TRUE); // we use windows, don't need that, this is for the terminal
     mousemask(ALL_MOUSE_EVENTS, NULL);
+	ESCDELAY = 25;
 }
 
 static void	setup_windows_sizes(t_ncurses *env)
@@ -25,7 +26,7 @@ static void	setup_windows_sizes(t_ncurses *env)
 	env->history.size.x = env->term.x / 3;
 	env->history.size.y = env->term.y * 2 / 3 - 1;
 	env->input.size.x = env->term.x / 3;
-	env->input.size.y = env->term.y / 3 + 1;
+	env->input.size.y = env->term.y / 3 + (env->term.y / 3) % 2; // fix for height
 }
 
 static void	setup_windows_position(t_ncurses *env)
