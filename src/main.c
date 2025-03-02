@@ -30,7 +30,8 @@ int main(int argc, char *argv[])
 		break;
 	case USER_EXIT:
 		clear_line();
-		ft_printf("Bye-Bye! 👋\n");
+		const char title[] = "Bye-Bye! 👋";
+		print_boxed_specialstr(title, sizeof(title) - 1 - 2);
 		break;
 	case INTERNAL_ERROR:
 		ft_dprintf(STDERR_FILENO, "INTERNAL ERROR\n");
