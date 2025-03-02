@@ -50,18 +50,11 @@ void	update_board(t_win *n_board, t_board *board, int offset)
 		text_len = ft_min(ft_nbrlen_base(i, 10) + 1, 3); // digits row '#123'
 		text_len += ft_nbrlen_base(row->cur_amount, 10) + 4; // ' 123: '
 		char_limit -= ft_min(row->cur_amount, char_limit - text_len);
-		// the getmaxy can most likely be win.size.y ...
-			mvwprintw(n_board->win, n_board->size.y - 1, 1,
-				"size (%i,%i) xoffset %i yoffset %i i %zu",
-				n_board->size.x, n_board->size.y,
-				xoffset, yoffset, i);
-		// if (yoffset != 0 && yoffset != (getmaxy(n_board->win) - 1)) {
 			mvwprintw(n_board->win, yoffset, xoffset, "#%-2zu %i:",
 				i + 1, row->cur_amount);
 			xoffset = n_board->size.x - 2;
 			while (xoffset > char_limit)
 				mvwprintw(n_board->win, yoffset, xoffset--, "|");
-		// }
 		yoffset++;
 		i++;
 	}
