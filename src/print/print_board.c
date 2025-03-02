@@ -45,7 +45,7 @@ void print_board_gameloop(t_board *board, unsigned int pieces)
 	if (cur_player == AI) {
 		ft_printf("\nAI removed %i%s\n\n", pieces, PIECE);
 	}
-	// adjustment for las player move
+	// adjustment for last player move
 	else if (board->cur_row == 0 && board->rows[0]->cur_amount == 0) {
 		ft_printf("\n");
 	}
@@ -73,8 +73,7 @@ static void print_board_row(t_board *board, size_t row)
 		for (int i = 0; i < PRT_PIN_FILLER; i++) {
 			ft_printf("%s", PIECE);
 		}
-		// this is now adjusted to 3 filler pins left and right
-		ft_printf("   ...        %5i%s left        ...   ", pieces, PIECE);
+		ft_printf(" ...%5i%s ... ", pieces, PIECE);
 		for (int i = 0; i < PRT_PIN_FILLER; i++) {
 			ft_printf("%s", PIECE);
 		}
@@ -84,7 +83,7 @@ static void print_board_row(t_board *board, size_t row)
 		ft_printf(" ");
 	}
 	ft_printf(
-	    " row #%i (%i%s)\n", row + 1, board->rows[row]->cur_amount, PIECE);
+	    "    #%-3i  %5i%s\n", row + 1, board->rows[row]->cur_amount, PIECE);
 }
 
 void print_board_complete(t_board *board)
@@ -94,11 +93,11 @@ void print_board_complete(t_board *board)
 
 	if (board->cur_row > PRT_ROW_LIMIT) {
 		row = board->cur_row - PRT_ROW_LIMIT;
-		width /= 2;
+		width -= 14; // half the length of the string to print
 		while (width--) {
 			ft_printf(" ");
 		}
-		ft_printf("there are %i more rows above\n", row);
+		ft_printf("... %3i more heaps above ...\n", row);
 	}
 	while (row < board->cur_row + 1) {
 		print_board_row(board, row++);
@@ -109,19 +108,6 @@ static void clear_complete_board(t_board *board, int offset_in)
 {
 	size_t curr_height = board->cur_row;
 	size_t offset = 1;
-
-	// static bool limit;
-
-	// this is needed for correct update on HEIGHT limit
-	// if (board->cur_row > PRT_ROW_LIMIT) {
-	// 	offset++;
-	// 	limit = true;
-	// }
-	// else if (limit) {
-	// 	offset++;
-	// 	limit = false;
-	// }
-	// removes one more line when the last line is empty
 
 	curr_height = ft_min(curr_height, PRT_ROW_LIMIT);
 	clear_rows(curr_height + offset + offset_in);
