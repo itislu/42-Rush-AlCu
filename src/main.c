@@ -22,6 +22,12 @@ int main(int argc, char *argv[])
 		res = init_board(&board, argv[1]);
 	}
 	if (res == OK) {
+		print_board_complete(&board);
+		ft_printf("\n");
+		res = prompt_game_mode(&board.game_mode);
+	}
+	if (res == OK) {
+		calc_finishers(&board);
 		res = game_loop(&board);
 	}
 
@@ -59,12 +65,7 @@ static Result game_loop(t_board *board)
 		unsigned int picks = 0;
 
 		if (cur_player == AI) {
-			if (cur_row->pref_finisher == AI) {
-				picks = ft_max(1, cur_row->cur_amount % 4);
-			}
-			else {
-				picks = ft_max(1, (cur_row->cur_amount - 1) % 4);
-			}
+			picks = ai_pick(board);
 		}
 		else {
 			res = prompt_picks(board, &picks);
@@ -72,7 +73,6 @@ static Result game_loop(t_board *board)
 				break;
 			}
 		}
-
 		cur_row->cur_amount -= picks;
 		cur_row->last_pick = cur_player;
 
