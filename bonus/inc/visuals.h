@@ -23,6 +23,7 @@ typedef struct s_ncurses {
 	t_win			history;
 	t_win			input;
 	t_size			term;
+	bool			is_history;
 }	t_ncurses;
 
 Result	setup_ncurses(t_ncurses *env);

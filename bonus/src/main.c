@@ -92,13 +92,14 @@ static void	turn(t_board *board, t_ncurses *env, Player *player)
 	cur_row->last_pick = *player;
 	board->picks[board->cur_turn] = picks;
 
-	update_history(env->history, board, capped_sub(board->cur_turn, env->history.size.y));
+	if (env->is_history) 
+		update_history(env->history, board, capped_sub(board->cur_turn, env->history.size.y));
 	if (cur_row->cur_amount == 0 && board->cur_row != 0) {
 		board->cur_row--;
 	}
 	board->cur_turn++;
 	*player *= -1;
-	update_board(&env->board, board);
+	update_board(&env->board, board, 0);
 }
 
 void update_history(t_win history, t_board *board, int offset) {
@@ -166,7 +167,7 @@ void mouse(t_ncurses *env, t_board* board)
 			if (win == env->board.win && env->board.scroll_offset > 0)
 			{
 					env->board.scroll_offset--;
-					update_board(&env->board, board);
+					update_board(&env->board, board, env->board.scroll_offset);
 			}
 			/* else if (win == env->history.win)
 			{
@@ -182,7 +183,7 @@ void mouse(t_ncurses *env, t_board* board)
 			if (win == env->board.win && env->board.scroll_offset > 0)
 			{
 					env->board.scroll_offset++;
-					update_board(&env->board, board);
+					update_board(&env->board, board, env->board.scroll_offset);
 			}
 			/* else if (win == env->history.win)
 			{
