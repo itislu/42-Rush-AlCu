@@ -38,8 +38,8 @@ void	run_visuals(void)
 	cleanup_ncruses(&env);
 }
 
-int main(void)
-{
-	run_visuals();
-	return (0);
-}
+// int main(void)
+// {
+// 	run_visuals();
+// 	return (0);
+// }

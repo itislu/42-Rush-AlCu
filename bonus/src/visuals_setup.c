@@ -1,7 +1,11 @@
 #include "../inc/visuals.h"
+#include "alcu.h"
 // here to shutup the blue squiggles...
 #include <ncurses.h>
 #include <stdlib.h>
+#include <locale.h>
+
+static Result	init_windows(t_ncurses *env);
 
 static void	init_ncurses(void)
 {
@@ -34,27 +38,27 @@ static void	setup_windows_position(t_ncurses *env)
 	env->input.pos.y = env->term.y * 2 / 3;
 }
 
-static bool	init_windows_err(t_ncurses *env)
+static Result	init_windows(t_ncurses *env)
 {
 	getmaxyx(stdscr, env->term.y, env->term.x);
 	setup_windows_sizes(env);
 	setup_windows_position(env);
 	env->board.win = newwin(env->board.size.y, env->board.size.x, env->board.pos.y, env->board.pos.x);
 	if (!env->board.win)
-		return (true);
+		return (INTERNAL_ERROR);
 	env->history.win = newwin(env->history.size.y, env->history.size.x, env->history.pos.y, env->history.pos.x);
 	if (!env->history.win)
-		return (true);
+		return (INTERNAL_ERROR);
 	env->input.win = newwin(env->input.size.y, env->input.size.x, env->input.pos.y, env->input.pos.x);
 	if (!env->input.win)
-		return (true);
+		return (INTERNAL_ERROR);
 	// draw the borders for the windows, uses TOP and BOTTOM line for the border
 	box(env->board.win, 0, 0);
 	box(env->history.win, 0, 0);
 	box(env->input.win, 0, 0);
 	// activate keyboard input for the input window
 	keypad(env->input.win, TRUE);
-	return (false);
+	return (RESULT_OK);
 }
 void	cleanup_ncruses(t_ncurses *env)
 {
@@ -67,11 +71,14 @@ void	cleanup_ncruses(t_ncurses *env)
 	endwin();
 }
 
-void	setup_ncurses(t_ncurses *env)
+Result	setup_ncurses(t_ncurses *env)
 {
+	Result	res = RESULT_OK;
+	
 	init_ncurses();
-	if (init_windows_err(env)) { // needs proper game exit
+	res = init_windows(env);
+	if (res != RESULT_OK) {
 		cleanup_ncruses(env);
-		//exit(1);
 	}
+	return (res);
 }
