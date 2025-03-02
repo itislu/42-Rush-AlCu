@@ -38,19 +38,20 @@ int main(int argc, char *argv[])
 	case OK:
 		print_result(&board);
 		break;
-	case USER_EXIT:
-		clear_line();
-		const char title[] = "Bye-Bye! 👋";
-		print_boxed_specialstr(title, sizeof(title) - 1 - 2);
-		break;
-	case INTERNAL_ERROR:
-		ft_dprintf(STDERR_FILENO, "INTERNAL ERROR\n");
-		break;
 	case USAGE_ERROR:
 		ft_dprintf(STDERR_FILENO, "%s [file]\n", argv[0]);
 		break;
 	case BOARD_ERROR:
 		ft_dprintf(STDERR_FILENO, "ERROR\n");
+		break;
+	case INTERNAL_ERROR:
+		ft_dprintf(STDERR_FILENO, "INTERNAL ERROR\n");
+		break;
+	case USER_EXIT:
+		clear_line();
+		const char title[] = "Bye-Bye! 👋";
+		print_boxed_specialstr(title, sizeof(title) - 1 - 2);
+		res = OK;
 		break;
 	}
 
