@@ -111,9 +111,9 @@ void update_history(t_win history, t_board *board, int offset) {
 		if (i + 2 < history.size.y - 1)
 			mvwprintw(history.win, i + 2, 1, "%s picked %d", 
 				(offset + i) % 2 == 0 ? "AI" : "You",
-				board->picks[//offset + i]); // offset does NOT work with scrolling
+				board->picks[offset + i]); // offset does NOT work with scrolling
 				// either fix the capped_sub below or remove scrolling
-			capped_sub(board->cur_turn, history.size.y  - i)]);
+			//capped_sub(board->cur_turn, history.size.y  - i)]);
 	}
 	wrefresh(history.win);
 }
@@ -161,7 +161,7 @@ void mouse(t_ncurses *env, t_board* board)
 {
 	MEVENT event;
 	if (getmouse(&event) == OK) {
-		WINDOW *win = detect_window(env, event.y, event.x);
+		WINDOW *win = env->board.win;// detect_window(env, event.y, event.x);
 		if (event.bstate & BUTTON4_PRESSED) //scrolldown
 		{
 			if (win == env->board.win && env->board.scroll_offset > 0)
@@ -169,7 +169,7 @@ void mouse(t_ncurses *env, t_board* board)
 					env->board.scroll_offset--;
 					update_board(env->board, board);
 			}
-			else if (win == env->history.win)
+			/* else if (win == env->history.win)
 			{
 				env->history.scroll_offset--;
 				update_history(env->history, board, env->history.scroll_offset);
@@ -177,7 +177,7 @@ void mouse(t_ncurses *env, t_board* board)
 			else if (win == env->input.win)
 			{
 				env->input.scroll_offset = (env->input.scroll_offset - 1 + board->num_options) % board->num_options;
-			}
+			} */
 		} else if (event.bstate & BUTTON5_PRESSED) //scrollup
 		{
 			if (win == env->board.win && env->board.scroll_offset > 0)
@@ -185,7 +185,7 @@ void mouse(t_ncurses *env, t_board* board)
 					env->board.scroll_offset++;
 					update_board(env->board, board);
 			}
-			else if (win == env->history.win)
+			/* else if (win == env->history.win)
 			{
 				env->history.scroll_offset++;
 				update_history(env->history, board, env->history.scroll_offset);
@@ -193,7 +193,7 @@ void mouse(t_ncurses *env, t_board* board)
 			else if (win == env->input.win)
 			{
 				env->input.scroll_offset = (env->input.scroll_offset + 1 + board->num_options) % board->num_options;
-			}
+			} */
 		}
 }
 }
