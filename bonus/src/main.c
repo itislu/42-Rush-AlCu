@@ -177,7 +177,7 @@ void mouse(t_ncurses *env, t_board* board)
 	MEVENT event;
 	if (getmouse(&event) == OK) {
 		WINDOW *win = env->board.win;// detect_window(env, event.y, event.x);
-		if (event.bstate & BUTTON4_PRESSED) //scrolldown
+		if (event.bstate & BUTTON5_PRESSED) //scrolldown
 		{
 			if (win == env->board.win && env->board.scroll_offset > 0)
 			{
@@ -193,7 +193,7 @@ void mouse(t_ncurses *env, t_board* board)
 			{
 				env->input.scroll_offset = (env->input.scroll_offset - 1 + board->num_options) % board->num_options;
 			} */
-		} else if (event.bstate & BUTTON5_PRESSED) //scrollup
+		} else if (event.bstate & BUTTON4_PRESSED) //scrollup
 		{
 			if (win == env->board.win && board->cur_row > env->board.size.y - 3
 				&& env->board.scroll_offset < board->cur_row - env->board.size.y + 3)
