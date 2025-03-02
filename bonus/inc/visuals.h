@@ -27,3 +27,4 @@ typedef struct s_ncurses {
 
 Result	setup_ncurses(t_ncurses *env);
 void	cleanup_ncruses(t_ncurses *env);
+Result	run_visuals(t_board *board);
