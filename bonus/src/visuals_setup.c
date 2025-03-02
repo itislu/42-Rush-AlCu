@@ -29,7 +29,7 @@ static void	setup_windows_sizes(t_ncurses *env)
 		env->history.size.x = env->term.x / 3;
 		env->history.size.y = env->term.y * 2 / 3 - 1;
 		env->input.size.x = env->term.x / 3;
-		env->input.size.y = env->term.y / 3 + (env->term.y / 3) % 2; // fix for height
+		env->input.size.y = env->term.y - env->history.size.y - 1;
 	}
 	else {
 		env->history.size.x = env->term.x / 3;
@@ -59,7 +59,7 @@ static void	setup_windows_position(t_ncurses *env)
 		env->input.pos.y = env->history.pos.y ;
 	}
 }
-#include "ft_printf.h"
+
 static Result	init_windows(t_ncurses *env)
 {
 	getmaxyx(stdscr, env->term.y, env->term.x);
