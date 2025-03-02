@@ -3,6 +3,7 @@
 #include "libft.h"
 #include "print.h"
 #include <stddef.h>
+#include <sys/param.h>
 
 static void print_board_row(t_board *board, size_t row);
 static void clear_complete_board(t_board *board, int offset);
@@ -118,6 +119,6 @@ static void clear_complete_board(t_board *board, int offset_in)
 	size_t curr_height = board->cur_row;
 	size_t offset = 1;
 
-	curr_height = ft_min(curr_height, PRT_ROW_LIMIT);
+	curr_height = MIN(curr_height, PRT_ROW_LIMIT);
 	clear_rows(curr_height + offset + offset_in);
 }

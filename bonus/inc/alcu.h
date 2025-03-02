@@ -57,5 +57,5 @@ typedef struct s_board {
 	Mode game_mode;
 	unsigned int *picks;
 	size_t cur_turn;
-	unsigned int	num_options;
+	unsigned int num_options;
 } t_board;
