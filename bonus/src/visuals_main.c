@@ -14,18 +14,27 @@ static void	test_draw(t_ncurses *env)
 	wrefresh(env->board.win);
 	wrefresh(env->history.win);
 	wrefresh(env->input.win);
+	
 }
 
 // void	run_visuals(t_board *board)
 void	run_visuals(void)
 {
 	t_ncurses	env;
+	int ch = 0;
 
 	setup_ncurses(&env);
 	// inital draw windows?
 	test_draw(&env);
 	// some loop?
-	sleep(2);
+	while ((ch = wgetch(env.input.win)) != 'q')
+	{
+		// ch = getch();
+		// ;
+		// wrefresh(env->board.win);
+		// wrefresh(env->history.win);
+		// wrefresh(env->input.win);
+	}
 	cleanup_ncruses(&env);
 }
 
