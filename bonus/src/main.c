@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 		print_result(&board);
 		break;
 	case USAGE_ERROR:
-		ft_dprintf(STDERR_FILENO, "%s [file]\n", argv[0]);
+		ft_dprintf(STDERR_FILENO, "%s <file>\n", argv[0]);
 		break;
 	case BOARD_ERROR:
 		ft_dprintf(STDERR_FILENO, "ERROR\n");
