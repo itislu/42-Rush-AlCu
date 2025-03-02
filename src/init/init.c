@@ -1,4 +1,4 @@
-#include "init.h"
+#include "_init.h"
 #include "alcu.h"
 #include "get_next_line.h"
 #include "libft.h"

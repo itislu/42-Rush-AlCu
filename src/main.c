@@ -1,13 +1,14 @@
+#include "ai.h"
 #include "alcu.h"
 #include "ft_printf.h"
-#include "libft.h"
-#include "print_utils.h"
+#include "init.h"
+#include "print.h"
+#include "prompt.h"
 #include <stddef.h>
 #include <unistd.h>
 
 static Result game_loop(t_board *board);
 static bool is_game_end(t_board *board);
-static void print_result(t_board *board);
 
 int main(int argc, char *argv[])
 {
@@ -89,19 +90,4 @@ static Result game_loop(t_board *board)
 static bool is_game_end(t_board *board)
 {
 	return board->cur_row == 0 && board->rows[board->cur_row]->cur_amount == 0;
-}
-
-static void print_result(t_board *board)
-{
-	const char *title = NULL;
-
-	if ((board->game_mode == LAST_WINS && board->rows[0]->last_pick == PLAYER)
-	    || (board->game_mode == LAST_LOSES
-	        && board->rows[0]->last_pick == AI)) {
-		title = "🌟 Congrats, you won! 🌟";
-	}
-	else {
-		title = "🥀 You lost... 🥀";
-	}
-	print_boxed_specialstr(title, ft_strlen(title) - 4);
 }

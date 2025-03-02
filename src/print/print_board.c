@@ -1,6 +1,7 @@
 #include "alcu.h"
 #include "ft_printf.h"
 #include "libft.h"
+#include "print.h"
 #include <stddef.h>
 
 static void print_board_row(t_board *board, size_t row);
