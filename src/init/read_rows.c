@@ -27,10 +27,11 @@ Result read_rows(t_list **rows, const char *filename)
 		    "Enter board (one number 1-10000 per line, empty line to end):\n");
 	}
 
-	char *line = NULL;
 	Result res = OK;
-
+	char *line = NULL;
+	t_list *tail = NULL;
 	errno = 0;
+
 	while ((res = get_input(&line, fd)) == OK) {
 		if (is_input_end(line)) {
 			if (fd == STDIN_FILENO) {
@@ -44,7 +45,7 @@ Result read_rows(t_list **rows, const char *filename)
 			res = BOARD_ERROR;
 			break;
 		}
-		if (!ft_lstnew_back(rows, row)) {
+		if (!ft_lstnew_back_eff(rows, &tail, row)) {
 			free(row);
 			break;
 		}
