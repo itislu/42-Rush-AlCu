@@ -10,7 +10,7 @@
 #define MAX_PICKS      3
 
 // --- PRINT stuff
-#define PIECES          "📍"
+#define PIECE           "📍"
 #define INPUT_OFFSET    3
 #define PRT_ROW_LIMIT   10
 #define PRT_WIDTH_LIMIT 26
