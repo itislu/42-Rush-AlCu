@@ -8,8 +8,6 @@
 #include <sys/param.h>
 #include <unistd.h>
 
-static Result read_file(char **line, int fd);
-
 Result get_input(char **line, int fd)
 {
 	// ft_printf("> ");
@@ -23,7 +21,7 @@ Result get_input(char **line, int fd)
 	return res;
 }
 
-static Result read_file(char **line, int fd)
+Result read_file(char **line, int fd)
 {
 	errno = 0;
 	*line = get_next_line(fd);

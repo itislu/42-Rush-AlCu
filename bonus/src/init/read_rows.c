@@ -33,7 +33,7 @@ Result read_rows(t_list **rows, const char *filename)
 	t_list *tail = NULL;
 	errno = 0;
 
-	while ((res = get_input(&line, fd)) == RESULT_OK) {
+	while ((res = read_file(&line, fd)) == RESULT_OK) {
 		if (is_input_end(line)) {
 			if (fd == g_stdin) {
 				clear_rows(1);
