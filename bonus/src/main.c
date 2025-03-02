@@ -133,6 +133,15 @@ void update_history(t_win history, t_board *board, int offset) {
 // }
 
 void update_input(t_win input, t_board *board) {
+
+	if (is_game_end(board)) {
+		werase(input.win);
+		box(input.win, 0, 0);
+		//if mode is LAST_LOSES, the last player to pick wins
+		mvwprintw(input.win, 1, 1, "%s won!", board->rows[board->cur_row]->last_pick == AI ? "You" : "AI");
+		wrefresh(input.win);
+		return;
+	}
     const char *options[3] = {
         "1 pick",
         "2 picks",
