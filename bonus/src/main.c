@@ -203,7 +203,7 @@ void mouse(t_ncurses *env, t_board* board)
 				env->history.scroll_offset--;
 				update_history(env->history, board, env->history.scroll_offset);
 			}
-			else if (win == env->input.win)
+			else if (win == env->input.win && !is_game_end(board))
 			{
 				env->input.scroll_offset = (env->input.scroll_offset + 1 + board->num_options) % board->num_options;
 				update_input(env->input, board);
@@ -224,7 +224,7 @@ void mouse(t_ncurses *env, t_board* board)
 				env->history.scroll_offset++;
 				update_history(env->history, board, env->history.scroll_offset);
 			}
-			else if (win == env->input.win)
+			else if (win == env->input.win && !is_game_end(board))
 			{
 				env->input.scroll_offset = (env->input.scroll_offset - 1 + board->num_options) % board->num_options;
 				update_input(env->input, board);
