@@ -25,15 +25,15 @@ int main(int argc, char *argv[])
 	ft_bzero(&board, sizeof(board));
 	ft_bzero(&env, sizeof(env));
 
-	if (argc != 2) {
+	if (argc > 2) {
 		res = USAGE_ERROR;
+	}
+	if (res == RESULT_OK) {
+		res = init_board(&board, argv[1]);
 	}
 	if (res == RESULT_OK) {
 		//ft_printf("\033[1m" TITLE "\033[0m");
 		res = setup_ncurses(&env);
-	}
-	if (res == RESULT_OK) {
-		res = init_board(&board, argv[1]);
 	}
 	if (res == RESULT_OK) {
 		// print_board_complete(&board);
