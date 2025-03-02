@@ -20,12 +20,6 @@
               │                       │\n\
               ╰───────────────────────╯\n\
 "
-#define PIECE           "📍"
-#define INPUT_OFFSET    3
-#define PRT_ROW_LIMIT   10
-#define PRT_WIDTH_LIMIT 26
-#define PLAYER_OFFSET   5
-#define PRT_PIN_FILLER  3
 
 extern int g_stdin;
 
