@@ -29,6 +29,8 @@ int main(int argc, char *argv[])
 		res = USAGE_ERROR;
 	}
 	if (res == RESULT_OK) {
+		const char title[] = "ℹ️  Maximize the terminal for the best experience ℹ️ ";
+		print_boxed_specialstr(title, sizeof(title) - 1 - 10);
 		res = init_board(&board, argv[1]);
 	}
 	if (res == RESULT_OK) {
