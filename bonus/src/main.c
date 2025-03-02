@@ -13,7 +13,6 @@
 static Result game_loop(t_board *board, t_ncurses *env);
 static bool is_game_end(t_board *board);
 void update_history(t_win history, t_board *board, int offset);
-void update_board(t_win board_win, t_board *board);
 
 int g_stdin = STDIN_FILENO;
 
@@ -99,7 +98,7 @@ static void	turn(t_board *board, t_ncurses *env, Player *player)
 	}
 	board->cur_turn++;
 	*player *= -1;
-	update_board(env->board, board);
+	update_board(&env->board, board);
 }
 
 void update_history(t_win history, t_board *board, int offset) {
@@ -118,13 +117,13 @@ void update_history(t_win history, t_board *board, int offset) {
 	wrefresh(history.win);
 }
 
-void update_board(t_win board_win, t_board *board) {
-	werase(board_win.win);
-	box(board_win.win, 0, 0);
-	//something
-	(void)board;
-	wrefresh(board_win.win);
-}
+// void update_board(t_win *board_win, t_board *board) {
+// 	werase(board_win->win);
+// 	box(board_win->win, 0, 0);
+// 	//something
+// 	(void)board;
+// 	wrefresh(board_win->win);
+// }
 
 void update_input(t_win input, t_board *board) {
     const char *options[3] = {
@@ -167,7 +166,7 @@ void mouse(t_ncurses *env, t_board* board)
 			if (win == env->board.win && env->board.scroll_offset > 0)
 			{
 					env->board.scroll_offset--;
-					update_board(env->board, board);
+					update_board(&env->board, board);
 			}
 			/* else if (win == env->history.win)
 			{
@@ -183,7 +182,7 @@ void mouse(t_ncurses *env, t_board* board)
 			if (win == env->board.win && env->board.scroll_offset > 0)
 			{
 					env->board.scroll_offset++;
-					update_board(env->board, board);
+					update_board(&env->board, board);
 			}
 			/* else if (win == env->history.win)
 			{
