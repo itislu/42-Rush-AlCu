@@ -1,7 +1,6 @@
-#include "visuals.h"
-#include "ft_printf.h"
+#include "alcu.h"
 #include "libft.h"
-// here to shutup the blue squiggles...
+#include "visuals.h"
 #include <ncurses.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -16,7 +15,7 @@
 // 	wrefresh(env->board.win);
 // 	wrefresh(env->history.win);
 // 	wrefresh(env->input.win);
-	
+
 // }
 
 // void	handle_input_window(t_ncurses *env, int key)
@@ -29,19 +28,20 @@
 // 	// update print from the board
 // }
 
-void	update_board(t_win *n_board, t_board *board, int offset)
+void update_board(t_win *n_board, t_board *board, int offset)
 {
-	int	xoffset, yoffset = 1;
-	int char_limit;
-	int text_len;
+	int xoffset = 1;
+	int yoffset = 1;
+	int char_limit = 0;
+	int text_len = 0;
 	size_t i = 0;
-	t_row *row; //ft_snprintf
+	t_row *row = NULL;
 
-	(void)offset;
 	werase(n_board->win);
 	box(n_board->win, 0, 0);
-	if (board->cur_row - offset > n_board->size.y - 3) // from - 1
+	if (board->cur_row - offset > n_board->size.y - 3) { // from - 1
 		i = board->cur_row - offset - n_board->size.y + 3;
+	}
 	// while (i <= board->cur_row) {
 	while (i <= board->cur_row - offset) {
 		xoffset = 1;
@@ -50,11 +50,16 @@ void	update_board(t_win *n_board, t_board *board, int offset)
 		text_len = ft_min(ft_nbrlen_base(i, 10) + 1, 3); // digits row '#123'
 		text_len += ft_nbrlen_base(row->cur_amount, 10) + 4; // ' 123: '
 		char_limit -= ft_min(row->cur_amount, char_limit - text_len);
-			mvwprintw(n_board->win, yoffset, xoffset, "#%-2zu %i:",
-				i + 1, row->cur_amount);
-			xoffset = n_board->size.x - 2;
-			while (xoffset > char_limit)
-				mvwprintw(n_board->win, yoffset, xoffset--, "|");
+		mvwprintw(n_board->win,
+		          yoffset,
+		          xoffset,
+		          "#%-2zu %i:",
+		          i + 1,
+		          row->cur_amount);
+		xoffset = n_board->size.x - 2;
+		while (xoffset > char_limit) {
+			mvwprintw(n_board->win, yoffset, xoffset--, "|");
+		}
 		yoffset++;
 		i++;
 	}
