@@ -1,5 +1,5 @@
 #include "init.h"
-#include "board.h"
+#include "alcu.h"
 #include "get_next_line.h"
 #include "libft.h"
 #include <fcntl.h>
