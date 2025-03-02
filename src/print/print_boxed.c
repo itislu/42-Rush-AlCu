@@ -1,7 +1,12 @@
-#include "alcu.h"
 #include "ft_printf.h"
 #include "libft.h"
+#include "print.h"
 #include <stddef.h>
+
+void print_boxed(const char *str)
+{
+	print_boxed_specialstr(str, ft_strlen(str));
+}
 
 void print_boxed_specialstr(const char *str, size_t str_len)
 {
@@ -20,22 +25,4 @@ void print_boxed_specialstr(const char *str, size_t str_len)
 		ft_printf("─");
 	}
 	ft_printf("╯\n");
-}
-
-void print_boxed(const char *str)
-{
-	print_boxed_specialstr(str, ft_strlen(str));
-}
-
-void print_game_mode(Mode mode)
-{
-	const char *title = NULL;
-
-	if (mode == LAST_LOSES) {
-		title = "🚨 LAST PICK LOSES 🚨";
-	}
-	else {
-		title = "🏅 LAST PICK WINS 🏅";
-	}
-	print_boxed_specialstr(title, ft_strlen(title) - 4);
 }

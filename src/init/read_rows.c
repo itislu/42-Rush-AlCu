@@ -2,7 +2,8 @@
 #include "ft_printf.h"
 #include "get_next_line.h"
 #include "libft.h"
-#include "print_utils.h"
+#include "print.h"
+#include "prompt.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
