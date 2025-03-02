@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
 	Result res = RESULT_OK;
 	t_board board;
 	t_ncurses env;
-	ft_bzero(&env, sizeof(env));
 	ft_bzero(&board, sizeof(board));
+	ft_bzero(&env, sizeof(env));
 
 	if (argc != 2) {
 		res = USAGE_ERROR;

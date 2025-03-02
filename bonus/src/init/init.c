@@ -16,7 +16,6 @@ static Result allocate_picks(t_board *board);
 // If filename == NULL, read from stdin
 Result init_board(t_board *board, const char *filename)
 {
-	ft_bzero(board, sizeof(*board));
 	Result res = read_board(board, filename);
 
 	if (res == RESULT_OK) {
