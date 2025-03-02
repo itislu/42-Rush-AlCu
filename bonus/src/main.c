@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 		res = RESULT_OK;
 		break;
 	case SIZE_ERROR:
-		ft_dprintf(STDERR_FILENO, "\n\n\n\nMIN TERMINAL SIZE: %dx%d\n", MIN_TERMINAL_WIDTH, MIN_TERMINAL_HEIGTH);
+		ft_dprintf(STDERR_FILENO, "MIN TERMINAL SIZE: %dx%d\n", MIN_TERMINAL_WIDTH, MIN_TERMINAL_HEIGTH);
 		break;
 	}
 
