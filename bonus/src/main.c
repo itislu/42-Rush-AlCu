@@ -195,7 +195,8 @@ void mouse(t_ncurses *env, t_board* board)
 			} */
 		} else if (event.bstate & BUTTON5_PRESSED) //scrollup
 		{
-			if (win == env->board.win && env->board.scroll_offset > 0)
+			if (win == env->board.win && board->cur_row > env->board.size.y - 3
+				&& env->board.scroll_offset < board->cur_row - env->board.size.y + 3)
 			{
 					env->board.scroll_offset++;
 					update_board(&env->board, board, env->board.scroll_offset);
