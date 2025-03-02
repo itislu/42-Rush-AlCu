@@ -28,7 +28,8 @@ typedef enum Result {
 	USAGE_ERROR,
 	BOARD_ERROR,
 	INTERNAL_ERROR,
-	USER_EXIT
+	USER_EXIT,
+	SIZE_ERROR
 } Result;
 
 typedef enum Mode {

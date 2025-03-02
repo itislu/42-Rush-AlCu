@@ -6,6 +6,9 @@
 #include <locale.h> // Include this for setlocale
 #include "alcu.h"
 
+#define MIN_TERMINAL_HEIGTH_FOR_HISTORY 20
+#define MIN_TERMINAL_HEIGTH 10
+#define MIN_TERMINAL_WIDTH 30
 typedef struct s_size{
 	unsigned int	x;
 	unsigned int	y;
