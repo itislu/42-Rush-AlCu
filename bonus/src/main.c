@@ -99,7 +99,7 @@ static void	turn(t_board *board, t_ncurses *env, Player *player)
 	board->picks[board->cur_turn] = picks;
 
 	if (env->is_history) 
-		update_history(env->history, board, capped_sub(board->cur_turn, env->history.size.y));
+		update_history(env->history, board, capped_sub(board->cur_turn, env->history.size.y - 4));
 	if (cur_row->cur_amount == 0 && board->cur_row != 0) {
 		board->cur_row--;
 	}
@@ -112,12 +112,12 @@ void update_history(t_win history, t_board *board, int offset) {
 	werase(history.win);
 	box(history.win, 0, 0);
 	mvwprintw(history.win, 1, 1, "History:");
+	int y_offset = 2;
 
-	for (unsigned int i = 0; i <= MIN(history.size.y, board->cur_turn); i++) {
-		if (i + 2 < history.size.y - 1)
-			mvwprintw(history.win, i + 2, 1, "%s picked %d", 
-				(offset + i) % 2 == 0 ? "AI" : "You",
-				board->picks[offset + i]); // offset does NOT work with scrolling
+	for (unsigned int i = offset; i <= board->cur_turn; i++) {
+		mvwprintw(history.win, y_offset++, 1, "%s picked %d", 
+			i % 2 == 0 ? "AI" : "You",
+			board->picks[i]); // offset does NOT work with scrolling
 				// either fix the capped_sub below or remove scrolling
 			//capped_sub(board->cur_turn, history.size.y  - i)]);
 	}
