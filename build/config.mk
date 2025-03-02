@@ -65,11 +65,13 @@ SRC				:=	$(shell find $(SRC_DIR) -type f -name "*$(SRC_EXTENSION)" -printf "%P\
 #	Valgrind
 
 VALGRIND		:=	$(shell which valgrind)
+SUPPRESSIONS	:=	$(REPO_ROOT)/ncurses.supp
 
 VALGRINDFLAGS	=	--errors-for-leak-kinds=all \
 					--leak-check=full \
 					--show-error-list=yes \
 					--show-leak-kinds=all \
+					--suppressions=$(SUPPRESSIONS) \
 					--trace-children=yes \
 					--track-origins=yes
 
