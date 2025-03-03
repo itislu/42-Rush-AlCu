@@ -113,7 +113,8 @@ static void turn(t_board *board, t_ncurses *env, Player *player)
 	}
 	board->cur_turn++;
 	*player *= -1;
-	update_board(&env->board, board, 0);
+	env->board.scroll_offset = 0;
+	update_board(&env->board, board);
 }
 
 void update_history(t_win history, t_board *board, int offset)
@@ -210,7 +211,7 @@ void mouse(t_ncurses *env, t_board *board)
 		{
 			if (win == env->board.win && env->board.scroll_offset > 0) {
 				env->board.scroll_offset--;
-				update_board(&env->board, board, env->board.scroll_offset);
+				update_board(&env->board, board);
 			}
 			else if (win == env->history.win && env->is_history
 			         && env->history.scroll_offset > 1) {
