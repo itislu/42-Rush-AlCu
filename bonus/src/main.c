@@ -275,7 +275,9 @@ static Result game_loop(t_board *board, t_ncurses *env)
 			update_input(env->input, board);
 		}
 		else if (ch == 'q' || ch == ESCAPE) {
-			res = USER_EXIT;
+			if (!is_game_end(board)) {
+				res = USER_EXIT;
+			}
 			break;
 		}
 		else if (ch == KEY_UP && !is_game_end(board)) {
