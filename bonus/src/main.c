@@ -10,12 +10,6 @@
 #include <sys/param.h>
 #include <unistd.h>
 
-static Result game_loop(t_board *board, t_ncurses *env);
-static bool is_game_end(t_board *board);
-void update_history(t_win *history, t_board *board);
-Result game_mode_selection(t_ncurses *env, t_board *board);
-void scroll_handler(t_board *board, t_ncurses *env, int ch);
-
 int g_stdin = STDIN_FILENO;
 
 int main(int argc, char *argv[])
@@ -89,7 +83,7 @@ size_t capped_sub(size_t a, size_t b)
 	return a > b ? a - b : 0;
 }
 
-static void turn(t_board *board, t_ncurses *env, Player *player)
+void turn(t_board *board, t_ncurses *env, Player *player)
 {
 	if (is_game_end(board)) {
 		return;
@@ -160,7 +154,7 @@ void update_history(t_win *history, t_board *board)
 // 	wrefresh(board_win->win);
 // }
 
-void print_res(t_win input, t_board *board)
+void print_res(t_win *input, t_board *board)
 {
 	Player winner;
 	if ((board->game_mode == LAST_WINS && board->rows[0]->last_pick == PLAYER)
@@ -172,15 +166,15 @@ void print_res(t_win input, t_board *board)
 		winner = AI;
 	}
 
-	werase(input.win);
-	box(input.win, 0, 0);
+	werase(input->win);
+	box(input->win, 0, 0);
 	// if mode is LAST_LOSES, the last player to pick wins
-	mvwprintw(input.win,
+	mvwprintw(input->win,
 	          1,
 	          1,
 	          "%s",
 	          winner == PLAYER ? "Congrats, you won!" : "You lost...");
-	wrefresh(input.win);
+	wrefresh(input->win);
 }
 
 Result game_mode_selection(t_ncurses *env, t_board *board)
@@ -219,7 +213,7 @@ Result game_mode_selection(t_ncurses *env, t_board *board)
 	return res;
 }
 
-void update_input(t_win input, t_board *board)
+void update_input(t_win *input, t_board *board)
 {
 	if (board->game_mode == 0) {
 		return;
@@ -231,18 +225,18 @@ void update_input(t_win input, t_board *board)
 
 	const char *options[3] = {"1 pick", "2 picks", "3 picks"};
 
-	werase(input.win);
-	box(input.win, 0, 0);
-	mvwprintw(input.win, 1, 1, "Select how many picks you want to remove:");
+	werase(input->win);
+	box(input->win, 0, 0);
+	mvwprintw(input->win, 1, 1, "Select how many picks you want to remove:");
 
 	for (unsigned int i = 0; i < board->num_options; i++) {
-		if (i == input.scroll_offset) {
-			wattron(input.win, A_REVERSE);
+		if (i == input->scroll_offset) {
+			wattron(input->win, A_REVERSE);
 		}
-		mvwprintw(input.win, 3 + i, 2, "%s", options[i]);
-		wattroff(input.win, A_REVERSE);
+		mvwprintw(input->win, 3 + i, 2, "%s", options[i]);
+		wattroff(input->win, A_REVERSE);
 	}
-	wrefresh(input.win);
+	wrefresh(input->win);
 }
 
 WINDOW *detect_window(t_ncurses *env, unsigned int y, unsigned int x)
@@ -282,7 +276,7 @@ void mouse(t_ncurses *env, t_board *board)
 				env->input.scroll_offset =
 				    (env->input.scroll_offset + 1 + board->num_options)
 				    % board->num_options;
-				update_input(env->input, board);
+				update_input(&env->input, board);
 			}
 		}
 		else if (event.bstate & BUTTON4_PRESSED) // scrollup
@@ -306,7 +300,7 @@ void mouse(t_ncurses *env, t_board *board)
 				env->input.scroll_offset =
 				    (env->input.scroll_offset - 1 + board->num_options)
 				    % board->num_options;
-				update_input(env->input, board);
+				update_input(&env->input, board);
 			}
 		}
 	}
@@ -318,19 +312,19 @@ void scroll_handler(t_board *board, t_ncurses *env, int ch)
 		env->input.scroll_offset =
 		    (env->input.scroll_offset - 1 + board->num_options)
 		    % board->num_options;
-		update_input(env->input, board);
+		update_input(&env->input, board);
 	}
 	else if (ch == KEY_DOWN && !is_game_end(board)) {
 		env->input.scroll_offset =
 		    (env->input.scroll_offset + 1) % board->num_options;
-		update_input(env->input, board);
+		update_input(&env->input, board);
 	}
 	else if (ch == KEY_MOUSE) {
 		mouse(env, board);
 	}
 }
 
-static Result game_loop(t_board *board, t_ncurses *env)
+Result game_loop(t_board *board, t_ncurses *env)
 {
 	Result res = RESULT_OK;
 	Player player = AI;
@@ -338,7 +332,7 @@ static Result game_loop(t_board *board, t_ncurses *env)
 	env->input.scroll_offset = 0;
 	turn(board, env, &player);
 	board->num_options = MIN(board->rows[board->cur_row]->cur_amount, 3);
-	update_input(env->input, board);
+	update_input(&env->input, board);
 	while (true) {
 		int ch = wgetch(env->input.win);
 
@@ -349,7 +343,7 @@ static Result game_loop(t_board *board, t_ncurses *env)
 			board->num_options =
 			    MIN(board->rows[board->cur_row]->cur_amount, 3);
 			env->input.scroll_offset = 0;
-			update_input(env->input, board);
+			update_input(&env->input, board);
 		}
 		else if (ch == 'q' || ch == ESCAPE) {
 			if (!is_game_end(board)) {
@@ -376,7 +370,7 @@ static Result game_loop(t_board *board, t_ncurses *env)
 	return res;
 }
 
-static bool is_game_end(t_board *board)
+bool is_game_end(t_board *board)
 {
 	return board->cur_row == 0 && board->rows[board->cur_row]->cur_amount == 0;
 }
