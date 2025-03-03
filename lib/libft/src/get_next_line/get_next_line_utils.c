@@ -6,12 +6,13 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 12:27:22 by ldulling          #+#    #+#             */
-/*   Updated: 2025/02/13 03:17:08 by ldulling         ###   ########.fr       */
+/*   Updated: 2025/03/03 00:53:43 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "_get_next_line.h"
 #include "get_next_line.h"
+#include <limits.h>
 #include <stdlib.h>
 #include <sys/types.h>
 
@@ -71,7 +72,7 @@ void	free_list(t_buf **head)
 
 bool	initial_check(int fd, t_buf **head)
 {
-	if (fd < 0 || fd >= FD_MAX || BUFFER_SIZE < 1)
+	if (fd < 0 || fd >= FD_MAX || BUFFER_SIZE < 1 || BUFFER_SIZE > SSIZE_MAX)
 		return (false);
 	if (*head == NULL)
 	{
