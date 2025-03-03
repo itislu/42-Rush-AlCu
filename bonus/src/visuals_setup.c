@@ -1,6 +1,5 @@
 #include "alcu.h"
 #include "visuals.h"
-// here to shutup the blue squiggles...
 #include <ncurses.h>
 #include <stdlib.h>
 
@@ -63,8 +62,6 @@ static Result init_windows(t_ncurses *env)
 {
 	getmaxyx(stdscr, env->term.y, env->term.x);
 	if (env->term.y < MIN_TERMINAL_HEIGTH || env->term.x < MIN_TERMINAL_WIDTH) {
-		// ft_dprintf(2, "MIN TERMINAL SIZE: %ux%u\n", MIN_TERMINAL_WIDTH,
-		// MIN_TERMINAL_HEIGTH);
 		return (SIZE_ERROR);
 	}
 	setup_windows_sizes(env);

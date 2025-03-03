@@ -43,7 +43,6 @@ void turn(t_board *board, t_ncurses *env, Player *player)
 	update_board(&env->board, board);
 }
 
-
 Result game_loop(t_board *board, t_ncurses *env)
 {
 	Result res = RESULT_OK;

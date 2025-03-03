@@ -2,10 +2,10 @@
 #include "libft.h"
 #include "visuals.h"
 #include <ncurses.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <stddef.h>
+#include <stdlib.h>
 #include <sys/param.h>
+#include <unistd.h>
 
 void update_history(t_win *history, t_board *board)
 {
@@ -76,7 +76,8 @@ void update_board(t_win *n_board, t_board *board)
 
 	werase(n_board->win);
 	box(n_board->win, 0, 0);
-	if (board->cur_row - n_board->scroll_offset > n_board->size.y - 3) { // from - 1
+	if (board->cur_row - n_board->scroll_offset
+	    > n_board->size.y - 3) { // from - 1
 		i = board->cur_row - n_board->scroll_offset - n_board->size.y + 3;
 	}
 	// while (i <= board->cur_row) {
@@ -86,16 +87,20 @@ void update_board(t_win *n_board, t_board *board)
 		// get max character that find in the windows
 		max_char_x = n_board->size.x - 2; // -1 for borders R, -1 for index 0
 		// calculate length of leading text
-		text_len = ft_max(ft_nbrlen_base(i, 10) + 1, 3); // '#123' min:'#1 '
+		text_len = ft_max(ft_nbrlen_base(i, 10) + 1, 3);     // '#123' min:'#1 '
 		text_len += ft_nbrlen_base(row->cur_amount, 10) + 4; // '  123: '
 		// calculate  maximal available space for | characters
 		stop_x = max_char_x - ft_min(row->cur_amount, max_char_x - text_len);
 		// print leading text
-		mvwprintw(n_board->win, yoffset, xoffset,
-			"#%-2zu  %u:", i + 1, row->cur_amount);
+		mvwprintw(n_board->win,
+		          yoffset,
+		          xoffset,
+		          "#%-2zu  %u:",
+		          i + 1,
+		          row->cur_amount);
 		// adjustment for too many pieces in row
 		if (row->cur_amount > max_char_x - text_len) {
-			stop_x += 9; // offset for number of filler characters	
+			stop_x += 9; // offset for number of filler characters
 			mvwprintw(n_board->win, yoffset, xoffset + text_len, "|||| ... ");
 		}
 		// begin '|' print at max possible X coordinate

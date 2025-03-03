@@ -1,6 +1,6 @@
+#include "init.h"
 #include "ai.h"
 #include "alcu.h"
-#include "init.h"
 #include "print.h"
 #include "visuals.h"
 #include <ncurses.h>
@@ -12,12 +12,11 @@ Result init_bonus(t_board *board, t_ncurses *env, char *filename)
 {
 	Result res = RESULT_OK;
 
-	const char title[] =
-		"ℹ️  Maximize the terminal for the best experience ℹ️ ";
+	const char title[] = "ℹ️  Maximize the terminal for the best experience ℹ️ ";
 	print_boxed_specialstr(title, sizeof(title) - 1 - 10);
-	
+
 	res = init_board(board, filename);
-	
+
 	if (res == RESULT_OK) {
 		res = setup_ncurses(env);
 	}

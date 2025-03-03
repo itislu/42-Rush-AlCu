@@ -1,4 +1,3 @@
-#include "alcu.h"
 #include "visuals.h"
 #include <ncurses.h>
 #include <stddef.h>
@@ -9,7 +8,6 @@ size_t capped_sub(size_t a, size_t b)
 {
 	return a > b ? a - b : 0;
 }
-
 
 WINDOW *detect_window(t_ncurses *env, unsigned int y, unsigned int x)
 {
