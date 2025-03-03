@@ -6,14 +6,12 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 15:06:25 by ldulling          #+#    #+#             */
-/*   Updated: 2025/02/13 02:39:50 by ldulling         ###   ########.fr       */
+/*   Updated: 2025/03/03 00:54:30 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "_get_next_line.h"
-#include <bits/posix1_lim.h>
-#include <limits.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -85,7 +83,7 @@ static bool	read_until_endofline(t_buf **head, int fd)
 		cur->bytes_unsaved = read(fd, cur->buf, BUFFER_SIZE);
 		if (cur->bytes_unsaved == -1 || (*head)->bytes_unsaved == 0)
 			return (free_list(head), false);
-		if (BUFFER_SIZE <= SSIZE_MAX && cur->bytes_unsaved != BUFFER_SIZE)
+		if (cur->bytes_unsaved != BUFFER_SIZE)
 			cur->endoffile = true;
 		cur->buf[cur->bytes_unsaved] = '\0';
 		cur->line_end = find_endofline(cur);
