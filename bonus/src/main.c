@@ -289,15 +289,15 @@ static Result game_loop(t_board *board, t_ncurses *env)
 		else if (ch == KEY_MOUSE) {
 			mouse(env, board);
 		}
-		else if (ch == '1') { // numpad 1
+		else if (ch == '1' && !is_game_end(board) && board->num_options >= 1) {
 			env->input.scroll_offset = 0;
 			goto pick;
 		}
-		else if (ch == '2') { // numpad 1
+		else if (ch == '2' && !is_game_end(board) && board->num_options >= 2) {
 			env->input.scroll_offset = 1;
 			goto pick;
 		}
-		else if (ch == '3') { // numpad 1
+		else if (ch == '3' && !is_game_end(board) && board->num_options == 3) {
 
 			env->input.scroll_offset = 2;
 			goto pick;
