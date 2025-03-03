@@ -13,6 +13,8 @@
 static Result game_loop(t_board *board, t_ncurses *env);
 static bool is_game_end(t_board *board);
 void update_history(t_win *history, t_board *board);
+Result game_mode_selection(t_ncurses *env, t_board *board);
+void scroll_handler(t_board *board, t_ncurses *env, int ch);
 
 int g_stdin = STDIN_FILENO;
 
@@ -41,7 +43,9 @@ int main(int argc, char *argv[])
 		// print_board_complete(&board);
 		// ft_printf("\n");
 		// res = prompt_game_mode(&board.game_mode); // TODO Popup
-		board.game_mode = LAST_LOSES;
+		update_board(&env.board, &board);
+		update_history(&env.history, &board);
+		res = game_mode_selection(&env, &board);
 	}
 	if (res == RESULT_OK) {
 		calc_finishers(&board);
@@ -156,24 +160,82 @@ void update_history(t_win *history, t_board *board)
 // 	wrefresh(board_win->win);
 // }
 
+void print_res(t_win input, t_board *board)
+{
+	Player winner;
+	if ((board->game_mode == LAST_WINS && board->rows[0]->last_pick == PLAYER)
+	    || (board->game_mode == LAST_LOSES && board->rows[0]->last_pick == AI)){
+		winner = PLAYER;
+	} else {
+		winner = AI;
+	}
+
+	werase(input.win);
+	box(input.win, 0, 0);
+	// if mode is LAST_LOSES, the last player to pick wins
+	mvwprintw(input.win,
+				1,
+				1,
+				"%s",
+				winner == PLAYER ? "Congrats, you won!" : "You lost...");
+	wrefresh(input.win);
+}
+
+Result game_mode_selection(t_ncurses *env, t_board *board)
+{
+	Result res = RESULT_OK;
+	board->game_mode = 0;
+	board->num_options = 2;
+
+	const char *options[2] = {
+		"Last to pick loses",
+		"Last to pick wins"
+	};
+
+	env->input.scroll_offset = 0;
+	int ch = 0;
+	while (ch != '\n')
+	{
+		werase(env->input.win);
+		box(env->input.win, 0, 0);
+		mvwprintw(env->input.win, 1, 1, "Select game mode:");
+
+		for (unsigned int i = 0; i < 2; i++) {
+			if (i == env->input.scroll_offset) {
+				wattron(env->input.win, A_REVERSE);
+			}
+			mvwprintw(env->input.win, 3 + i, 2, "%s", options[i]);
+			wattroff(env->input.win, A_REVERSE);
+		}
+		wrefresh(env->input.win);
+		ch = wgetch(env->input.win);
+		if (ch == 'q' || ch == ESCAPE) {
+			res = USER_EXIT;
+			return res;
+		}
+		else {
+			scroll_handler(board, env, ch);
+		}
+	}
+	board->game_mode = env->input.scroll_offset == 0 ? LAST_LOSES : LAST_WINS;
+	return res;
+}
+
 void update_input(t_win input, t_board *board)
 {
-	if (is_game_end(board)) {
-		werase(input.win);
-		box(input.win, 0, 0);
-		// if mode is LAST_LOSES, the last player to pick wins
-		mvwprintw(input.win,
-		          1,
-		          1,
-		          "%s won!",
-		          board->rows[board->cur_row]->last_pick == AI ? "You" : "AI");
-		wrefresh(input.win);
+
+	if (board->game_mode == 0) {
 		return;
 	}
+	if (is_game_end(board)) {
+		print_res(input, board);
+		return;
+	}
+
 	const char *options[3] = {"1 pick", "2 picks", "3 picks"};
 
-	werase(input.win);    // could may be removed
-	box(input.win, 0, 0); // same
+	werase(input.win);
+	box(input.win, 0, 0);
 	mvwprintw(input.win, 1, 1, "Select how many picks you want to remove:");
 
 	for (unsigned int i = 0; i < board->num_options; i++) {
@@ -253,6 +315,19 @@ void mouse(t_ncurses *env, t_board *board)
 	}
 }
 
+void scroll_handler(t_board *board, t_ncurses *env, int ch)
+{
+	if (ch == KEY_UP && !is_game_end(board)) {
+		env->input.scroll_offset = (env->input.scroll_offset - 1 + board->num_options) % board->num_options;
+		update_input(env->input, board);
+	} else if (ch == KEY_DOWN && !is_game_end(board)) {
+		env->input.scroll_offset = (env->input.scroll_offset + 1) % board->num_options;
+		update_input(env->input, board);
+	} else if (ch == KEY_MOUSE) {
+		mouse(env, board);
+	}
+}
+
 static Result game_loop(t_board *board, t_ncurses *env)
 {
 	Result res = RESULT_OK;
@@ -270,7 +345,7 @@ static Result game_loop(t_board *board, t_ncurses *env)
 			turn(board, env, &player);
 			turn(board, env, &player);
 			board->num_options =
-			    MIN(board->rows[board->cur_row]->cur_amount, 3);
+				MIN(board->rows[board->cur_row]->cur_amount, 3);
 			env->input.scroll_offset = 0;
 			update_input(env->input, board);
 		}
@@ -279,22 +354,7 @@ static Result game_loop(t_board *board, t_ncurses *env)
 				res = USER_EXIT;
 			}
 			break;
-		}
-		else if (ch == KEY_UP && !is_game_end(board)) {
-			env->input.scroll_offset =
-			    (env->input.scroll_offset - 1 + board->num_options)
-			    % board->num_options;
-			update_input(env->input, board);
-		}
-		else if (ch == KEY_DOWN && !is_game_end(board)) {
-			env->input.scroll_offset =
-			    (env->input.scroll_offset + 1) % board->num_options;
-			update_input(env->input, board);
-		}
-		else if (ch == KEY_MOUSE) {
-			mouse(env, board);
-		}
-		else if (ch == '1' && !is_game_end(board) && board->num_options >= 1) {
+		} else if (ch == '1' && !is_game_end(board) && board->num_options >= 1) {
 			env->input.scroll_offset = 0;
 			goto pick;
 		}
@@ -305,6 +365,8 @@ static Result game_loop(t_board *board, t_ncurses *env)
 		else if (ch == '3' && !is_game_end(board) && board->num_options == 3) {
 			env->input.scroll_offset = 2;
 			goto pick;
+		} else {
+			scroll_handler(board, env, ch);
 		}
 	}
 	return res;
