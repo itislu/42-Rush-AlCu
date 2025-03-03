@@ -85,6 +85,9 @@ Result game_loop(t_board *board, t_ncurses *env)
 		}
 		else {
 			scroll_handler(board, env, ch);
+			res = resize_window(ch, env, board);
+			if (res != RESULT_OK)
+				return (res);
 		}
 	}
 	return res;

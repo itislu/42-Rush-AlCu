@@ -52,3 +52,4 @@ Result	game_mode_selection(t_ncurses *env, t_board *board);
 //event handlers
 void	scroll_handler(t_board *board, t_ncurses *env, int ch);
 void	mouse(t_ncurses *env, t_board *board);
+Result	resize_window(int ch, t_ncurses *env, t_board *board);
