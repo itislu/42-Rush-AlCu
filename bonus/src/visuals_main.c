@@ -15,7 +15,7 @@
 // 	// update print from the board
 // }
 
-void update_board(t_win *n_board, t_board *board, int offset)
+void update_board(t_win *n_board, t_board *board)
 {
 	unsigned int xoffset = 1;
 	unsigned int yoffset = 1;
@@ -27,11 +27,11 @@ void update_board(t_win *n_board, t_board *board, int offset)
 
 	werase(n_board->win);
 	box(n_board->win, 0, 0);
-	if (board->cur_row - offset > n_board->size.y - 3) { // from - 1
-		i = board->cur_row - offset - n_board->size.y + 3;
+	if (board->cur_row - n_board->scroll_offset > n_board->size.y - 3) { // from - 1
+		i = board->cur_row - n_board->scroll_offset - n_board->size.y + 3;
 	}
 	// while (i <= board->cur_row) {
-	while (i <= board->cur_row - offset) {
+	while (i <= board->cur_row - n_board->scroll_offset) {
 		xoffset = 1;
 		row = board->rows[i];
 		// get max character that find in the windows
