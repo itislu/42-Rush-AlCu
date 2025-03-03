@@ -1,19 +1,16 @@
 #include "alcu.h"
 #include "visuals.h"
-// here to shutup the blue squiggles...
 #include <ncurses.h>
-#include <stdlib.h>
 
 static Result init_windows(t_ncurses *env);
 
 static void init_ncurses(void)
 {
 	initscr();
-	noecho();
-	cbreak();
-	curs_set(0); // hide cursor
-	// keypad(stdscr, TRUE); // we use windows, don't need that, this is for the
-	// terminal
+	// init needs a success check - no return values here are checked
+	noecho(); // user typed input will not be displayed on screen
+	cbreak(); // disables line buffering; typed characters immediately available
+	curs_set(0); // hide CLI cursor
 	mousemask(ALL_MOUSE_EVENTS, NULL);
 	ESCDELAY = 25;
 }
@@ -23,7 +20,7 @@ static void setup_windows_sizes(t_ncurses *env)
 	env->board.size.x =
 	    env->term.x * 2 / 3 - 1; // -1 for the border not to overlap
 	env->board.size.y =
-	    env->term.y - 1; // this might be the missing 1 for the +3 offset
+	    env->term.y - 1;
 
 	if (env->term.y > MIN_TERMINAL_HEIGTH_FOR_HISTORY) {
 		env->history.size.x = env->term.x / 3;
@@ -63,8 +60,6 @@ static Result init_windows(t_ncurses *env)
 {
 	getmaxyx(stdscr, env->term.y, env->term.x);
 	if (env->term.y < MIN_TERMINAL_HEIGTH || env->term.x < MIN_TERMINAL_WIDTH) {
-		// ft_dprintf(2, "MIN TERMINAL SIZE: %ux%u\n", MIN_TERMINAL_WIDTH,
-		// MIN_TERMINAL_HEIGTH);
 		return (SIZE_ERROR);
 	}
 	setup_windows_sizes(env);
@@ -116,7 +111,7 @@ Result setup_ncurses(t_ncurses *env)
 {
 	Result res = RESULT_OK;
 
-	init_ncurses();
+	init_ncurses(); // this probably needs error check
 	res = init_windows(env);
 	if (res != RESULT_OK) {
 		cleanup_ncruses(env);
