@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 		break;
 	case SIZE_ERROR:
 		ft_dprintf(STDERR_FILENO,
-		           "MIN TERMINAL SIZE: %dx%d\n",
+		           "MIN TERMINAL SIZE: %ux%u\n",
 		           MIN_TERMINAL_WIDTH,
 		           MIN_TERMINAL_HEIGTH);
 		break;
@@ -141,7 +141,7 @@ void update_history(t_win *history, t_board *board)
 		mvwprintw(history->win,
 		          y_offset++,
 		          1,
-		          "#%i %s picked %d",
+		          "#%u %s picked %u",
 		          i + 1,
 		          i % 2 == 0 ? "AI" : "You",
 		          board->picks[i]); // offset does NOT work with scrolling

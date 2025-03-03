@@ -43,7 +43,7 @@ void update_board(t_win *n_board, t_board *board)
 		stop_x = max_char_x - ft_min(row->cur_amount, max_char_x - text_len);
 		// print leading text
 		mvwprintw(n_board->win, yoffset, xoffset,
-			"#%-2zu  %i:", i + 1, row->cur_amount);
+			"#%-2zu  %u:", i + 1, row->cur_amount);
 		// adjustment for too many pieces in row
 		if (row->cur_amount > max_char_x - text_len) {
 			stop_x += 9; // offset for number of filler characters	
