@@ -12,7 +12,7 @@
 
 static Result game_loop(t_board *board, t_ncurses *env);
 static bool is_game_end(t_board *board);
-void update_history(t_win history, t_board *board, int offset);
+void update_history(t_win *history, t_board *board);
 
 int g_stdin = STDIN_FILENO;
 
@@ -105,8 +105,8 @@ static void turn(t_board *board, t_ncurses *env, Player *player)
 	board->picks[board->cur_turn] = picks;
 
 	if (env->is_history) {
-		update_history(env->history, board, 0);
 		env->history.scroll_offset = 0;
+		update_history(&env->history, board);
 	}
 	if (cur_row->cur_amount == 0 && board->cur_row != 0) {
 		board->cur_row--;
@@ -117,23 +117,24 @@ static void turn(t_board *board, t_ncurses *env, Player *player)
 	update_board(&env->board, board);
 }
 
-void update_history(t_win history, t_board *board, int offset)
+void update_history(t_win *history, t_board *board)
 {
 	int y_offset = 2;
 	unsigned int start = 0;
 
-	werase(history.win);
-	box(history.win, 0, 0);
-	mvwprintw(history.win, 1, 1, "History:");
+	werase(history->win);
+	box(history->win, 0, 0);
+	mvwprintw(history->win, 1, 1, "History:");
 	// offset *= -1;
-	// offset += capped_sub(board->cur_turn, history.size.y - 4);
-	// start = capped_sub(board->cur_turn, history.size.y - 4) - offset;
-	if (board->cur_turn - offset > history.size.y - 4) {
-		start = board->cur_turn - offset - history.size.y + 4;
+	// offset += capped_sub(board->cur_turn, history->size.y - 4);
+	// start = capped_sub(board->cur_turn, history->size.y - 4) - offset;
+	if (board->cur_turn - history->scroll_offset > history->size.y - 4) {
+		start = board->cur_turn - history->scroll_offset - history->size.y + 4;
 	}
-	for (unsigned int i = start; i <= board->cur_turn - offset; i++) {
+	for (unsigned int i = start; i <= board->cur_turn - history->scroll_offset;
+	     i++) {
 		// for (unsigned int i = offset; i <= board->cur_turn; i++) {
-		mvwprintw(history.win,
+		mvwprintw(history->win,
 		          y_offset++,
 		          1,
 		          "#%i %s picked %d",
@@ -142,9 +143,9 @@ void update_history(t_win history, t_board *board, int offset)
 		          board->picks[i]); // offset does NOT work with scrolling
 		                            // either fix the capped_sub below or remove
 		                            // scrolling
-		// capped_sub(board->cur_turn, history.size.y  - i)]);
+		// capped_sub(board->cur_turn, history->size.y  - i)]);
 	}
-	wrefresh(history.win);
+	wrefresh(history->win);
 }
 
 // void update_board(t_win *board_win, t_board *board) {
@@ -216,7 +217,7 @@ void mouse(t_ncurses *env, t_board *board)
 			else if (win == env->history.win && env->is_history
 			         && env->history.scroll_offset > 1) {
 				env->history.scroll_offset--;
-				update_history(env->history, board, env->history.scroll_offset);
+				update_history(&env->history, board);
 			}
 			else if (win == env->input.win && !is_game_end(board)) {
 				env->input.scroll_offset =
@@ -231,7 +232,7 @@ void mouse(t_ncurses *env, t_board *board)
 			    && env->board.scroll_offset
 			           < board->cur_row - env->board.size.y + 3) {
 				env->board.scroll_offset++;
-				update_board(&env->board, board, env->board.scroll_offset);
+				update_board(&env->board, board);
 			}
 			else if (win == env->history.win && env->is_history
 			         && board->cur_turn > env->history.size.y - 4
@@ -240,7 +241,7 @@ void mouse(t_ncurses *env, t_board *board)
 			// env->history.size.y - 4 // is the limit to print the last row
 			{
 				env->history.scroll_offset++;
-				update_history(env->history, board, env->history.scroll_offset);
+				update_history(&env->history, board);
 			}
 			else if (win == env->input.win && !is_game_end(board)) {
 				env->input.scroll_offset =
