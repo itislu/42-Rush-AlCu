@@ -24,7 +24,7 @@ void print_board_gameloop(t_board *board, unsigned int pieces)
 	if (!init_done) {
 		row_prev_turn = board->cur_row;
 		print_board_complete(board);
-		ft_printf("\nAI removed %i%s\n\n", pieces, PRT_PIECE);
+		ft_printf("\nAI removed %u%s\n\n", pieces, PRT_PIECE);
 		init_done = true;
 		return;
 	}
@@ -48,7 +48,7 @@ void print_board_gameloop(t_board *board, unsigned int pieces)
 		print_board_complete(board);
 	}
 	if (cur_player == AI) {
-		ft_printf("\nYou removed %i%s :: AI removed %i%s\n\n",
+		ft_printf("\nYou removed %u%s :: AI removed %u%s\n\n",
 		          player_pieces,
 		          PRT_PIECE,
 		          pieces,
@@ -56,7 +56,7 @@ void print_board_gameloop(t_board *board, unsigned int pieces)
 	}
 	// adjustment for last player move
 	else if (board->cur_row == 0 && board->rows[0]->cur_amount == 0) {
-		ft_printf("\nYou removed %i%s\n\n", player_pieces, PRT_PIECE);
+		ft_printf("\nYou removed %u%s\n\n", player_pieces, PRT_PIECE);
 	}
 }
 
@@ -82,7 +82,7 @@ static void print_board_row(t_board *board, size_t row)
 		for (int i = 0; i < PRT_PIN_FILLER; i++) {
 			ft_printf("%s", PRT_PIECE);
 		}
-		ft_printf(" ...%5i%s ... ", pieces, PRT_PIECE);
+		ft_printf(" ...%5u%s ... ", pieces, PRT_PIECE);
 		for (int i = 0; i < PRT_PIN_FILLER; i++) {
 			ft_printf("%s", PRT_PIECE);
 		}
@@ -92,7 +92,7 @@ static void print_board_row(t_board *board, size_t row)
 		ft_printf(" ");
 	}
 	ft_printf(
-	    "    #%-3i %5i%s\n", row + 1, board->rows[row]->cur_amount, PRT_PIECE);
+	    "    #%-3u %5u%s\n", row + 1, board->rows[row]->cur_amount, PRT_PIECE);
 }
 
 void print_board_complete(t_board *board)
@@ -107,7 +107,7 @@ void print_board_complete(t_board *board)
 		while (width--) {
 			ft_printf(" ");
 		}
-		ft_printf("... %3i more heaps above ...\n", row);
+		ft_printf("... %3u more heaps above ...\n", row);
 	}
 	while (row < board->cur_row + 1) {
 		print_board_row(board, row++);
