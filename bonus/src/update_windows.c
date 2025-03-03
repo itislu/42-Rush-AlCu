@@ -16,8 +16,9 @@ void update_history(t_win *history, t_board *board)
 	box(history->win, 0, 0);
 	mvwprintw(history->win, 1, 1, "History:");
 	// offset *= -1;
-	// offset += capped_sub(board->cur_turn, history->size.y - 4);
-	// start = capped_sub(board->cur_turn, history->size.y - 4) - offset;
+	// offset += ft_saturating_sub_u(board->cur_turn, history->size.y - 4);
+	// start = ft_saturating_sub_u(board->cur_turn, history->size.y - 4) -
+	// offset;
 	if (board->cur_turn - history->scroll_offset > history->size.y - 4) {
 		start = board->cur_turn - history->scroll_offset - history->size.y + 4;
 	}
@@ -31,9 +32,9 @@ void update_history(t_win *history, t_board *board)
 		          i + 1,
 		          i % 2 == 0 ? "AI" : "You",
 		          board->picks[i]); // offset does NOT work with scrolling
-		                            // either fix the capped_sub below or remove
-		                            // scrolling
-		// capped_sub(board->cur_turn, history->size.y  - i)]);
+		                            // either fix the ft_saturating_sub_u below
+		                            // or remove scrolling
+		// ft_saturating_sub_u(board->cur_turn, history->size.y  - i)]);
 	}
 	wrefresh(history->win);
 }

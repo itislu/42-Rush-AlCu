@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 13:33:38 by ldulling          #+#    #+#              #
-#    Updated: 2025/03/01 15:23:48 by ldulling         ###   ########.fr        #
+#    Updated: 2025/03/03 22:32:19 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -149,6 +149,7 @@ SRC		+=	$(addprefix $(DIR), \
 			ft_nbrlen_base.c \
 			ft_nbrlen_base_u.c \
 			ft_round_down_even.c \
+			ft_saturating_sub_u.c \
 )
 
 # Put:

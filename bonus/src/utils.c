@@ -1,8 +1,5 @@
 #include "visuals.h"
 #include <ncurses.h>
-#include <stddef.h>
-#include <sys/param.h>
-#include <unistd.h>
 
 size_t capped_sub(size_t a, size_t b)
 {
