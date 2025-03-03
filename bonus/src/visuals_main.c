@@ -54,7 +54,7 @@ void update_board(t_win *n_board, t_board *board, int offset)
 		// while (xoffset > stop_x) {
 		// alternative approach from left to right
 		xoffset += stop_x;
-		while (xoffset < max_char_x) {
+		while (xoffset <= max_char_x) {
 			mvwprintw(n_board->win, yoffset, xoffset++, "|");
 		}
 		yoffset++;
