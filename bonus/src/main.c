@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
 		calc_finishers(&board);
 		res = game_loop(&board, &env);
 	}
+	cleanup_ncruses(&env);
 
 	switch (res) {
 	case RESULT_OK:
@@ -75,7 +76,6 @@ int main(int argc, char *argv[])
 		break;
 	}
 
-	cleanup_ncruses(&env);
 	free_board(&board);
 	return res;
 }
@@ -273,6 +273,7 @@ static Result game_loop(t_board *board, t_ncurses *env)
 			update_input(env->input, board);
 		}
 		else if (ch == 'q' || ch == ESCAPE) {
+			res = USER_EXIT;
 			break;
 		}
 		else if (ch == KEY_UP && !is_game_end(board)) {
@@ -298,7 +299,6 @@ static Result game_loop(t_board *board, t_ncurses *env)
 			goto pick;
 		}
 		else if (ch == '3' && !is_game_end(board) && board->num_options == 3) {
-
 			env->input.scroll_offset = 2;
 			goto pick;
 		}
