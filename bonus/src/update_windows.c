@@ -20,13 +20,14 @@ void update_history(t_win *history, t_board *board)
 	}
 	for (unsigned int i = start; i <= board->cur_turn - history->scroll_offset;
 	     i++) {
-		mvwprintw(history->win,
-		          y_offset++,
-		          1,
-		          "#%u %s picked %u",
-		          i + 1,
-		          i % 2 == 0 ? "AI" : "You",
-		          board->picks[i]);
+		if (board->picks[i])
+			mvwprintw(history->win,
+					y_offset++,
+					1,
+					"#%u %s picked %u",
+					i + 1,
+					i % 2 == 0 ? "AI" : "You",
+					board->picks[i]);
 	}
 	wrefresh(history->win);
 }
