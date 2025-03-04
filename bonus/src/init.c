@@ -47,7 +47,6 @@ Result game_mode_selection(t_ncurses *env, t_board *board)
 		werase(env->input.win);
 		box(env->input.win, 0, 0);
 		mvwprintw(env->input.win, 1, 1, "Select game mode:");
-
 		for (unsigned int i = 0; i < 2; i++) {
 			if (i == env->input.scroll_offset) {
 				wattron(env->input.win, A_REVERSE);
@@ -62,6 +61,9 @@ Result game_mode_selection(t_ncurses *env, t_board *board)
 			return res;
 		}
 		scroll_handler(board, env, ch);
+		res = resize_window(ch, env, board);
+		if (res != RESULT_OK)
+			return (res);
 	}
 	board->game_mode = env->input.scroll_offset == 0 ? LAST_LOSES : LAST_WINS;
 	return res;
