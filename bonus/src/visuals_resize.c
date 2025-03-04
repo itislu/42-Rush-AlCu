@@ -17,10 +17,8 @@ Result	resize_window(int ch, t_ncurses *env, t_board *board)
 	(void) board;
 	// redraw new windows
 	refresh(); // refreshes standard screen => removes borders righthand side
-	// wrefresh(env->board.win);
 	update_board(&env->board, board);
 	update_history(&env->history, board);
-	// wrefresh(env->history.win);
-	// wrefresh(env->input.win); // this is drawn somewhere else too
+	update_input(&env->input, board);
 	return (RESULT_OK);
 }
