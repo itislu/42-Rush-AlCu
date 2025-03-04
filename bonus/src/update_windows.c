@@ -15,25 +15,18 @@ void update_history(t_win *history, t_board *board)
 	werase(history->win);
 	box(history->win, 0, 0);
 	mvwprintw(history->win, 1, 1, "History:");
-	// offset *= -1;
-	// offset += capped_sub(board->cur_turn, history->size.y - 4);
-	// start = capped_sub(board->cur_turn, history->size.y - 4) - offset;
 	if (board->cur_turn - history->scroll_offset > history->size.y - 4) {
 		start = board->cur_turn - history->scroll_offset - history->size.y + 4;
 	}
 	for (unsigned int i = start; i <= board->cur_turn - history->scroll_offset;
 	     i++) {
-		// for (unsigned int i = offset; i <= board->cur_turn; i++) {
 		mvwprintw(history->win,
 		          y_offset++,
 		          1,
 		          "#%u %s picked %u",
 		          i + 1,
 		          i % 2 == 0 ? "AI" : "You",
-		          board->picks[i]); // offset does NOT work with scrolling
-		                            // either fix the capped_sub below or remove
-		                            // scrolling
-		// capped_sub(board->cur_turn, history->size.y  - i)]);
+		          board->picks[i]);
 	}
 	wrefresh(history->win);
 }
@@ -79,7 +72,6 @@ void update_board(t_win *n_board, t_board *board)
 	if (board->cur_row - n_board->scroll_offset > n_board->size.y - 3) { // from - 1
 		i = board->cur_row - n_board->scroll_offset - n_board->size.y + 3;
 	}
-	// while (i <= board->cur_row) {
 	while (i <= board->cur_row - n_board->scroll_offset) {
 		xoffset = 1;
 		row = board->rows[i];
@@ -98,10 +90,7 @@ void update_board(t_win *n_board, t_board *board)
 			stop_x += 9; // offset for number of filler characters	
 			mvwprintw(n_board->win, yoffset, xoffset + text_len, "|||| ... ");
 		}
-		// begin '|' print at max possible X coordinate
-		// xoffset = max_char_x;
-		// while (xoffset > stop_x) {
-		// alternative approach from left to right
+		// print | from left to right
 		xoffset += stop_x;
 		while (xoffset <= max_char_x) {
 			mvwprintw(n_board->win, yoffset, xoffset++, "|");
