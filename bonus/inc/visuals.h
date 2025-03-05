@@ -1,9 +1,12 @@
 #include "alcu.h"
 #include <ncurses.h>
 
-#define MIN_TERMINAL_HEIGTH_FOR_HISTORY 20
+#define MAX_INFO_PANEL_WIDTH			40 // 1 + long input prompt + borders
+#define MIN_INFO_PANEL_WIDTH			23 // 4 + short input prompt + borders
+#define MIN_BOARD_WIDTH					30
+#define MIN_TERMINAL_HEIGTH_FOR_HISTORY 15
 #define MIN_TERMINAL_HEIGTH             9
-#define MIN_TERMINAL_WIDTH              63
+#define MIN_TERMINAL_WIDTH              MIN_BOARD_WIDTH + MIN_INFO_PANEL_WIDTH
 
 #define ESCAPE 27
 typedef struct s_size {

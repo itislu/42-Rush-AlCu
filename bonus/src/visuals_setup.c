@@ -17,45 +17,42 @@ static void init_ncurses(void)
 
 static void setup_windows_sizes(t_ncurses *env)
 {
-	env->board.size.x =
-	    env->term.x * 2 / 3 - 1; // -1 for the border not to overlap
-	env->board.size.y =
-	    env->term.y - 1;
-
+	unsigned int info_width;
+	if (env->term.x / 3 > MAX_INFO_PANEL_WIDTH)
+		info_width = MAX_INFO_PANEL_WIDTH;
+	else
+		info_width = MIN_INFO_PANEL_WIDTH;
+	// env->board.size.x = env->term.x * 2 / 3;
+	env->board.size.x = env->term.x - info_width;
+	env->board.size.y = env->term.y;
+	env->input.size.x = info_width;
+	env->history.size.x = info_width;
 	if (env->term.y > MIN_TERMINAL_HEIGTH_FOR_HISTORY) {
-		env->history.size.x = env->term.x / 3;
-		env->history.size.y = env->term.y * 2 / 3 - 1;
-		env->input.size.x = env->term.x / 3;
-		env->input.size.y = env->term.y - env->history.size.y - 1;
+		env->input.size.y = MIN_TERMINAL_HEIGTH;
+		env->history.size.y = env->term.y - env->input.size.y;
 	}
 	else {
-		env->history.size.x = env->term.x / 3;
-		env->history.size.y = env->term.y * 2 / 3 - 1;
-		env->input.size.x = env->term.x / 3;
 		env->input.size.y = env->board.size.y;
+		env->history.size.y = 0;
 	}
 }
 
 static void setup_windows_position(t_ncurses *env)
 {
-	env->board.pos.x = 1;
-	env->board.pos.y = 1;
+	env->board.pos.x = 0;
+	env->board.pos.y = 0;
+	env->history.pos.y = 0;
 	env->is_history = true;
+	env->history.pos.x = env->board.size.x;
+	env->input.pos.x = env->board.size.x;
 	if (env->term.y > MIN_TERMINAL_HEIGTH_FOR_HISTORY) {
-		env->history.pos.x = env->term.x * 2 / 3;
-		env->history.pos.y = 1;
-		env->input.pos.x = env->term.x * 2 / 3;
-		env->input.pos.y = env->term.y * 2 / 3;
+		env->input.pos.y = env->history.size.y;
 	}
 	else {
 		env->is_history = false;
-		env->history.pos.x = env->term.x * 2 / 3;
-		env->history.pos.y = 1;
-		env->input.pos.x = env->history.pos.x;
-		env->input.pos.y = env->history.pos.y;
+		env->input.pos.y = 0;
 	}
 }
-#include <stdio.h>
 static Result terminal_size(t_ncurses *env)
 {
 	keypad(stdscr, TRUE);
@@ -76,9 +73,6 @@ static Result terminal_size(t_ncurses *env)
 static Result init_windows(t_ncurses *env)
 {
 	getmaxyx(stdscr, env->term.y, env->term.x);
-	// if (env->term.y < MIN_TERMINAL_HEIGTH || env->term.x < MIN_TERMINAL_WIDTH) {
-		// return (SIZE_ERROR);
-	// }
 	while (env->term.y < MIN_TERMINAL_HEIGTH || env->term.x < MIN_TERMINAL_WIDTH) {
 		if (terminal_size(env) != RESULT_OK)
 			return (INTERNAL_ERROR);
