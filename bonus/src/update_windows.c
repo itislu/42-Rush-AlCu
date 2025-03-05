@@ -41,18 +41,23 @@ void update_input(t_win *input, t_board *board)
 		print_res(input, board);
 		return;
 	}
-
 	const char *options[3] = {"1 pick", "2 picks", "3 picks"};
-
+	int offset = 3; // borders top+bottom, text line
 	werase(input->win);
 	box(input->win, 0, 0);
-	mvwprintw(input->win, 1, 1, "Select how many picks you want to remove:");
-
+	// mvwprintw(input->win, 0, 0, "(%i,%i)", input->size.x, input->size.y);
+	if (input->size.x > 39)
+		mvwprintw(input->win, 1, 1, "How many picks do you want to remove:"); // 37
+	else {
+		mvwprintw(input->win, 1, 1, "How many picks do"); // 17
+		mvwprintw(input->win, 2, 1, "you want to remove:"); // 19
+		offset++;
+	}
 	for (unsigned int i = 0; i < board->num_options; i++) {
 		if (i == input->scroll_offset) {
 			wattron(input->win, A_REVERSE);
 		}
-		mvwprintw(input->win, 3 + i, 2, "%s", options[i]);
+		mvwprintw(input->win, offset + i, 2, "%s", options[i]);
 		wattroff(input->win, A_REVERSE);
 	}
 	wrefresh(input->win);

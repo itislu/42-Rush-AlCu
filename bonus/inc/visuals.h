@@ -2,8 +2,8 @@
 #include <ncurses.h>
 
 #define MIN_TERMINAL_HEIGTH_FOR_HISTORY 20
-#define MIN_TERMINAL_HEIGTH             10
-#define MIN_TERMINAL_WIDTH              30
+#define MIN_TERMINAL_HEIGTH             9
+#define MIN_TERMINAL_WIDTH              63
 
 #define ESCAPE 27
 typedef struct s_size {
