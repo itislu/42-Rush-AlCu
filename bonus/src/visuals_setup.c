@@ -55,12 +55,33 @@ static void setup_windows_position(t_ncurses *env)
 		env->input.pos.y = env->history.pos.y;
 	}
 }
+#include <stdio.h>
+static Result terminal_size(t_ncurses *env)
+{
+	keypad(stdscr, TRUE);
+	mvprintw(1,1,"terminal too small");
+	mvprintw(2,1,"size (%i,%i) need (%i,%i)",
+		env->term.x, env->term.y, MIN_TERMINAL_WIDTH, MIN_TERMINAL_HEIGTH);
+	refresh();
+	int ch = getch();
+	if (ch == ESCAPE || ch == 'q')
+		return (INTERNAL_ERROR); // this needs proper exit cleanup code
+	else if (ch != KEY_RESIZE)
+		return (RESULT_OK);
+	getmaxyx(stdscr, env->term.y, env->term.x);
+	keypad(stdscr, FALSE);
+	return (RESULT_OK);
+}
 
 static Result init_windows(t_ncurses *env)
 {
 	getmaxyx(stdscr, env->term.y, env->term.x);
-	if (env->term.y < MIN_TERMINAL_HEIGTH || env->term.x < MIN_TERMINAL_WIDTH) {
-		return (SIZE_ERROR);
+	// if (env->term.y < MIN_TERMINAL_HEIGTH || env->term.x < MIN_TERMINAL_WIDTH) {
+		// return (SIZE_ERROR);
+	// }
+	while (env->term.y < MIN_TERMINAL_HEIGTH || env->term.x < MIN_TERMINAL_WIDTH) {
+		if (terminal_size(env) != RESULT_OK)
+			return (INTERNAL_ERROR);
 	}
 	setup_windows_sizes(env);
 	setup_windows_position(env);
