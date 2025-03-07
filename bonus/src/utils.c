@@ -4,12 +4,12 @@
 #include <stddef.h>
 #include <sys/param.h>
 #include <unistd.h>
+#include "libft.h"
 
 size_t capped_sub(size_t a, size_t b)
 {
 	return a > b ? a - b : 0;
 }
-
 
 WINDOW *detect_window(t_ncurses *env, unsigned int y, unsigned int x)
 {
@@ -26,4 +26,14 @@ WINDOW *detect_window(t_ncurses *env, unsigned int y, unsigned int x)
 		return env->input.win;
 	}
 	return env->board.win;
+}
+
+void print_title(t_win *win, char *title)
+{
+	werase(win->win);
+	box(win->win, 0, 0);
+	wattron(win->win, A_BOLD);
+	mvwprintw(win->win, 1, (win->size.x - ft_strlen(title) + 1) / 2, title);
+	wattroff(win->win, A_BOLD);
+	wrefresh(win->win);
 }

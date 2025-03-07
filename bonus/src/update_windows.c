@@ -12,14 +12,12 @@ void update_history(t_win *history, t_board *board)
 	int y_offset = 2;
 	unsigned int start = 0;
 
-	werase(history->win);
-	box(history->win, 0, 0);
-	mvwprintw(history->win, 1, 1, "History:");
+	print_title(history, "History");
 	// offset *= -1;
 	// offset += capped_sub(board->cur_turn, history->size.y - 4);
 	// start = capped_sub(board->cur_turn, history->size.y - 4) - offset;
-	if (board->cur_turn - history->scroll_offset > history->size.y - 4) {
-		start = board->cur_turn - history->scroll_offset - history->size.y + 4;
+	if (board->cur_turn - history->scroll_offset > history->size.y - 1 - y_offset) {
+		start = board->cur_turn - history->scroll_offset - history->size.y + 2 + y_offset;
 	}
 	for (unsigned int i = start; i <= board->cur_turn - history->scroll_offset;
 	     i++) {
@@ -50,9 +48,7 @@ void update_input(t_win *input, t_board *board)
 
 	const char *options[3] = {"1 pick", "2 picks", "3 picks"};
 
-	werase(input->win);
-	box(input->win, 0, 0);
-	mvwprintw(input->win, 1, 1, "Select how many picks you want to remove:");
+	print_title(input, SELECT_PICKS);
 
 	for (unsigned int i = 0; i < board->num_options; i++) {
 		if (i == input->scroll_offset) {
@@ -67,17 +63,26 @@ void update_input(t_win *input, t_board *board)
 void update_board(t_win *n_board, t_board *board)
 {
 	unsigned int xoffset = 1;
-	unsigned int yoffset = 1;
+	unsigned int yoffset = 2;
 	unsigned int text_len = 0;
 	unsigned int stop_x = 0;
 	unsigned int max_char_x = 0;
 	size_t i = 0;
 	t_row *row = NULL;
 
-	werase(n_board->win);
-	box(n_board->win, 0, 0);
-	if (board->cur_row - n_board->scroll_offset > n_board->size.y - 3) { // from - 1
-		i = board->cur_row - n_board->scroll_offset - n_board->size.y + 3;
+	switch (board->game_mode) {
+	case LAST_WINS:
+		print_title(n_board, LAST_TO_PICK_WINS);
+		break;
+	case LAST_LOSES:
+		print_title(n_board, LAST_TO_PICK_LOSES);
+		break;
+	default:
+		print_title(n_board, NO_GAME_MODE);
+	}
+
+	if (board->cur_row - n_board->scroll_offset > n_board->size.y - 1 - yoffset) { // from - 1
+		i = board->cur_row - n_board->scroll_offset - n_board->size.y + 2 + yoffset;
 	}
 	// while (i <= board->cur_row) {
 	while (i <= board->cur_row - n_board->scroll_offset) {
@@ -128,6 +133,6 @@ void print_res(t_win *input, t_board *board)
 	          1,
 	          1,
 	          "%s",
-	          winner == PLAYER ? "Congrats, you won!" : "You lost...");
+	          winner == PLAYER ? WIN : LOSE);
 	wrefresh(input->win);
 }

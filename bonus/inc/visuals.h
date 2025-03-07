@@ -5,6 +5,14 @@
 #define MIN_TERMINAL_HEIGTH             10
 #define MIN_TERMINAL_WIDTH              30
 
+#define NO_GAME_MODE "Game mode is not selected yet"
+#define SELECT_GAME_MODE "Select game mode"
+#define LAST_TO_PICK_WINS "Last to pick wins"
+#define LAST_TO_PICK_LOSES "Last to pick loses"
+#define SELECT_PICKS "Select how many picks to remove"
+#define WIN "Congrats, you won!"
+#define LOSE "You lost..."
+
 #define ESCAPE 27
 typedef struct s_size {
 	unsigned int x;
@@ -40,6 +48,7 @@ bool	is_game_end(t_board *board);
 //utils
 WINDOW	*detect_window(t_ncurses *env, unsigned int y, unsigned int x);
 size_t	capped_sub(size_t a, size_t b);
+void print_title(t_win *win, char *title);
 
 //ncurses
 Result	setup_ncurses(t_ncurses *env);
