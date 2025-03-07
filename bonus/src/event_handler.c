@@ -51,7 +51,7 @@ bool mouse(t_ncurses *env, t_board *board)
 				update_input(&env->input, board);
 			}
 		}
-		else if (event.bstate & BUTTON1_CLICKED
+		else if (event.bstate & BUTTON1_PRESSED
 			&& win == env->input.win
 			&& (unsigned int)event.y >= 3 + env->input.pos.y
 			&& (unsigned int)event.y <= board->num_options + env->input.pos.y + 2) {
