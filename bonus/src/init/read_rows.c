@@ -33,7 +33,7 @@ Result read_rows(t_list **rows, const char *filename)
 	t_list *tail = NULL;
 	errno = 0;
 
-	while ((res = read_file(&line, fd)) == RESULT_OK) {
+	while ((res = read_line(&line, fd)) == RESULT_OK) {
 		if (is_input_end(line)) {
 			if (fd == g_stdin) {
 				clear_rows(1);
@@ -73,7 +73,7 @@ static int open_file(const char *filename)
 
 static bool is_input_end(const char *line)
 {
-	return (line == NULL || ft_strcmp(line, "\n") == 0);
+	return (ft_strcmp(line, "\n") == 0);
 }
 
 static t_row *new_row(const char *line)
