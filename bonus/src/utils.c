@@ -13,7 +13,8 @@ size_t capped_sub(size_t a, size_t b)
 
 WINDOW *detect_window(t_ncurses *env, unsigned int y, unsigned int x)
 {
-	if (y >= env->history.pos.y
+	if (env->is_history
+		&& y >= env->history.pos.y
 	    && y < env->history.pos.y + env->history.size.y - 1
 	    && x >= env->history.pos.x
 	    && x < env->history.pos.x + env->history.size.x - 1) {
