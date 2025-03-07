@@ -4,34 +4,50 @@
 #include "libft.h"
 #include "print.h"
 #include "prompt.h"
-#include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-static int open_file(const char *filename);
+static Result read_file(t_list **rows, int fd);
 static bool is_input_end(const char *line);
 static t_row *new_row(const char *line);
 
 Result read_rows(t_list **rows, const char *filename)
 {
-	int fd = open_file(filename);
-	if (fd == -1) {
-		return INTERNAL_ERROR;
+	int fd = g_stdin;
+
+	if (filename != NULL) {
+		fd = open(filename, O_RDONLY);
+		if (fd == -1) {
+			return INTERNAL_ERROR;
+		}
 	}
-	if (fd == g_stdin) {
+	else {
 		const char title[] = "🔨 BOARD CREATION 🔨";
 		print_boxed_specialstr(title, sizeof(title) - 1 - 4);
 		ft_printf(
 		    "Enter board (one number 1-10000 per line, empty line to end):\n");
 	}
+	Result res = read_file(rows, fd);
 
+	close(fd);
+	if (fd != g_stdin) {
+		close(g_stdin);
+	}
+	g_stdin = open("/dev/tty", O_RDONLY);
+	if (g_stdin == -1) {
+		res = INTERNAL_ERROR;
+	}
+	return res;
+}
+
+static Result read_file(t_list **rows, int fd)
+{
 	Result res = OK;
 	char *line = NULL;
 	t_list *tail = NULL;
-	errno = 0;
 
 	while ((res = read_line(&line, fd)) == OK) {
 		if (is_input_end(line)) {
@@ -53,22 +69,8 @@ Result read_rows(t_list **rows, const char *filename)
 		free(line);
 	}
 	free(line);
-	close(fd);
 	free_get_next_line();
-
-	g_stdin = open("/dev/tty", O_RDONLY);
-	if (errno != 0) {
-		res = INTERNAL_ERROR;
-	}
 	return res;
-}
-
-static int open_file(const char *filename)
-{
-	if (filename == NULL) {
-		return g_stdin;
-	}
-	return open(filename, O_RDONLY);
 }
 
 static bool is_input_end(const char *line)
