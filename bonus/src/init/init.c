@@ -36,7 +36,6 @@ void free_board(t_board *board)
 	}
 	free(board->picks);
 	free_get_next_line();
-	close(g_stdin);
 }
 
 static Result read_board(t_board *board, const char *filename)

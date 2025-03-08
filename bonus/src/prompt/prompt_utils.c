@@ -8,21 +8,25 @@
 #include <sys/param.h>
 #include <unistd.h>
 
-Result get_input(char **line, int fd)
+Result read_line_user(char **line, int fd)
 {
 	ft_printf("> ");
-	return read_line(line, fd);
+	Result res = read_line_file(line, fd);
+	if (res != RESULT_OK) {
+		return res;
+	}
+	if (*line == NULL || (*line)[ft_strlen(*line) - 1] != '\n') {
+		return USER_EXIT;
+	}
+	return res;
 }
 
-Result read_line(char **line, int fd)
+Result read_line_file(char **line, int fd)
 {
 	errno = 0;
 	*line = get_next_line(fd);
 	if (errno != 0) {
 		return INTERNAL_ERROR;
-	}
-	if (*line == NULL || (*line)[ft_strlen(*line) - 1] != '\n') {
-		return USER_EXIT;
 	}
 	return RESULT_OK;
 }

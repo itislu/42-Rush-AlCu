@@ -10,40 +10,49 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static Result read_file(t_list **rows, int fd);
+static Result
+read_file(t_list **rows, int fd, Result (*read_line)(char **, int));
 static bool is_input_end(const char *line);
 static t_row *new_row(const char *line);
+static bool is_interactive(void);
+static Result make_interactive(void);
 
 Result read_rows(t_list **rows, const char *filename)
 {
-	int fd = g_stdin;
+	Result res = RESULT_OK;
+	const bool interactive = is_interactive();
 
 	if (filename != NULL) {
-		fd = open(filename, O_RDONLY);
+		int fd = open(filename, O_RDONLY);
 		if (fd == -1) {
 			return INTERNAL_ERROR;
 		}
+		res = read_file(rows, fd, read_line_file);
+		close(fd);
 	}
-	else {
+	else if (!interactive) {
+		res = read_file(rows, STDIN_FILENO, read_line_file);
+	}
+	else { // interactive
 		const char title[] = "🔨 BOARD CREATION 🔨";
 		print_boxed_specialstr(title, sizeof(title) - 1 - 4);
 		ft_printf(
 		    "Enter board (one number 1-10000 per line, empty line to end):\n");
+		res = read_file(rows, STDIN_FILENO, read_line_user);
+		if (res == RESULT_OK) {
+			clear_rows(1);
+			move_down_a_line();
+		}
 	}
-	Result res = read_file(rows, fd);
 
-	close(fd);
-	if (fd != g_stdin) {
-		close(g_stdin);
-	}
-	g_stdin = open("/dev/tty", O_RDONLY);
-	if (g_stdin == -1) {
-		res = INTERNAL_ERROR;
+	if (!interactive) {
+		res = make_interactive();
 	}
 	return res;
 }
 
-static Result read_file(t_list **rows, int fd)
+static Result
+read_file(t_list **rows, int fd, Result (*read_line)(char **, int))
 {
 	Result res = RESULT_OK;
 	char *line = NULL;
@@ -51,10 +60,6 @@ static Result read_file(t_list **rows, int fd)
 
 	while ((res = read_line(&line, fd)) == RESULT_OK) {
 		if (is_input_end(line)) {
-			if (fd == g_stdin) {
-				clear_rows(1);
-				move_down_a_line();
-			}
 			break;
 		}
 		t_row *row = new_row(line);
@@ -75,7 +80,7 @@ static Result read_file(t_list **rows, int fd)
 
 static bool is_input_end(const char *line)
 {
-	return (ft_strcmp(line, "\n") == 0);
+	return (line == NULL || ft_strcmp(line, "\n") == 0);
 }
 
 static t_row *new_row(const char *line)
@@ -91,4 +96,53 @@ static t_row *new_row(const char *line)
 	row->start_amount = ft_atoi(line);
 	row->cur_amount = row->start_amount;
 	return row;
+}
+
+/**
+ * Detects if STDIN_FILENO is interactive by checking if its 'open-flags' are
+ * 'O_RDWR | O_APPEND'.
+ *
+ * The fdinfo of a normal stdin looks like this:
+ *     pos:    0
+ *     flags:  02002
+ *     mnt_id: 27
+ *     ino:    17
+ * A redirected stdin looks like this:
+ *     pos:    0
+ *     flags:  0100000
+ *     mnt_id: 25
+ *     ino:    23350703
+ */
+static bool is_interactive(void)
+{
+	const int info_fd = open("/proc/self/fdinfo/0", O_RDONLY);
+	if (info_fd == -1) {
+		return false;
+	}
+
+	bool res = false;
+	char *line = NULL;
+	while (read_line_file(&line, info_fd) == RESULT_OK) {
+		if (ft_strnstr(line, "flags:", ft_strlen(line)) != NULL) {
+			const char *end = ft_strrchr(line, '2');
+			if (end != NULL && !ft_isdigit(end[1]) && end[-3] == '2') {
+				res = true;
+			}
+			break;
+		}
+		free(line);
+	}
+	free(line);
+	free_get_next_line();
+	close(info_fd);
+	return res;
+}
+
+static Result make_interactive(void)
+{
+	close(STDIN_FILENO);
+	if (open("/dev/tty", O_RDONLY) == -1) { // STDIN_FILENO gets closed at exit
+		return INTERNAL_ERROR;
+	}
+	return RESULT_OK;
 }
