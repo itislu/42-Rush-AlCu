@@ -46,8 +46,7 @@ void print_title(t_win *win, char *title)
 		if (i == 0) {
 			i = win->size.x - 2;
 		}
-		ft_strlcpy(tmp, title + start, i);
-		tmp[i] = '\0';
+		ft_strlcpy(tmp, title + start, i+1);
 		
 		mvwprintw(win->win, line++, (win->size.x - ft_strlen(tmp)) / 2, "%s", tmp);
 		start += i + 1;
