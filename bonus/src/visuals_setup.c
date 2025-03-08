@@ -129,7 +129,7 @@ Result setup_ncurses(t_ncurses *env)
 {
 	Result res = RESULT_OK;
 
-	init_ncurses(); // this probably needs error check
+	init_ncurses(); // TODO: this probably needs error check
 	res = init_windows(env);
 	if (res != RESULT_OK) {
 		cleanup_ncruses(env);
