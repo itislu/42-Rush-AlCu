@@ -7,16 +7,14 @@ Result	resize_window(int ch, t_ncurses *env, t_board *board)
 	if (ch != KEY_RESIZE)
 		return (RESULT_OK);
 	// destroy old environment
-	erase(); // clear the standard screen => removes borders lefthand side
+	erase(); // clear the standard screen => removes content left&top (increase)
 	cleanup_ncruses(env);
 	// create new environment
 	res = setup_ncurses(env);
 	if (res != RESULT_OK)
 		return (res);
-	// fill with content
-	(void) board;
 	// redraw new windows
-	refresh(); // refreshes standard screen => removes borders righthand side
+	refresh(); // refresh standard screen => remove content right&down (shrink)
 	update_board(&env->board, board);
 	update_history(&env->history, board);
 	update_input(&env->input, board);
