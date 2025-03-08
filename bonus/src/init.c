@@ -61,7 +61,9 @@ Result game_mode_selection(t_ncurses *env, t_board *board)
 			res = USER_EXIT;
 			return res;
 		}
-		scroll_handler(board, env, ch);
+		if (scroll_handler(board, env, ch)) {
+			break;
+		}
 	}
 	board->game_mode = env->input.scroll_offset == 0 ? LAST_LOSES : LAST_WINS;
 	return res;

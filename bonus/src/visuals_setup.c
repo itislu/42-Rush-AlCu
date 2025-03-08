@@ -14,6 +14,7 @@ static void init_ncurses(void)
 	curs_set(0); // hide cursor
 	// keypad(stdscr, TRUE); // we use windows, don't need that, this is for the
 	// terminal
+	mouseinterval(0);
 	mousemask(ALL_MOUSE_EVENTS, NULL);
 	ESCDELAY = 25;
 }
