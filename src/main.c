@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
 		res = init_board(&board, argv[1]);
 	}
 	if (res == OK) {
+		ft_printf("\n");
 		print_board_complete(&board);
 		ft_printf("\n");
 		res = prompt_game_mode(&board.game_mode);
