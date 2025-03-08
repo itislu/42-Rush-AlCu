@@ -33,7 +33,28 @@ void print_title(t_win *win, char *title)
 	werase(win->win);
 	box(win->win, 0, 0);
 	wattron(win->win, A_BOLD);
-	mvwprintw(win->win, 1, (win->size.x - ft_strlen(title) + 1) / 2, title);
+
+	size_t start = 0;
+	int line = 1;
+	char tmp[win->size.x - 1];
+
+	while (ft_strlen(title + start) > win->size.x - 2) {
+		size_t i = win->size.x - 2;
+		while (i > 0 && title[start + i] != ' ') {
+			i--;
+		}
+		if (i == 0) {
+			i = win->size.x - 2;
+		}
+		ft_strlcpy(tmp, title + start, i);
+		tmp[i] = '\0';
+		
+		mvwprintw(win->win, line++, (win->size.x - ft_strlen(tmp)) / 2, "%s", tmp);
+		start += i + 1;
+	}
+
+	mvwprintw(win->win, line, (win->size.x - ft_strlen(title + start)) / 2, "%s", title + start);
 	wattroff(win->win, A_BOLD);
 	wrefresh(win->win);
+	win->title_hight = line + 1;
 }
