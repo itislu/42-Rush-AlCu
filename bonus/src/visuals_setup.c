@@ -63,7 +63,7 @@ static Result terminal_size(t_ncurses *env)
 	refresh();
 	int ch = getch();
 	if (ch == ESCAPE || ch == 'q')
-		return (INTERNAL_ERROR); // this needs proper exit cleanup code
+		return (USER_EXIT); // this needs proper exit cleanup code
 	else if (ch != KEY_RESIZE)
 		return (RESULT_OK);
 	getmaxyx(stdscr, env->term.y, env->term.x);
