@@ -20,7 +20,7 @@ Result	resize_window(int ch, t_ncurses *env, t_board *board)
 			env->board.scroll_offset--;
 		}
 	if (env->history.scroll_offset
-		&& env->history.size.y - 3 > board->cur_turn - env->history.scroll_offset) {
+		&& env->history.size.y - 4 > board->cur_turn - env->history.scroll_offset) {
 			env->history.scroll_offset--;
 		}
 	// redraw new windows

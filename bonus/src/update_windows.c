@@ -10,7 +10,7 @@
 void update_history(t_win *history, t_board *board)
 {
 	int y_offset = 2;
-	unsigned int start = 0;
+	size_t start = 0;
 
 	werase(history->win);
 	box(history->win, 0, 0);
@@ -18,7 +18,9 @@ void update_history(t_win *history, t_board *board)
 	if (board->cur_turn - history->scroll_offset > history->size.y - 4) {
 		start = board->cur_turn - history->scroll_offset - history->size.y + 4;
 	}
-	for (unsigned int i = start; i <= board->cur_turn - history->scroll_offset;
+	if (start && !history->scroll_offset && board->cur_turn % 2)
+		start--;
+	for (size_t i = start; i <= board->cur_turn - history->scroll_offset;
 	     i++) {
 		if (board->picks[i])
 			mvwprintw(history->win,
@@ -91,7 +93,8 @@ void update_board(t_win *n_board, t_board *board)
 		text_len += ft_nbrlen_base(row->cur_amount, 10) + 4; // '  123: '
 		// calculate  maximal available space for | characters
 		stop_x = max_char_x - ft_min(row->cur_amount, max_char_x - text_len);
-		// print leading text
+		// print leading text - has an issue with more than 2 digits in line
+		// TODO: replace with %-zu (%u): and recalculate text_len!
 		mvwprintw(n_board->win, offset.y, offset.x,
 			"#%-2zu  %u:", i + 1, row->cur_amount);
 		// adjustment for too many pieces in row
@@ -107,7 +110,7 @@ void update_board(t_win *n_board, t_board *board)
 		offset.y++;
 		i++;
 	}
-	wrefresh(n_board->win);
+	wrefresh(n_board->win);	
 }
 
 void print_res(t_win *input, t_board *board)
