@@ -9,18 +9,14 @@
 
 void update_history(t_win *history, t_board *board)
 {
-	int y_offset = 2;
+	int y_offset = history->title_height;
 	size_t start = 0;
 
 	print_title(history, "History");
-	// offset *= -1;
-	// offset += capped_sub(board->cur_turn, history->size.y - 4);
-	// start = capped_sub(board->cur_turn, history->size.y - 4) - offset;
-	if (board->cur_turn - history->scroll_offset > history->size.y - 1 - y_offset) {
+	if (board->cur_turn - history->scroll_offset > history->size.y - 2 - y_offset) {
 		start = board->cur_turn - history->scroll_offset - history->size.y + 2 + y_offset;
 	}
-	if (start && !history->scroll_offset && board->cur_turn % 2)
-		start--;
+
 	for (size_t i = start; i <= board->cur_turn - history->scroll_offset;
 	     i++) {
 		if (board->picks[i])
@@ -82,7 +78,7 @@ void update_board(t_win *n_board, t_board *board)
 
 	// size.y - 3 = ncurses board windows height - border top & bottom - 1
 	// - 1 = height starts at 1 instead of 0
-	if (board->cur_row - n_board->scroll_offset > n_board->size.y - 1 - offset.y) {
+	if (board->cur_row - n_board->scroll_offset > n_board->size.y - 2 - offset.y) {
 		i = board->cur_row - n_board->scroll_offset - n_board->size.y + 2 + offset.y;
 	}
 	while (i <= board->cur_row - n_board->scroll_offset) {
