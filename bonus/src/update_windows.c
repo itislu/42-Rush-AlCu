@@ -65,21 +65,24 @@ void update_input(t_win *input, t_board *board)
 
 void update_board(t_win *n_board, t_board *board)
 {
-	unsigned int xoffset = 1;
-	unsigned int yoffset = 1;
 	unsigned int text_len = 0;
 	unsigned int stop_x = 0;
 	unsigned int max_char_x = 0;
+	t_size offset;
 	size_t i = 0;
 	t_row *row = NULL;
 
+	offset.x = 1;
+	offset.y = 1;
 	werase(n_board->win);
 	box(n_board->win, 0, 0);
-	if (board->cur_row - n_board->scroll_offset > n_board->size.y - 3) { // from - 1
+	// size.y - 3 = ncurses board windows height - border top & bottom - 1
+	// - 1 = height starts at 1 instead of 0
+	if (board->cur_row - n_board->scroll_offset > n_board->size.y - 3) {
 		i = board->cur_row - n_board->scroll_offset - n_board->size.y + 3;
 	}
 	while (i <= board->cur_row - n_board->scroll_offset) {
-		xoffset = 1;
+		offset.x = 1;
 		row = board->rows[i];
 		// get max character that find in the windows
 		max_char_x = n_board->size.x - 2; // -1 for borders R, -1 for index 0
@@ -89,19 +92,19 @@ void update_board(t_win *n_board, t_board *board)
 		// calculate  maximal available space for | characters
 		stop_x = max_char_x - ft_min(row->cur_amount, max_char_x - text_len);
 		// print leading text
-		mvwprintw(n_board->win, yoffset, xoffset,
+		mvwprintw(n_board->win, offset.y, offset.x,
 			"#%-2zu  %u:", i + 1, row->cur_amount);
 		// adjustment for too many pieces in row
 		if (row->cur_amount > max_char_x - text_len) {
 			stop_x += 9; // offset for number of filler characters	
-			mvwprintw(n_board->win, yoffset, xoffset + text_len, "|||| ... ");
+			mvwprintw(n_board->win, offset.y, offset.x + text_len, "|||| ... ");
 		}
 		// print | from left to right
-		xoffset += stop_x;
-		while (xoffset <= max_char_x) {
-			mvwprintw(n_board->win, yoffset, xoffset++, "|");
+		offset.x += stop_x;
+		while (offset.x <= max_char_x) {
+			mvwprintw(n_board->win, offset.y, offset.x++, "|");
 		}
-		yoffset++;
+		offset.y++;
 		i++;
 	}
 	wrefresh(n_board->win);
