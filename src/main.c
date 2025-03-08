@@ -10,8 +10,6 @@
 static Result game_loop(t_board *board);
 static bool is_game_end(t_board *board);
 
-int g_stdin = STDIN_FILENO;
-
 int main(int argc, char *argv[])
 {
 	Result res = OK;
@@ -25,6 +23,7 @@ int main(int argc, char *argv[])
 		res = init_board(&board, argv[1]);
 	}
 	if (res == OK) {
+		ft_printf("\n");
 		print_board_complete(&board);
 		ft_printf("\n");
 		res = prompt_game_mode(&board.game_mode);
@@ -56,6 +55,7 @@ int main(int argc, char *argv[])
 	}
 
 	free_board(&board);
+	close(STDIN_FILENO);
 	return res;
 }
 

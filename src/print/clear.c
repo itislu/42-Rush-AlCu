@@ -3,6 +3,7 @@
 
 void clear_rows(int rows)
 {
+	clear_line();
 	for (int i = 0; i < rows; i++) {
 		move_up_a_line();
 		clear_line();
