@@ -68,13 +68,13 @@ void update_board(t_win *n_board, t_board *board)
 	t_row *row = NULL;
 
 	switch (board->game_mode) {
-		case LAST_WINS:
+	case LAST_WINS:
 		print_title(n_board, LAST_TO_PICK_WINS);
 		break;
-		case LAST_LOSES:
+	case LAST_LOSES:
 		print_title(n_board, LAST_TO_PICK_LOSES);
 		break;
-		default:
+	default:
 		print_title(n_board, NO_GAME_MODE);
 	}
 	offset.x = 1;
