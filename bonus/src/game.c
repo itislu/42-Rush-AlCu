@@ -43,7 +43,6 @@ void turn(t_board *board, t_ncurses *env, Player *player)
 	update_board(&env->board, board);
 }
 
-
 Result game_loop(t_board *board, t_ncurses *env)
 {
 	Result res = RESULT_OK;
@@ -83,8 +82,10 @@ Result game_loop(t_board *board, t_ncurses *env)
 			env->input.scroll_offset = 2;
 			goto pick;
 		}
+		else if (scroll_handler(board, env, ch)) {
+			goto pick;
+		}
 		else {
-			scroll_handler(board, env, ch);
 			res = resize_window(ch, env, board);
 			if (res != RESULT_OK)
 				return (res);

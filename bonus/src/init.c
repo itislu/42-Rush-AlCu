@@ -60,7 +60,9 @@ Result game_mode_selection(t_ncurses *env, t_board *board)
 			res = USER_EXIT;
 			return res;
 		}
-		scroll_handler(board, env, ch);
+		if (scroll_handler(board, env, ch)) {
+			break;
+		}
 		res = resize_window(ch, env, board);
 		if (res != RESULT_OK)
 			return (res);

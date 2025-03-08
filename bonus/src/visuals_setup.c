@@ -11,6 +11,7 @@ static void init_ncurses(void)
 	noecho(); // user typed input will not be displayed on screen
 	cbreak(); // disables line buffering; typed characters immediately available
 	curs_set(0); // hide CLI cursor
+	mouseinterval(0);
 	mousemask(ALL_MOUSE_EVENTS, NULL);
 	ESCDELAY = 25;
 }

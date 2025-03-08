@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include <sys/param.h>
 
-void mouse(t_ncurses *env, t_board *board)
+bool mouse(t_ncurses *env, t_board *board)
 {
 	MEVENT event;
 	if (getmouse(&event) == OK) {
@@ -51,10 +51,18 @@ void mouse(t_ncurses *env, t_board *board)
 				update_input(&env->input, board);
 			}
 		}
+		else if (event.bstate & BUTTON1_PRESSED
+			&& win == env->input.win
+			&& (unsigned int)event.y >= 3 + env->input.pos.y
+			&& (unsigned int)event.y <= board->num_options + env->input.pos.y + 2) {
+			env->input.scroll_offset = event.y - env->input.pos.y - 3;
+			return true;
+		}
 	}
+	return false;
 }
 
-void scroll_handler(t_board *board, t_ncurses *env, int ch)
+bool scroll_handler(t_board *board, t_ncurses *env, int ch)
 {
 	if (ch == KEY_UP && !is_game_end(board)) {
 		env->input.scroll_offset =
@@ -68,6 +76,7 @@ void scroll_handler(t_board *board, t_ncurses *env, int ch)
 		update_input(&env->input, board);
 	}
 	else if (ch == KEY_MOUSE) {
-		mouse(env, board);
+		return mouse(env, board);
 	}
+	return false;
 }
