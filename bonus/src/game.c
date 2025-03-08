@@ -85,6 +85,11 @@ Result game_loop(t_board *board, t_ncurses *env)
 		else if (scroll_handler(board, env, ch)) {
 			goto pick;
 		}
+		else {
+			res = resize_window(ch, env, board);
+			if (res != RESULT_OK)
+				return (res);
+		}
 	}
 	return res;
 }
