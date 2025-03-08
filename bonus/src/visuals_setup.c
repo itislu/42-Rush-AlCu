@@ -1,19 +1,16 @@
 #include "alcu.h"
 #include "visuals.h"
-// here to shutup the blue squiggles...
 #include <ncurses.h>
-#include <stdlib.h>
 
 static Result init_windows(t_ncurses *env);
 
 static void init_ncurses(void)
 {
 	initscr();
-	noecho();
-	cbreak();
-	curs_set(0); // hide cursor
-	// keypad(stdscr, TRUE); // we use windows, don't need that, this is for the
-	// terminal
+	// init needs a success check - no return values here are checked
+	noecho(); // user typed input will not be displayed on screen
+	cbreak(); // disables line buffering; typed characters immediately available
+	curs_set(0); // hide CLI cursor
 	mouseinterval(0);
 	mousemask(ALL_MOUSE_EVENTS, NULL);
 	ESCDELAY = 25;
@@ -21,52 +18,67 @@ static void init_ncurses(void)
 
 static void setup_windows_sizes(t_ncurses *env)
 {
-	env->board.size.x =
-	    env->term.x * 2 / 3 - 1; // -1 for the border not to overlap
-	env->board.size.y =
-	    env->term.y - 1; // this might be the missing 1 for the +3 offset
-
+	unsigned int info_width;
+	if (env->term.x / 3 > MAX_INFO_PANEL_WIDTH)
+		info_width = MAX_INFO_PANEL_WIDTH;
+	else
+		info_width = MIN_INFO_PANEL_WIDTH;
+	// env->board.size.x = env->term.x * 2 / 3;
+	env->board.size.x = env->term.x - info_width;
+	env->board.size.y = env->term.y;
+	env->input.size.x = info_width;
+	env->history.size.x = info_width;
 	if (env->term.y > MIN_TERMINAL_HEIGTH_FOR_HISTORY) {
-		env->history.size.x = env->term.x / 3;
-		env->history.size.y = env->term.y * 2 / 3 - 1;
-		env->input.size.x = env->term.x / 3;
-		env->input.size.y = env->term.y - env->history.size.y - 1;
+		env->input.size.y = MIN_TERMINAL_HEIGTH;
+		env->history.size.y = env->term.y - env->input.size.y;
 	}
 	else {
-		env->history.size.x = env->term.x / 3;
-		env->history.size.y = env->term.y * 2 / 3 - 1;
-		env->input.size.x = env->term.x / 3;
 		env->input.size.y = env->board.size.y;
+		env->history.size.y = 0;
 	}
 }
 
 static void setup_windows_position(t_ncurses *env)
 {
-	env->board.pos.x = 1;
-	env->board.pos.y = 1;
+	env->board.pos.x = 0;
+	env->board.pos.y = 0;
+	env->history.pos.y = 0;
 	env->is_history = true;
+	env->history.pos.x = env->board.size.x;
+	env->input.pos.x = env->board.size.x;
 	if (env->term.y > MIN_TERMINAL_HEIGTH_FOR_HISTORY) {
-		env->history.pos.x = env->term.x * 2 / 3;
-		env->history.pos.y = 1;
-		env->input.pos.x = env->term.x * 2 / 3;
-		env->input.pos.y = env->term.y * 2 / 3;
+		env->input.pos.y = env->history.size.y;
 	}
 	else {
 		env->is_history = false;
-		env->history.pos.x = env->term.x * 2 / 3;
-		env->history.pos.y = 1;
-		env->input.pos.x = env->history.pos.x;
-		env->input.pos.y = env->history.pos.y;
+		env->input.pos.y = 0;
 	}
+}
+static Result terminal_size(t_ncurses *env)
+{
+	keypad(stdscr, TRUE);
+	mvprintw(1,1,"terminal too small");
+	mvprintw(2,1,"size (%i,%i) need (%i,%i)",
+		env->term.x, env->term.y, MIN_TERMINAL_WIDTH, MIN_TERMINAL_HEIGTH);
+	refresh();
+	int ch = getch();
+	if (ch == ESCAPE || ch == 'q')
+		return (USER_EXIT); // this needs proper exit cleanup code
+	else if (ch != KEY_RESIZE)
+		return (RESULT_OK);
+	getmaxyx(stdscr, env->term.y, env->term.x);
+	keypad(stdscr, FALSE);
+	return (RESULT_OK);
 }
 
 static Result init_windows(t_ncurses *env)
 {
 	getmaxyx(stdscr, env->term.y, env->term.x);
-	if (env->term.y < MIN_TERMINAL_HEIGTH || env->term.x < MIN_TERMINAL_WIDTH) {
-		// ft_dprintf(2, "MIN TERMINAL SIZE: %ux%u\n", MIN_TERMINAL_WIDTH,
-		// MIN_TERMINAL_HEIGTH);
-		return (SIZE_ERROR);
+	while (env->term.y < MIN_TERMINAL_HEIGTH || env->term.x < MIN_TERMINAL_WIDTH) {
+		Result res = terminal_size(env);
+		if (res != RESULT_OK) {
+			return (res);
+		}
 	}
 	setup_windows_sizes(env);
 	setup_windows_position(env);
@@ -117,7 +129,7 @@ Result setup_ncurses(t_ncurses *env)
 {
 	Result res = RESULT_OK;
 
-	init_ncurses();
+	init_ncurses(); // TODO: this probably needs error check
 	res = init_windows(env);
 	if (res != RESULT_OK) {
 		cleanup_ncruses(env);

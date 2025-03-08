@@ -1,9 +1,12 @@
 #include "alcu.h"
 #include <ncurses.h>
 
-#define MIN_TERMINAL_HEIGTH_FOR_HISTORY 20
-#define MIN_TERMINAL_HEIGTH             10
-#define MIN_TERMINAL_WIDTH              30
+#define MAX_INFO_PANEL_WIDTH			40 // 1 + long input prompt + borders
+#define MIN_INFO_PANEL_WIDTH			23 // 4 + short input prompt + borders
+#define MIN_BOARD_WIDTH					30
+#define MIN_TERMINAL_HEIGTH_FOR_HISTORY 15
+#define MIN_TERMINAL_HEIGTH             9
+#define MIN_TERMINAL_WIDTH              MIN_BOARD_WIDTH + MIN_INFO_PANEL_WIDTH
 
 #define NO_GAME_MODE "Game mode is not selected yet"
 #define SELECT_GAME_MODE "Select game mode"
@@ -62,3 +65,4 @@ Result	game_mode_selection(t_ncurses *env, t_board *board);
 //event handlers
 bool	scroll_handler(t_board *board, t_ncurses *env, int ch);
 bool	mouse(t_ncurses *env, t_board *board);
+Result	resize_window(int ch, t_ncurses *env, t_board *board);

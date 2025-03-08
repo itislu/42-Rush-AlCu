@@ -12,7 +12,7 @@ bool mouse(t_ncurses *env, t_board *board)
 		WINDOW *win = detect_window(env, event.y, event.x);
 		if (event.bstate & BUTTON5_PRESSED)
 		{
-			if (win == env->board.win && env->board.scroll_offset > 1) {
+			if (win == env->board.win && env->board.scroll_offset > env->board.title_height) {
 				env->board.scroll_offset--;
 				update_board(&env->board, board);
 			}
@@ -30,9 +30,9 @@ bool mouse(t_ncurses *env, t_board *board)
 		}
 		else if (event.bstate & BUTTON4_PRESSED)
 		{
-			if (win == env->board.win && board->cur_row > env->board.size.y - 4
+			if (win == env->board.win && board->cur_row > env->board.size.y - 2 - env->board.title_height
 			    && env->board.scroll_offset
-			           < board->cur_row - env->board.size.y + 4) {
+			           < board->cur_row - env->board.size.y + 2 + env->board.title_height) {
 				env->board.scroll_offset++;
 				update_board(&env->board, board);
 			}
