@@ -75,8 +75,10 @@ static Result init_windows(t_ncurses *env)
 {
 	getmaxyx(stdscr, env->term.y, env->term.x);
 	while (env->term.y < MIN_TERMINAL_HEIGTH || env->term.x < MIN_TERMINAL_WIDTH) {
-		if (terminal_size(env) != RESULT_OK)
-			return (INTERNAL_ERROR);
+		Result res = terminal_size(env);
+		if (res != RESULT_OK) {
+			return (res);
+		}
 	}
 	setup_windows_sizes(env);
 	setup_windows_position(env);
