@@ -68,6 +68,7 @@ read_file(t_list **rows, int fd, Result (*read_line)(char **, int))
 			break;
 		}
 		if (!ft_lstnew_back_eff(rows, &tail, row)) {
+			res = INTERNAL_ERROR;
 			free(row);
 			break;
 		}
