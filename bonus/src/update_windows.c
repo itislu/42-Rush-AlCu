@@ -54,7 +54,7 @@ void update_input(t_win *input, t_board *board)
 		if (i == input->scroll_offset) {
 			wattron(input->win, A_REVERSE);
 		}
-		mvwprintw(input->win, input->title_hight + 1 + i, 2, "%s", options[i]);
+		mvwprintw(input->win, input->title_height + 1 + i, 2, "%s", options[i]);
 		wattroff(input->win, A_REVERSE);
 	}
 	wrefresh(input->win);

@@ -56,5 +56,5 @@ void print_title(t_win *win, char *title)
 	mvwprintw(win->win, line, (win->size.x - ft_strlen(title + start)) / 2, "%s", title + start);
 	wattroff(win->win, A_BOLD);
 	wrefresh(win->win);
-	win->title_hight = line + 1;
+	win->title_height = line + 1;
 }

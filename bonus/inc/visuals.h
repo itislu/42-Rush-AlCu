@@ -24,7 +24,7 @@ typedef struct s_win {
 	t_size size;
 	t_size pos;
 	unsigned int scroll_offset;
-	unsigned int title_hight;
+	unsigned int title_height;
 } t_win;
 
 typedef struct s_ncurses {

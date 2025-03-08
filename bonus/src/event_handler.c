@@ -53,9 +53,9 @@ bool mouse(t_ncurses *env, t_board *board)
 		}
 		else if (event.bstate & BUTTON1_PRESSED
 			&& win == env->input.win
-			&& (unsigned int)event.y >= env->input.title_hight + 1 + env->input.pos.y
-			&& (unsigned int)event.y <= board->num_options + env->input.pos.y +  env->input.title_hight) {
-			env->input.scroll_offset = event.y - env->input.pos.y -  env->input.title_hight - 1;
+			&& (unsigned int)event.y >= env->input.title_height + 1 + env->input.pos.y
+			&& (unsigned int)event.y <= board->num_options + env->input.pos.y +  env->input.title_height) {
+			env->input.scroll_offset = event.y - env->input.pos.y -  env->input.title_height - 1;
 			return true;
 		}
 	}
