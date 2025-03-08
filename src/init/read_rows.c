@@ -41,7 +41,6 @@ Result read_rows(t_list **rows, const char *filename)
 		res = read_file(rows, STDIN_FILENO, read_line_user);
 		if (res == OK) {
 			clear_rows(1);
-			move_down_a_line();
 		}
 	}
 
