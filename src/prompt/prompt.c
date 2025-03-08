@@ -40,8 +40,11 @@ Result prompt_game_mode(Mode *mode)
 	}
 	free(line);
 
-	clear_rows(7);
-	print_game_mode(*mode);
+	clear_rows(0);
+	if (res == OK) {
+		clear_rows(7);
+		print_game_mode(*mode);
+	}
 	ft_printf("\n");
 	return res;
 }
