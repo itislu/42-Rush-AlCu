@@ -21,8 +21,6 @@
               ╰───────────────────────╯\n\
 "
 
-extern int g_stdin;
-
 typedef enum Result {
 	RESULT_OK,
 	USAGE_ERROR,
