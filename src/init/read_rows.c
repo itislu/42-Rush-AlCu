@@ -100,7 +100,7 @@ static t_row *new_row(const char *line)
 
 /**
  * Detects if STDIN_FILENO is interactive by checking if its 'open-flags' are
- * 'O_RDWR | O_APPEND'.
+ * 'O_RDWR | O_APPEND' (02002).
  *
  * The fdinfo of a normal stdin looks like this:
  *     pos:    0
