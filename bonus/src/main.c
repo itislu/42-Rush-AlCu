@@ -9,8 +9,6 @@
 #include <sys/param.h>
 #include <unistd.h>
 
-int g_stdin = STDIN_FILENO;
-
 int main(int argc, char *argv[])
 {
 	Result res = RESULT_OK;
@@ -58,5 +56,6 @@ int main(int argc, char *argv[])
 	}
 
 	free_board(&board);
+	close(STDIN_FILENO);
 	return res;
 }
