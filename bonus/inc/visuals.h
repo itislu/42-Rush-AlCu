@@ -8,7 +8,7 @@
 #define MIN_TERMINAL_HEIGTH             9
 #define MIN_TERMINAL_WIDTH              MIN_BOARD_WIDTH + MIN_INFO_PANEL_WIDTH
 
-#define NO_GAME_MODE "Game mode is not selected yet"
+#define NO_GAME_MODE "Game mode not selected yet"
 #define SELECT_GAME_MODE "Select game mode"
 #define LAST_TO_PICK_WINS "Last to pick wins"
 #define LAST_TO_PICK_LOSES "Last to pick loses"

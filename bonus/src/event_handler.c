@@ -12,12 +12,12 @@ bool mouse(t_ncurses *env, t_board *board)
 		WINDOW *win = detect_window(env, event.y, event.x);
 		if (event.bstate & BUTTON5_PRESSED)
 		{
-			if (win == env->board.win && env->board.scroll_offset > env->board.title_height) {
+			if (win == env->board.win && env->board.scroll_offset > 0) {
 				env->board.scroll_offset--;
 				update_board(&env->board, board);
 			}
 			else if (win == env->history.win && env->is_history
-			         && env->history.scroll_offset > 1) {
+			         && env->history.scroll_offset > 1) { //I can't figure it out why can't this be the same as the board
 				env->history.scroll_offset--;
 				update_history(&env->history, board);
 			}
@@ -37,9 +37,9 @@ bool mouse(t_ncurses *env, t_board *board)
 				update_board(&env->board, board);
 			}
 			else if (win == env->history.win && env->is_history
-			         && board->cur_turn > env->history.size.y - 4
+			         && board->cur_turn > env->history.size.y - 2 - env->history.title_height
 			         && env->history.scroll_offset
-			                < board->cur_turn - env->history.size.y + 4)
+			                < board->cur_turn - env->history.size.y + 2 + env->history.title_height)
 			{
 				env->history.scroll_offset++;
 				update_history(&env->history, board);

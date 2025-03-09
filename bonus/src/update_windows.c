@@ -9,16 +9,16 @@
 
 void update_history(t_win *history, t_board *board)
 {
-	int y_offset = history->title_height;
-	size_t start = 0;
-
 	print_title(history, "History");
+	
+	size_t start = 0;
+	int y_offset = history->title_height;
+
 	if (board->cur_turn - history->scroll_offset > history->size.y - 2 - y_offset) {
 		start = board->cur_turn - history->scroll_offset - history->size.y + 2 + y_offset;
 	}
 
-	for (size_t i = start; i <= board->cur_turn - history->scroll_offset;
-	     i++) {
+	for (size_t i = start; i <= board->cur_turn - history->scroll_offset; i++) {
 		if (board->picks[i])
 			mvwprintw(history->win,
 					y_offset++,
@@ -56,13 +56,6 @@ void update_input(t_win *input, t_board *board)
 
 void update_board(t_win *n_board, t_board *board)
 {
-	unsigned int text_len = 0;
-	unsigned int stop_x = 0;
-	unsigned int max_char_x = 0;
-	t_size offset;
-	size_t i = 0;
-	t_row *row = NULL;
-
 	switch (board->game_mode) {
 	case LAST_WINS:
 		print_title(n_board, LAST_TO_PICK_WINS);
@@ -73,39 +66,34 @@ void update_board(t_win *n_board, t_board *board)
 	default:
 		print_title(n_board, NO_GAME_MODE);
 	}
-	offset.x = 1;
+
+	t_size offset;
+	t_row *row = NULL;
+	
+	size_t start = 0;
 	offset.y = n_board->title_height;
 
-	// size.y - 3 = ncurses board windows height - border top & bottom - 1
-	// - 1 = height starts at 1 instead of 0
 	if (board->cur_row - n_board->scroll_offset > n_board->size.y - 2 - offset.y) {
-		i = board->cur_row - n_board->scroll_offset - n_board->size.y + 2 + offset.y;
+		start = board->cur_row - n_board->scroll_offset - n_board->size.y + 2 + offset.y;
 	}
-	while (i <= board->cur_row - n_board->scroll_offset) {
+	for (size_t i = start; i <= board->cur_row - n_board->scroll_offset; i++) {
 		offset.x = 1;
 		row = board->rows[i];
-		// get max character that find in the windows
-		max_char_x = n_board->size.x - 2; // -1 for borders R, -1 for index 0
-		// calculate length of leading text
-		text_len = ft_max(ft_nbrlen_base(i + 1, 10) + 1, 2); // '#123' min:'#1'
-		text_len += ft_nbrlen_base(row->cur_amount, 10) + 5; // ' (123): '
-		// calculate  maximal available space for | characters
-		stop_x = max_char_x - ft_min(row->cur_amount, max_char_x - text_len);
-		// print leading text
+		unsigned int max_char_x = n_board->size.x - 2;
+		unsigned int text_len = ft_max(ft_nbrlen_base(i + 1, 10) + 1, 2);
+		text_len += ft_nbrlen_base(row->cur_amount, 10) + 5;
+		unsigned int stop_x = max_char_x - ft_min(row->cur_amount, max_char_x - text_len);
 		mvwprintw(n_board->win, offset.y, offset.x,
 			"#%-zu (%u):", i + 1, row->cur_amount);
-		// adjustment for too many pieces in row
 		if (row->cur_amount > max_char_x - text_len) {
 			stop_x += 9; // offset for number of filler characters	
 			mvwprintw(n_board->win, offset.y, offset.x + text_len, "|||| ... ");
 		}
-		// print | from left to right
 		offset.x += stop_x;
 		while (offset.x <= max_char_x) {
 			mvwprintw(n_board->win, offset.y, offset.x++, "|");
 		}
 		offset.y++;
-		i++;
 	}
 	wrefresh(n_board->win);	
 }
@@ -119,13 +107,5 @@ void print_res(t_win *input, t_board *board)
 	        && board->rows[0]->last_pick == AI)) {
 		winner = PLAYER;
 	}
-
-	werase(input->win);
-	box(input->win, 0, 0);
-	mvwprintw(input->win,
-	          1,
-	          1,
-	          "%s",
-	          winner == PLAYER ? WIN : LOSE);
-	wrefresh(input->win);
+	print_title(input, winner == PLAYER ? WIN : LOSE);
 }

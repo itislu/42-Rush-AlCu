@@ -50,7 +50,7 @@ Result game_mode_selection(t_ncurses *env, t_board *board)
 			if (i == env->input.scroll_offset) {
 				wattron(env->input.win, A_REVERSE);
 			}
-			mvwprintw(env->input.win, 3 + i, 2, "%s", options[i]);
+			mvwprintw(env->input.win, env->input.title_height + 1 + i, 2, "%s", options[i]);
 			wattroff(env->input.win, A_REVERSE);
 		}
 		wrefresh(env->input.win);
