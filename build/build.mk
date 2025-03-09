@@ -25,6 +25,7 @@ BUILD_TARGETS	:=	all clear modes run term val valfd
 REBUILD_TARGETS	:=	opt re san
 DOC_TARGETS		:=	bear doxygen uml
 CLEAN_TARGETS	:=	clean fclean ffclean
+#TODO help-% works, but %-help does not
 PHONY_TARGETS	:=	$(BUILD_TARGETS) $(REBUILD_TARGETS) $(DOC_TARGETS) $(CLEAN_TARGETS) lib
 ENV_VARIABLES	:=	MODE ARGS TERMINAL
 HELP_TARGETS	:=	help help-print \

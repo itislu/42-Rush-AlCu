@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 		res = USAGE_ERROR;
 	}
 	if (res == RESULT_OK) {
-		res = init_bonus(&board, &env, argv[1]);
+		res = init(&board, &env, argv[1]);
 	}
 	if (res == RESULT_OK) {
 		res = game_loop(&board, &env);

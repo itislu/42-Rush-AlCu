@@ -14,28 +14,28 @@ int g_stdin = STDIN_FILENO;
 
 int main(int argc, char *argv[])
 {
-	Result res = OK;
+	Result res = RESULT_OK;
 	t_board board;
 
 	if (argc > 2) {
 		res = USAGE_ERROR;
 	}
-	if (res == OK) {
+	if (res == RESULT_OK) {
 		ft_printf("\033[1m" TITLE "\033[0m");
 		res = init_board(&board, argv[1]);
 	}
-	if (res == OK) {
+	if (res == RESULT_OK) {
 		print_board_complete(&board);
 		ft_printf("\n");
 		res = prompt_game_mode(&board.game_mode);
 	}
-	if (res == OK) {
+	if (res == RESULT_OK) {
 		calc_finishers(&board);
 		res = game_loop(&board);
 	}
 
 	switch (res) {
-	case OK:
+	case RESULT_OK:
 		print_result(&board);
 		break;
 	case USAGE_ERROR:
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 		clear_line();
 		const char title[] = "Bye-Bye! 👋";
 		print_boxed_specialstr(title, sizeof(title) - 1 - 2);
-		res = OK;
+		res = RESULT_OK;
 		break;
 	}
 
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 
 static Result game_loop(t_board *board)
 {
-	Result res = OK;
+	Result res = RESULT_OK;
 	Player cur_player = AI;
 
 	while (!is_game_end(board)) {
@@ -73,7 +73,7 @@ static Result game_loop(t_board *board)
 		}
 		else {
 			res = prompt_picks(board, &picks);
-			if (res != OK) {
+			if (res != RESULT_OK) {
 				break;
 			}
 		}

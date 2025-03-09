@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 19:26:08 by ldulling          #+#    #+#             */
-/*   Updated: 2025/01/31 16:59:59 by ldulling         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:29:08 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,13 @@
 # include <stdarg.h>
 # include <stddef.h>
 
-int	ft_printf(const char *format, ...);
-int	ft_dprintf(int fd, const char *format, ...);
-int	ft_snprintf(char *str, size_t size, const char *format, ...);
-int	ft_vsnprintf(char *str, size_t size, const char *format, va_list ap);
+int	ft_printf(const char *format, ...)
+	/* __attribute__((format (printf, 1, 2))) */;
+int	ft_dprintf(int fd, const char *format, ...)
+	/* __attribute__((format (printf, 2, 3))) */;
+int	ft_snprintf(char *str, size_t size, const char *format, ...)
+	/* __attribute__((format (printf, 3, 4))) */;
+int	ft_vsnprintf(char *str, size_t size, const char *format, va_list ap)
+	/* __attribute__((format (printf, 3, 0))) */;
 
 #endif

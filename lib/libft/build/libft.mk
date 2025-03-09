@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 13:33:38 by ldulling          #+#    #+#              #
-#    Updated: 2025/03/03 22:32:19 by ldulling         ###   ########.fr        #
+#    Updated: 2025/03/04 05:29:18 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -172,6 +172,7 @@ SRC		+=	$(addprefix $(DIR), \
 			ft_split_at_index.c \
 			ft_strchr.c \
 			ft_strcmp.c \
+			ft_strcount_str.c \
 			ft_strdel_sequence.c \
 			ft_strdup.c \
 			ft_strisdigits.c \

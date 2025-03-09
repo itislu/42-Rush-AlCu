@@ -24,7 +24,7 @@
 extern int g_stdin;
 
 typedef enum Result {
-	OK,
+	RESULT_OK,
 	USAGE_ERROR,
 	BOARD_ERROR,
 	INTERNAL_ERROR,

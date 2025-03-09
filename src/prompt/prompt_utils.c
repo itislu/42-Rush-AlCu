@@ -24,7 +24,7 @@ Result read_line(char **line, int fd)
 	if (*line == NULL || (*line)[ft_strlen(*line) - 1] != '\n') {
 		return USER_EXIT;
 	}
-	return OK;
+	return RESULT_OK;
 }
 
 bool is_valid_number(const char *num, unsigned int lower, unsigned int upper)
@@ -33,13 +33,13 @@ bool is_valid_number(const char *num, unsigned int lower, unsigned int upper)
 		return (false);
 	}
 	int i = 0;
-	while (num[i] && ft_isspace(num[i])) {
+	while (ft_isspace(num[i])) {
 		i++;
 	}
 	i += num[i] == '+';
 
 	bool has_digit = false;
-	while (num[i] && ft_isdigit(num[i])) {
+	while (ft_isdigit(num[i])) {
 		has_digit = true;
 		i++;
 	}
@@ -47,7 +47,7 @@ bool is_valid_number(const char *num, unsigned int lower, unsigned int upper)
 		return false;
 	}
 
-	while (num[i] && ft_isspace(num[i])) {
+	while (ft_isspace(num[i])) {
 		i++;
 	}
 	if (num[i] != '\0') {

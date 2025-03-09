@@ -45,11 +45,11 @@ Result read_rows(t_list **rows, const char *filename)
 
 static Result read_file(t_list **rows, int fd)
 {
-	Result res = OK;
+	Result res = RESULT_OK;
 	char *line = NULL;
 	t_list *tail = NULL;
 
-	while ((res = read_line(&line, fd)) == OK) {
+	while ((res = read_line(&line, fd)) == RESULT_OK) {
 		if (is_input_end(line)) {
 			if (fd == g_stdin) {
 				clear_rows(1);
@@ -57,13 +57,14 @@ static Result read_file(t_list **rows, int fd)
 			}
 			break;
 		}
-		t_row *row = new_row(line);
-		if (row == NULL) {
+		if (!is_valid_number(line, MIN_ROW_AMOUNT, MAX_ROW_AMOUNT)) {
 			res = BOARD_ERROR;
 			break;
 		}
-		if (!ft_lstnew_back_eff(rows, &tail, row)) {
+		t_row *row = new_row(line);
+		if (row == NULL || !ft_lstnew_back_eff(rows, &tail, row)) {
 			free(row);
+			res = INTERNAL_ERROR;
 			break;
 		}
 		free(line);
@@ -80,14 +81,10 @@ static bool is_input_end(const char *line)
 
 static t_row *new_row(const char *line)
 {
-	if (!is_valid_number(line, MIN_ROW_AMOUNT, MAX_ROW_AMOUNT)) {
-		return NULL;
-	}
 	t_row *row = ft_calloc(1, sizeof(t_row));
 	if (row == NULL) {
 		return NULL;
 	}
-
 	row->start_amount = ft_atoi(line);
 	row->cur_amount = row->start_amount;
 	return row;

@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 12:12:35 by ldulling          #+#    #+#             */
-/*   Updated: 2025/02/13 01:52:34 by ldulling         ###   ########.fr       */
+/*   Updated: 2025/03/04 03:57:05 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
  */
 int	ft_isspace(int c)
 {
-	if (ft_strchr(WHITESPACE, c) != NULL)
+	if (c != '\0' && ft_strchr(WHITESPACE, c) != NULL)
 		return (1);
 	return (0);
 }

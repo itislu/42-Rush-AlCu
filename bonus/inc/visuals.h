@@ -38,16 +38,12 @@ Result game_loop(t_board *board, t_ncurses *env);
 void turn(t_board *board, t_ncurses *env, Player *player);
 bool is_game_end(t_board *board);
 
-// utils
-WINDOW *detect_window(t_ncurses *env, unsigned int y, unsigned int x);
-size_t capped_sub(size_t a, size_t b);
-
 // ncurses
 Result setup_ncurses(t_ncurses *env);
 void cleanup_ncruses(t_ncurses *env);
 
 // init
-Result init_bonus(t_board *board, t_ncurses *env, char *filename);
+Result init(t_board *board, t_ncurses *env, char *filename);
 Result game_mode_selection(t_ncurses *env, t_board *board);
 
 // event handlers

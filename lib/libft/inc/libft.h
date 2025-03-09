@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 16:17:46 by ldulling          #+#    #+#             */
-/*   Updated: 2025/03/03 22:32:00 by ldulling         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:36:28 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ char			**ft_split(const char *s, char c);
 char			**ft_split_at_index(const char *str, size_t index);
 char			*ft_strchr(const char *s, int c);
 int				ft_strcmp(const char *s1, const char *s2);
+size_t			ft_strcount_str(const char *big, const char *little);
 char			*ft_strdel_sequence(const char *str, const char *sequence);
 char			*ft_strdup(const char *s);
 bool			ft_strisdigits(const char *s);
@@ -154,7 +155,7 @@ size_t			ft_strlcat(char *dst, const char *src, size_t size);
 size_t			ft_strlcpy(char *dst, const char *src, size_t size);
 size_t			ft_strlcpy_nbr_base(char *dst, long nbr, const char *base, \
 									size_t size);
-size_t			ft_strlen(const char *s);
+size_t			ft_strlen(const char *s) __attribute__((nonnull));
 char			*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 int				ft_strmatches_any(const char *str, int n, ...);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);

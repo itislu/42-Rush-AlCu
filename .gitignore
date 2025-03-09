@@ -4,6 +4,7 @@
 !*.h
 !*.md
 !*.mk
+!.*sh
 !*.supp
 !.clang-format
 !.clangd

@@ -11,16 +11,17 @@
 
 static Result read_board(t_board *board, const char *filename);
 static unsigned int max_width(t_board *board);
+static Result allocate_picks(t_board *board);
 
 // If filename == NULL, read from stdin
 Result init_board(t_board *board, const char *filename)
 {
-	ft_bzero(board, sizeof(*board));
 	Result res = read_board(board, filename);
 
-	if (res == OK) {
+	if (res == RESULT_OK) {
 		board->width = max_width(board);
 		board->cur_row = board->height - 1;
+		res = allocate_picks(board);
 	}
 	return res;
 }
@@ -33,6 +34,7 @@ void free_board(t_board *board)
 		}
 		ft_free_and_null((void **)&board->rows);
 	}
+	free(board->picks);
 	free_get_next_line();
 	close(g_stdin);
 }
@@ -42,7 +44,7 @@ static Result read_board(t_board *board, const char *filename)
 	t_list *rows = NULL;
 	Result res = read_rows(&rows, filename);
 
-	if (res == OK) {
+	if (res == RESULT_OK) {
 		board->height = ft_lstsize(rows);
 		board->rows = (t_row **)ft_lstto_array(&rows);
 		if (board->height == 0) {
@@ -64,4 +66,18 @@ static unsigned int max_width(t_board *board)
 		max = MAX(max, board->rows[row]->start_amount);
 	}
 	return max;
+}
+
+static Result allocate_picks(t_board *board)
+{
+	size_t matches = 0;
+
+	for (size_t row = 0; row < board->height; row++) {
+		matches += board->rows[row]->start_amount;
+	}
+	board->picks = ft_calloc(matches + 1, sizeof(unsigned int));
+	if (board->picks == NULL) {
+		return INTERNAL_ERROR;
+	}
+	return RESULT_OK;
 }

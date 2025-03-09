@@ -5,6 +5,8 @@
 #include <sys/param.h>
 #include <unistd.h>
 
+static WINDOW *detect_window(t_ncurses *env, unsigned int y, unsigned int x);
+
 void mouse(t_ncurses *env, t_board *board)
 {
 	MEVENT event;
@@ -67,4 +69,20 @@ void scroll_handler(t_board *board, t_ncurses *env, int ch)
 	else if (ch == KEY_MOUSE) {
 		mouse(env, board);
 	}
+}
+
+static WINDOW *detect_window(t_ncurses *env, unsigned int y, unsigned int x)
+{
+	if (y >= env->history.pos.y
+	    && y < env->history.pos.y + env->history.size.y - 1
+	    && x >= env->history.pos.x
+	    && x < env->history.pos.x + env->history.size.x - 1) {
+		return env->history.win;
+	}
+	if (y >= env->input.pos.y && y < env->input.pos.y + env->input.size.y - 1
+	    && x >= env->input.pos.x
+	    && x < env->input.pos.x + env->input.size.x - 1) {
+		return env->input.win;
+	}
+	return env->board.win;
 }

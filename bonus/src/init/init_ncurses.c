@@ -95,6 +95,7 @@ static Result init_windows(t_ncurses *env)
 	keypad(env->input.win, TRUE);
 	return (RESULT_OK);
 }
+
 void cleanup_ncruses(t_ncurses *env)
 {
 	if (env->board.win) {
