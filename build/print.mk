@@ -138,7 +138,7 @@ endif
 # *************************** MAKEFILE DEBUGGING ***************************** #
 
 print-%			:
-					$(call PRINTLN,$* = $(shell echo -e -n $($*)))
+					$(call PRINTLN,$* = $(shell echo -n $($*)))
 
 
 endif
