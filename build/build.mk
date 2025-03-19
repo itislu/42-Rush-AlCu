@@ -30,7 +30,7 @@ ENV_VARIABLES	:=	MODE ARGS TERMINAL
 HELP_TARGETS	:=	help help-print \
 					$(addprefix help-,$(PHONY_TARGETS) $(ENV_VARIABLES)) \
 					$(addsuffix -help,$(PHONY_TARGETS) $(ENV_VARIABLES))
-HIDDEN_TARGETS	:=	.bear-image .build .clang-uml .clang-uml-image .doxygen-image .libs_ready .plantuml .plantuml-image .ready
+HIDDEN_TARGETS	:=	.bear-image .build .clang-uml .clang-uml-image .doxygen-image .plantuml .plantuml-image
 
 
 #	Phony targets
@@ -42,7 +42,7 @@ PHONY_TARGETS	+=	$(HELP_TARGETS) $(HIDDEN_TARGETS) $(LIBRARIES)
 # ***************************** BUILD TARGETS ******************************** #
 
 all				:
-					if $(MAKE) --question .ready 2>/dev/null; then \
+					if $(READY); then \
 						$(call PRINTLN,"$(MSG_NO_CHANGE)"); \
 						$(call PRINTLN,"$(MSG_HELP)"); \
 					else \
@@ -102,19 +102,24 @@ endif
 
 #	Dependency management
 
+define READY
+$(NAME_READY) && $(LIBS_READY)
+endef
+
+define NAME_READY
+$(MAKE) --question $(NAME) && $(LIBS_READY)
+endef
+
+define LIBS_READY
+$(foreach lib,$(LIBRARIES),$(MAKE) --question --directory=$(lib) && ) true
+endef
+
 ifeq (4.4, $(firstword $(sort $(MAKE_VERSION) 4.4)))
 .build			:	$(LIBRARIES) .WAIT $(NAME)
 else
 .build			:	$(LIBRARIES)
 					$(MAKE) $(NAME)
 endif
-
-.ready			:
-					$(MAKE) --question $(NAME)
-					$(MAKE) --question .libs_ready
-
-.libs_ready		:
-					$(foreach lib,$(LIBRARIES),$(MAKE) --question --directory=$(lib) && ) true
 
 
 #	Library compilation
@@ -147,8 +152,7 @@ $(DEP_DIR)/%.d	:	$(SRC_DIR)/%$(SRC_EXTENSION) $(BUILDFILES) | $(DEP_SUBDIRS)
 
 #	Directory structure mirroring of source files for build artifacts
 
-$(OBJ_SUBDIRS) \
-$(DEP_SUBDIRS)	:
+$(OBJ_SUBDIRS) $(DEP_SUBDIRS):
 					mkdir -p $@
 
 
