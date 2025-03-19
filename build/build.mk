@@ -96,7 +96,7 @@ re				:
 
 #	Include if building or if no target specified
 ifneq (, $(or $(filter $(BUILD_TARGETS),$(MAKECMDGOALS)),$(if $(MAKECMDGOALS),,all)))
-    -include	$(DEP)
+    -include		$(DEP)
 endif
 
 

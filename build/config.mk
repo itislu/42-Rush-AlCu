@@ -14,7 +14,7 @@ COLOR_MAKE		?=	STY_GRE
 
 #	Default targets
 
-.DEFAULT		:
+%				:
 					$(MAKE) help
 
 .DEFAULT_GOAL	:=	all
