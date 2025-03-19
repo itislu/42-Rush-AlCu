@@ -18,6 +18,7 @@ help			:
 					echo -e "  term             Build and run the project in a new terminal window"
 					echo -e "  clear            Build the project and clear the terminal"
 					echo -e "  re               Rebuild the project"
+					echo -e "  libs             Build all libraries the project depends on"
 					echo -e "  bear             Generate compilation database using Bear"
 					echo -e "  doxygen          Generate documentation using Doxygen"
 					echo -e "  uml              Generate UML diagrams using clang-uml and convert them to PNG, SVG and PDF"
@@ -89,6 +90,14 @@ help-clear		:
 
 help-re			:
 					echo -e "Rebuild the project."
+
+help-libs		:
+					echo -e "Build all libraries the project depends on."
+					echo
+					echo -e "The following libraries will be built:"
+					for lib in $(LIBRARIES); do \
+						echo -e "  $$lib"; \
+					done
 
 help-bear		:
 					echo -e "Generate compilation database (compile_commands.json) using Bear."

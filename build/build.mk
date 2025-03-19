@@ -25,7 +25,7 @@ BUILD_TARGETS	:=	all clear modes run term val valfd
 REBUILD_TARGETS	:=	opt re san
 DOC_TARGETS		:=	bear doxygen uml
 CLEAN_TARGETS	:=	clean fclean ffclean
-PHONY_TARGETS	:=	$(BUILD_TARGETS) $(REBUILD_TARGETS) $(DOC_TARGETS) $(CLEAN_TARGETS)
+PHONY_TARGETS	:=	$(BUILD_TARGETS) $(REBUILD_TARGETS) $(DOC_TARGETS) $(CLEAN_TARGETS) libs
 ENV_VARIABLES	:=	MODE ARGS TERMINAL
 HELP_TARGETS	:=	help help-print \
 					$(addprefix help-,$(PHONY_TARGETS) $(ENV_VARIABLES)) \
@@ -118,6 +118,9 @@ endif
 
 
 #	Library compilation
+
+libs			:	MAKEFLAGS := $(filter-out --silent,$(MAKEFLAGS))
+libs			:	$(LIBRARIES)
 
 $(LIBRARIES)	:
 					$(MAKE) --directory=$@
