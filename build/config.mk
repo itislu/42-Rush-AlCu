@@ -14,7 +14,7 @@ COLOR_MAKE		?=	STY_GRE
 
 #	Default targets
 
-.DEFAULT		:
+%				:
 					$(MAKE) help
 
 .DEFAULT_GOAL	:=	all
@@ -59,7 +59,7 @@ LDLIBS			:=	$(addprefix -l,$(patsubst lib%,%,$(notdir $(LIBRARIES) $(LIBRARIES_E
 #	Files
 
 SRC_EXTENSION	:=	.c
-SRC				:=	$(shell find $(SRC_DIR) -type f -name "*$(SRC_EXTENSION)" -printf "%P\n")
+SRC				:=	$(patsubst $(SRC_DIR)/%,%,$(shell find $(SRC_DIR) -type f -name "*$(SRC_EXTENSION)"))
 
 
 #	Valgrind
