@@ -107,11 +107,11 @@ $(NAME_READY) && $(LIBS_READY)
 endef
 
 define NAME_READY
-$(MAKE) --question $(NAME) && $(LIBS_READY)
+$(MAKE) --question $(NAME) &>/dev/null
 endef
 
 define LIBS_READY
-$(foreach lib,$(LIBRARIES),$(MAKE) --question --directory=$(lib) && ) true
+$(foreach lib,$(LIBRARIES),$(MAKE) --question --directory=$(lib) &>/dev/null && ) true
 endef
 
 ifeq (4.4, $(firstword $(sort $(MAKE_VERSION) 4.4)))
