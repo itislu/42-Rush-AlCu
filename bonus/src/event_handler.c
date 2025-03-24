@@ -17,7 +17,7 @@ bool mouse(t_ncurses *env, t_board *board)
 				update_board(&env->board, board);
 			}
 			else if (win == env->history.win && env->is_history
-			         && env->history.scroll_offset > 1) {
+			         && env->history.scroll_offset > 1) { //I can't figure it out why can't this be the same as the board
 				env->history.scroll_offset--;
 				update_history(&env->history, board);
 			}
@@ -30,16 +30,16 @@ bool mouse(t_ncurses *env, t_board *board)
 		}
 		else if (event.bstate & BUTTON4_PRESSED)
 		{
-			if (win == env->board.win && board->cur_row > env->board.size.y - 3
+			if (win == env->board.win && board->cur_row > env->board.size.y - 2 - env->board.title_height
 			    && env->board.scroll_offset
-			           < board->cur_row - env->board.size.y + 3) {
+			           < board->cur_row - env->board.size.y + 2 + env->board.title_height) {
 				env->board.scroll_offset++;
 				update_board(&env->board, board);
 			}
 			else if (win == env->history.win && env->is_history
-			         && board->cur_turn > env->history.size.y - 4
+			         && board->cur_turn > env->history.size.y - 2 - env->history.title_height
 			         && env->history.scroll_offset
-			                < board->cur_turn - env->history.size.y + 4)
+			                < board->cur_turn - env->history.size.y + 2 + env->history.title_height)
 			{
 				env->history.scroll_offset++;
 				update_history(&env->history, board);
@@ -53,9 +53,9 @@ bool mouse(t_ncurses *env, t_board *board)
 		}
 		else if (event.bstate & BUTTON1_PRESSED
 			&& win == env->input.win
-			&& (unsigned int)event.y >= 3 + env->input.pos.y
-			&& (unsigned int)event.y <= board->num_options + env->input.pos.y + 2) {
-			env->input.scroll_offset = event.y - env->input.pos.y - 3;
+			&& (unsigned int)event.y >= env->input.title_height + 1 + env->input.pos.y
+			&& (unsigned int)event.y <= board->num_options + env->input.pos.y +  env->input.title_height) {
+			env->input.scroll_offset = event.y - env->input.pos.y -  env->input.title_height - 1;
 			return true;
 		}
 	}

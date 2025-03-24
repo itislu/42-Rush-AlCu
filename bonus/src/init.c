@@ -23,7 +23,7 @@ Result init_bonus(t_board *board, t_ncurses *env, char *filename)
 	}
 	if (res == RESULT_OK) {
 		update_board(&env->board, board);
-		update_history(&env->history, board);
+		print_title(&env->history, HISTORY_TITLE);
 		res = game_mode_selection(env, board);
 	}
 	if (res == RESULT_OK) {
@@ -39,19 +39,18 @@ Result game_mode_selection(t_ncurses *env, t_board *board)
 	board->game_mode = 0;
 	board->num_options = 2;
 
-	const char *options[2] = {"Last to pick loses", "Last to pick wins"};
+	const char *options[2] = {LAST_TO_PICK_LOSES, LAST_TO_PICK_WINS};
 
 	env->input.scroll_offset = 0;
 	int ch = 0;
 	while (ch != '\n') {
-		werase(env->input.win);
-		box(env->input.win, 0, 0);
-		mvwprintw(env->input.win, 1, 1, "Select game mode:");
+		print_title(&env->input, SELECT_GAME_MODE);
+
 		for (unsigned int i = 0; i < 2; i++) {
 			if (i == env->input.scroll_offset) {
 				wattron(env->input.win, A_REVERSE);
 			}
-			mvwprintw(env->input.win, 3 + i, 2, "%s", options[i]);
+			mvwprintw(env->input.win, env->input.title_height + 1 + i, 2, "%s", options[i]);
 			wattroff(env->input.win, A_REVERSE);
 		}
 		wrefresh(env->input.win);
