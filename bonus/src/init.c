@@ -23,7 +23,7 @@ Result init_bonus(t_board *board, t_ncurses *env, char *filename)
 	}
 	if (res == RESULT_OK) {
 		update_board(&env->board, board);
-		print_title(&env->history, "History");
+		print_title(&env->history, HISTORY_TITLE);
 		res = game_mode_selection(env, board);
 	}
 	if (res == RESULT_OK) {

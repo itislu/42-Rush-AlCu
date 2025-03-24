@@ -15,6 +15,7 @@
 #define SELECT_PICKS "Select how many picks to remove"
 #define WIN "Congrats, you won!"
 #define LOSE "You lost..."
+#define HISTORY_TITLE "History"
 
 #define ESCAPE 27
 typedef struct s_size {

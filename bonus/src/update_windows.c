@@ -9,7 +9,7 @@
 
 void update_history(t_win *history, t_board *board)
 {
-	print_title(history, "History");
+	print_title(history, HISTORY_TITLE);
 	
 	size_t start = 0;
 	int y_offset = history->title_height;
